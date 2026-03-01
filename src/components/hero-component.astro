@@ -1,7 +1,6 @@
 ---
 import { Image } from "astro:assets";
 import heroBg from "@/assets/home-page_fvbc_hero.webp";
-import vbcLogo from "@/assets/vbc_logo.svg";
 import { Button } from "@/components/starwind/button";
 
 const navLinks = [
@@ -39,7 +38,7 @@ const navLinks = [
     <!-- Logo -->
     <div class="hero__logo">
       <Image
-        src={vbcLogo}
+        src="/vbc_logo.svg"
         alt="Victory Baptist Church"
         width={56}
         height={56}
