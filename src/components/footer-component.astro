@@ -1,0 +1,128 @@
+---
+import { Image } from "astro:assets";
+import vbcLogo from "@/assets/vbc_logo.svg";
+---
+
+<footer class="bg-foreground text-background py-16 px-8 md:px-16 lg:px-24">
+  <div class="max-w-6xl mx-auto">
+    <div class="grid grid-cols-1 gap-12 md:grid-cols-4">
+      <!-- Brand -->
+      <div class="md:col-span-1 flex flex-col gap-4">
+        <Image
+          src={vbcLogo}
+          alt="Victory Baptist Church"
+          width={48}
+          height={48}
+          class="h-12 w-12 brightness-0 invert"
+        />
+        <p class="text-sm text-background/70 leading-relaxed">
+          Victory Baptist Church<br />
+          123 Victory Lane<br />
+          Fresno, CA 93701
+        </p>
+        <p class="text-sm text-background/70">Sunday Service — 10:00 AM</p>
+      </div>
+
+      <!-- Visit -->
+      <div class="flex flex-col gap-3">
+        <h3
+          class="text-sm font-semibold uppercase tracking-widest text-background/50"
+        >
+          Visit
+        </h3>
+        <nav class="flex flex-col gap-2">
+          <a
+            href="/plan-a-visit"
+            class="text-sm text-background/80 hover:text-background transition-colors"
+            >Plan a Visit</a
+          >
+          <a
+            href="/about"
+            class="text-sm text-background/80 hover:text-background transition-colors"
+            >About Us</a
+          >
+          <a
+            href="/staff"
+            class="text-sm text-background/80 hover:text-background transition-colors"
+            >Our Staff</a
+          >
+          <a
+            href="/events"
+            class="text-sm text-background/80 hover:text-background transition-colors"
+            >Events</a
+          >
+        </nav>
+      </div>
+
+      <!-- Connect -->
+      <div class="flex flex-col gap-3">
+        <h3
+          class="text-sm font-semibold uppercase tracking-widest text-background/50"
+        >
+          Connect
+        </h3>
+        <nav class="flex flex-col gap-2">
+          <a
+            href="/groups"
+            class="text-sm text-background/80 hover:text-background transition-colors"
+            >Small Groups</a
+          >
+          <a
+            href="/serve"
+            class="text-sm text-background/80 hover:text-background transition-colors"
+            >Serve</a
+          >
+          <a
+            href="/give"
+            class="text-sm text-background/80 hover:text-background transition-colors"
+            >Give</a
+          >
+          <a
+            href="/messages"
+            class="text-sm text-background/80 hover:text-background transition-colors"
+            >Messages</a
+          >
+        </nav>
+      </div>
+
+      <!-- Contact -->
+      <div class="flex flex-col gap-3">
+        <h3
+          class="text-sm font-semibold uppercase tracking-widest text-background/50"
+        >
+          Contact
+        </h3>
+        <nav class="flex flex-col gap-2">
+          <a
+            href="tel:+15591234567"
+            class="text-sm text-background/80 hover:text-background transition-colors"
+            >(559) 123-4567</a
+          >
+          <a
+            href="mailto:info@vbc.org"
+            class="text-sm text-background/80 hover:text-background transition-colors"
+            >info@vbc.org</a
+          >
+          <a
+            href="https://www.facebook.com"
+            rel="noopener"
+            target="_blank"
+            class="text-sm text-background/80 hover:text-background transition-colors"
+            >Facebook</a
+          >
+          <a
+            href="https://www.instagram.com"
+            rel="noopener"
+            target="_blank"
+            class="text-sm text-background/80 hover:text-background transition-colors"
+            >Instagram</a
+          >
+        </nav>
+      </div>
+    </div>
+
+    <p class="text-sm text-background/40 text-center">
+      &copy; {new Date().getFullYear()} Victory Baptist Church. All rights reserved.
+    </p>
+  </div>
+</footer>

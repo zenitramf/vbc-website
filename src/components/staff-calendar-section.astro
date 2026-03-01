@@ -1,0 +1,82 @@
+---
+import { Image } from "astro:assets";
+import heroBg from "@/assets/home-page_fvbc_hero.webp";
+import { Button } from "@/components/starwind/button";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/starwind/card";
+import { Badge } from "@/components/starwind/badge";
+---
+
+<section class="bg-background py-20 px-8 md:px-16 lg:px-24">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-12">
+      <p
+        class="text-sm font-semibold uppercase tracking-widest text-primary mb-3"
+      >
+        Get Connected
+      </p>
+      <h2 class="text-3xl font-bold text-foreground md:text-4xl">
+        Real people. Real community.
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+      <!-- Staff card -->
+      <Card>
+        <div class="relative overflow-hidden rounded-t-xl aspect-video">
+          <Image
+            src={heroBg}
+            alt="VBC pastoral team"
+            class="h-full w-full object-cover"
+            widths={[600, 900]}
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
+        </div>
+        <CardHeader>
+          <Badge variant="secondary">Our Team</Badge>
+          <CardTitle>Meet the Pastors & Leaders</CardTitle>
+          <CardDescription>
+            Get to know the men and women who shepherd our congregation and
+            serve our city with humility and love.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Button variant="outline">
+            <a href="/staff">Meet Our Staff</a>
+          </Button>
+        </CardContent>
+      </Card>
+
+      <!-- Calendar card -->
+      <Card>
+        <div class="relative overflow-hidden rounded-t-xl aspect-video">
+          <Image
+            src={heroBg}
+            alt="VBC events and gatherings"
+            class="h-full w-full object-cover"
+            widths={[600, 900]}
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
+        </div>
+        <CardHeader>
+          <Badge variant="secondary">Events</Badge>
+          <CardTitle>What's Coming Up</CardTitle>
+          <CardDescription>
+            From Sunday services to community outreach, there's always something
+            happening at VBC. Come be part of it.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Button variant="outline">
+            <a href="/events">View Calendar</a>
+          </Button>
+        </CardContent>
+      </Card>
+    </div>
+  </div>
+</section>

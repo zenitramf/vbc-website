@@ -1,0 +1,44 @@
+---
+import { Image } from "astro:assets";
+import heroBg from "@/assets/home-page_fvbc_hero.webp";
+import { Button } from "@/components/starwind/button";
+import { Badge } from "@/components/starwind/badge";
+---
+
+<section class="bg-muted py-20 px-8 md:px-16 lg:px-24">
+  <div
+    class="max-w-6xl mx-auto grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center"
+  >
+    <!-- Content (reversed layout from Plan a Visit) -->
+    <div class="flex flex-col gap-6 lg:order-1">
+      <Badge variant="secondary" class="self-start">Next Steps</Badge>
+      <h2 class="text-3xl font-bold text-foreground md:text-4xl">
+        Ready to go deeper?
+      </h2>
+      <p class="text-muted-foreground text-lg leading-relaxed">
+        Whether you're brand new or have been coming for years, there's always a
+        next step. Join a small group, serve on a team, or talk with a pastor —
+        we'll help you find where you belong.
+      </p>
+      <div class="flex flex-col gap-3 sm:flex-row">
+        <Button size="lg">
+          <a href="/groups">Join a Group</a>
+        </Button>
+        <Button size="lg" variant="outline">
+          <a href="/serve">Serve With Us</a>
+        </Button>
+      </div>
+    </div>
+
+    <!-- Image -->
+    <div class="relative overflow-hidden rounded-xl aspect-4/3 lg:order-2">
+      <Image
+        src={heroBg}
+        alt="VBC community serving together"
+        class="h-full w-full object-cover"
+        widths={[600, 900]}
+        sizes="(max-width: 1024px) 100vw, 50vw"
+      />
+    </div>
+  </div>
+</section>

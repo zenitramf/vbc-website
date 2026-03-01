@@ -1,0 +1,208 @@
+---
+import { Image } from "astro:assets";
+import heroBg from "@/assets/home-page_fvbc_hero.webp";
+import vbcLogo from "@/assets/vbc_logo.svg";
+import { Button } from "@/components/starwind/button";
+---
+
+<section class="hero">
+  <!-- Background image -->
+  <Image
+    src={heroBg}
+    alt="Fresno Victory Baptist Church"
+    class="hero__bg"
+    widths={[640, 1280, 1920]}
+    sizes="100vw"
+    loading="eager"
+  />
+
+  <!-- Gradient overlay: light on left, darker on right to make text pop -->
+  <div class="hero__overlay"></div>
+
+  <!-- Top-left logo -->
+  <div class="hero__logo">
+    <Image
+      src={vbcLogo}
+      alt="Victory Baptist Church"
+      width={56}
+      height={56}
+      class="hero__logo-img"
+    />
+  </div>
+
+  <!-- Hero content -->
+  <div class="hero__content">
+    <!-- Large headline — left column -->
+    <h1 class="hero__headline">
+      Bible-Centered.<br />Christ Focused
+    </h1>
+
+    <!-- Right column — subtitle + CTAs -->
+    <div class="hero__right">
+      <div class="hero__tagline">
+        <p class="hero__church-name">Welcome to Victory Baptist Church</p>
+        <p class="hero__location">Independent, Fundamental</p>
+      </div>
+
+      <Button variant="cta"> Plan a Visit </Button>
+      <Button variant="outline">Get Involved</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    height: 100svh;
+    min-height: 600px;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+  }
+
+  /* Subtle gradient — keeps image vivid, darkens edges for legibility */
+  .hero__overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.55) 0%,
+        rgba(0, 0, 0, 0.25) 50%,
+        rgba(0, 0, 0, 0.45) 100%
+      ),
+      linear-gradient(to top, rgba(0, 0, 0, 0.4) 0%, transparent 60%);
+  }
+
+  .hero__logo {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    z-index: 10;
+  }
+
+  .hero__logo-img {
+    width: 3.5rem;
+    height: 3.5rem;
+    /* Make the SVG render white */
+    filter: brightness(0) invert(1);
+  }
+
+  .hero__content {
+    position: relative;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    width: 100%;
+    max-width: 72rem;
+    margin-inline: auto;
+    padding-inline: 2rem;
+  }
+
+  .hero__headline {
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    color: #fff;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .hero__right {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+
+  .hero__church-name {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+  }
+
+  .hero__location {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.75);
+    margin: 0.25rem 0 0;
+  }
+
+  .hero__ctas {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .hero__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.75rem;
+    padding-inline: 1.75rem;
+    border-radius: 0.375rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition:
+      background 0.15s ease,
+      color 0.15s ease,
+      border-color 0.15s ease;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .hero__btn--primary {
+    background: #fff;
+    color: #111;
+    border: 2px solid transparent;
+  }
+
+  .hero__btn--primary:hover {
+    background: rgba(255, 255, 255, 0.88);
+  }
+
+  .hero__btn--outline {
+    background: transparent;
+    color: #fff;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+  }
+
+  .hero__btn--outline:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: #fff;
+  }
+
+  @media (min-width: 768px) {
+    .hero__logo {
+      top: 1.75rem;
+      left: 2rem;
+    }
+
+    .hero__content {
+      padding-inline: 4rem;
+    }
+
+    .hero__ctas {
+      flex-direction: row;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero__content {
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding-inline: 6rem;
+    }
+  }
+</style>
