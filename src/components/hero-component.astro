@@ -3,6 +3,14 @@ import { Image } from "astro:assets";
 import heroBg from "@/assets/home-page_fvbc_hero.webp";
 import vbcLogo from "@/assets/vbc_logo.svg";
 import { Button } from "@/components/starwind/button";
+import { separator } from "./starwind/separator/Separator.astro";
+
+const navLinks = [
+  { href: "#heaven", label: "Heaven" },
+  { href: "#about", label: "About Us" },
+  { href: "#sermons", label: "Sermons" },
+  { href: "#give", label: "Give" },
+];
 ---
 
 <section class="hero">
@@ -19,15 +27,64 @@ import { Button } from "@/components/starwind/button";
   <!-- Gradient overlay: light on left, darker on right to make text pop -->
   <div class="hero__overlay"></div>
 
-  <!-- Top-left logo -->
-  <div class="hero__logo">
-    <Image
-      src={vbcLogo}
-      alt="Victory Baptist Church"
-      width={56}
-      height={56}
-      class="hero__logo-img"
-    />
+  <!-- Hidden checkbox — drives the CSS-only mobile menu toggle -->
+  <input
+    type="checkbox"
+    id="hero-nav-cbox"
+    class="hero__cbox"
+    aria-hidden="true"
+  />
+
+  <!-- Navigation bar -->
+  <nav class="hero__nav" aria-label="Main navigation">
+    <!-- Logo -->
+    <div class="hero__logo">
+      <Image
+        src={vbcLogo}
+        alt="Victory Baptist Church"
+        width={56}
+        height={56}
+        class="hero__logo-img"
+      />
+    </div>
+
+    <!-- Desktop nav links (hidden on mobile) -->
+    <ul class="hero__nav-links" role="list">
+      {
+        navLinks.map((link) => (
+          <li>
+            <a href={link.href} class="hero__nav-link">
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <!-- Mobile hamburger label (hidden on desktop) -->
+    <label for="hero-nav-cbox" class="hero__hamburger" aria-label="Toggle menu">
+      <span class="hero__hamburger-bar"></span>
+      <span class="hero__hamburger-bar"></span>
+      <span class="hero__hamburger-bar"></span>
+    </label>
+  </nav>
+
+  <!-- Mobile menu overlay -->
+  <div class="hero__mobile-menu" id="mobile-menu">
+    <ul class="hero__mobile-links" role="list">
+      {
+        navLinks.map((link) => (
+          <li class="hero__mobile-item">
+            <a href={link.href} class="hero__mobile-link">
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="hero__mobile-cta">
+      <a href="#visit" class="hero__mobile-cta-btn">Plan a Visit</a>
+    </div>
   </div>
 
   <!-- Hero content -->
@@ -49,6 +106,36 @@ import { Button } from "@/components/starwind/button";
     </div>
   </div>
 </section>
+
+<script>
+  const cbox = document.querySelector(
+    "#hero-nav-cbox"
+  ) as HTMLInputElement | null;
+
+  const closeMenu = () => {
+    if (cbox) {
+      cbox.checked = false;
+    }
+    document.body.style.overflow = "";
+  };
+
+  // Lock body scroll when menu opens, release when it closes
+  cbox?.addEventListener("change", () => {
+    document.body.style.overflow = cbox.checked ? "hidden" : "";
+  });
+
+  // Close on any nav link click inside the mobile menu
+  for (const link of document.querySelectorAll(".hero__mobile-link")) {
+    link.addEventListener("click", closeMenu);
+  }
+
+  // Close on Escape key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && cbox?.checked) {
+      closeMenu();
+    }
+  });
+</script>
 
 <style>
   .hero {
@@ -84,19 +171,205 @@ import { Button } from "@/components/starwind/button";
       linear-gradient(to top, rgba(0, 0, 0, 0.4) 0%, transparent 60%);
   }
 
-  .hero__logo {
+  /* ── Navigation ─────────────────────────────────── */
+
+  .hero__nav {
     position: absolute;
-    top: 1.5rem;
-    left: 1.5rem;
-    z-index: 10;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 20; /* raised to 101 via :has() when menu is open */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 2rem;
   }
 
   .hero__logo-img {
     width: 3.5rem;
     height: 3.5rem;
-    /* Make the SVG render white */
     filter: brightness(0) invert(1);
+    display: block;
   }
+
+  /* Desktop nav links — hidden on mobile */
+  .hero__nav-links {
+    display: none;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 2rem;
+  }
+
+  .hero__nav-link {
+    color: rgba(255, 255, 255, 0.88);
+    text-decoration: none;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    transition: color 0.15s ease;
+  }
+
+  .hero__nav-link:hover {
+    color: #fff;
+  }
+
+  /* ── Hidden checkbox ───────────────────────────── */
+
+  .hero__cbox {
+    display: none;
+  }
+
+  /* ── Hamburger label — visible on mobile only ───── */
+
+  .hero__hamburger {
+    position: relative;
+    display: block; /* shown on mobile */
+    width: 44px;
+    height: 44px;
+    overflow: hidden;
+    background-color: transparent;
+    cursor: pointer;
+    transition: background-color 300ms ease-in-out;
+  }
+
+  /* Individual bars — reference centering trick */
+  .hero__hamburger-bar {
+    position: absolute;
+    display: block;
+    background-color: #fff;
+    width: 26px;
+    height: 2px;
+    border-radius: 2px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 300ms ease-in-out;
+  }
+
+  .hero__hamburger-bar:nth-child(1) {
+    top: 35%;
+  }
+  .hero__hamburger-bar:nth-child(2) {
+    top: 50%;
+  }
+  .hero__hamburger-bar:nth-child(3) {
+    top: 65%;
+  }
+
+  /* ── Checked state: bars become an X ───────────── */
+
+  #hero-nav-cbox:checked ~ .hero__nav .hero__hamburger-bar:nth-child(1) {
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+  #hero-nav-cbox:checked ~ .hero__nav .hero__hamburger-bar:nth-child(2) {
+    left: -150%; /* slide center bar out of sight */
+  }
+  #hero-nav-cbox:checked ~ .hero__nav .hero__hamburger-bar:nth-child(3) {
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+
+  /* ── Mobile menu overlay ────────────────────────── */
+
+  .hero__mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* Grow from top-right corner (hamburger position) */
+    clip-path: circle(0% at calc(100% - 2rem - 22px) calc(1.5rem + 22px));
+    transition: clip-path 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Open state driven by the checkbox sibling */
+  #hero-nav-cbox:checked ~ .hero__mobile-menu {
+    clip-path: circle(150% at calc(100% - 2rem - 22px) calc(1.5rem + 22px));
+  }
+
+  /* Raise nav above the overlay when open so the X label stays clickable */
+  .hero:has(#hero-nav-cbox:checked) .hero__nav {
+    z-index: 101;
+  }
+
+  /* Hide logo when mobile menu is open */
+  .hero:has(#hero-nav-cbox:checked) .hero__logo {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .hero__logo {
+    transition: opacity 0.2s ease;
+  }
+
+  .hero__mobile-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+
+  .hero__mobile-item {
+    width: 100%;
+  }
+
+  .hero__mobile-item:not(:last-child) {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .hero__mobile-link {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 1.25rem 2rem;
+    color: #fff;
+    text-decoration: none;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    transition: color 0.15s ease;
+  }
+
+  .hero__mobile-link:hover {
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  .hero__mobile-cta {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    padding-inline: 2rem;
+  }
+
+  .hero__mobile-cta-btn {
+    display: block;
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+    padding: 1rem 2rem;
+    background: #fff;
+    color: #000;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    border-radius: 0.375rem;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .hero__mobile-cta-btn:hover {
+    background: rgba(255, 255, 255, 0.85);
+  }
+
+  /* ── Hero content ───────────────────────────────── */
 
   .hero__content {
     position: relative;
@@ -138,67 +411,31 @@ import { Button } from "@/components/starwind/button";
     margin: 0.25rem 0 0;
   }
 
-  .hero__ctas {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .hero__btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 2.75rem;
-    padding-inline: 1.75rem;
-    border-radius: 0.375rem;
-    font-size: 0.9375rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition:
-      background 0.15s ease,
-      color 0.15s ease,
-      border-color 0.15s ease;
-    cursor: pointer;
-    white-space: nowrap;
-  }
-
-  .hero__btn--primary {
-    background: #fff;
-    color: #111;
-    border: 2px solid transparent;
-  }
-
-  .hero__btn--primary:hover {
-    background: rgba(255, 255, 255, 0.88);
-  }
-
-  .hero__btn--outline {
-    background: transparent;
-    color: #fff;
-    border: 2px solid rgba(255, 255, 255, 0.7);
-  }
-
-  .hero__btn--outline:hover {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: #fff;
-  }
+  /* ── Responsive breakpoints ─────────────────────── */
 
   @media (min-width: 768px) {
-    .hero__logo {
-      top: 1.75rem;
-      left: 2rem;
+    .hero__nav {
+      padding: 1.75rem 4rem;
+    }
+
+    .hero__hamburger {
+      display: none; /* hide hamburger on desktop */
+    }
+
+    .hero__nav-links {
+      display: flex;
     }
 
     .hero__content {
       padding-inline: 4rem;
     }
-
-    .hero__ctas {
-      flex-direction: row;
-    }
   }
 
   @media (min-width: 1024px) {
+    .hero__nav {
+      padding-inline: 6rem;
+    }
+
     .hero__content {
       grid-template-columns: 1fr 1fr;
       align-items: center;
