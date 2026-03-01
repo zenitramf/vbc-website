@@ -1,8 +1,10 @@
 ---
-// oxlint-disable import/no-relative-parent-imports
-import BaseHead from "../components/BaseHead.astro";
-import Footer from "../components/Footer.astro";
-const { title } = Astro.props;
+// oxlint-disable-next-line import/no-relative-parent-imports
+import "../styles/global.css";
+interface Props {
+  title: string;
+}
+const { title }: Props = Astro.props;
 ---
 
 <html lang="en">
@@ -10,24 +12,10 @@ const { title } = Astro.props;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-
-    <BaseHead title={title} />
   </head>
   <body>
-    <nav>
-      <a href="#">Home</a>
-      <a href="#">Posts</a>
-      <a href="#">Contact</a>
-    </nav>
-    <h1>{title}</h1>
-    <article>
+    <main>
       <slot />
-      <!-- your content is injected here -->
-    </article>
-    <Footer />
-  </body><style>
-    h1 {
-      font-size: 2rem;
-    }
-  </style>
+    </main>
+  </body>
 </html>
