@@ -1,21 +1,28 @@
 {
-	"name": "vbc-website",
-	"type": "module",
-	"version": "0.0.1",
-	"scripts": {
-		"dev": "astro dev",
-		"build": "astro build",
-		"preview": "astro build && wrangler dev",
-		"astro": "astro",
-		"deploy": "astro build && wrangler deploy",
-		"cf-typegen": "wrangler types"
-	},
-	"dependencies": {
-		"@astrojs/cloudflare": "^12.6.12",
-		"astro": "^5.17.1"
-	},
-	"devDependencies": {
-		"@types/node": "^25.3.3",
-		"wrangler": "^4.69.0"
-	}
+  "name": "vbc-website",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro build && wrangler dev",
+    "astro": "astro",
+    "deploy": "astro build && wrangler deploy",
+    "cf-typegen": "wrangler types",
+    "check": "ultracite check",
+    "fix": "ultracite fix"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "^12.6.12",
+    "astro": "^5.17.1"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.3",
+    "oxfmt": "^0.35.0",
+    "oxlint": "^1.50.0",
+    "prettier": "^3.8.1",
+    "prettier-plugin-astro": "^0.14.1",
+    "ultracite": "7.2.4",
+    "wrangler": "^4.69.0"
+  }
 }
