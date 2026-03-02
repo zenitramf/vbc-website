@@ -13,6 +13,10 @@ export default defineConfig({
     },
   }),
 
+  image: {
+    domains: ["images.fresnovictory.com"],
+  },
+
   integrations: [react()],
 
   vite: {
