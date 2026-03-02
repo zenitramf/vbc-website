@@ -14,13 +14,14 @@ const navLinks = [
 <section class="hero">
   <!-- Background image -->
   <Image
-    src="https://images.fresnovictory.com/home-page/fvbc_hero.webp"
+    src={heroBg}
     alt="Fresno Victory Baptist Church"
     class="hero__bg"
-    inferSize={true}
     widths={[640, 1280, 1920]}
     sizes="100vw"
     loading="eager"
+    fetchpriority="high"
+    decoding="sync"
   />
 
   <!-- Gradient overlay: light on left, darker on right to make text pop -->
@@ -163,6 +164,7 @@ const navLinks = [
     overflow: hidden;
     display: flex;
     align-items: center;
+    background-color: #1c1c1c;
   }
 
   .hero__bg {

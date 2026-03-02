@@ -1,5 +1,6 @@
 ---
 // oxlint-disable import/no-relative-parent-imports
+import { getImage } from "astro:assets";
 import MainLayout from "../layouts/main-layout.astro";
 import HeroComponent from "../components/hero-component.astro";
 import AboutSection from "../components/about-section.astro";
@@ -7,9 +8,23 @@ import PlanVisitSection from "../components/plan-visit-section.astro";
 import StaffCalendarSection from "../components/staff-calendar-section.astro";
 import NextStepsSection from "../components/next-steps-section.astro";
 import FooterComponent from "../components/footer-component.astro";
+import heroBg from "@/images/home-page_fvbc_hero.webp";
+
+const heroImageDesktop = await getImage({ src: heroBg, width: 1920, format: "webp" });
+const heroImageMobile = await getImage({ src: heroBg, width: 640, format: "webp" });
 ---
 
 <MainLayout title="Fresno Victory Baptist Church">
+  <Fragment slot="head">
+    <link
+      rel="preload"
+      as="image"
+      href={heroImageDesktop.src}
+      imagesrcset={`${heroImageMobile.src} 640w, ${heroImageDesktop.src} 1920w`}
+      imagesizes="100vw"
+      fetchpriority="high"
+    />
+  </Fragment>
   <HeroComponent />
   <AboutSection />
   <PlanVisitSection />
