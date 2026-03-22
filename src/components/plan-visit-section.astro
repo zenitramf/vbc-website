@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import heroBg from "@/images/home-page_fvbc_hero.webp";
 import { Badge } from "@/components/starwind/badge";
+import { Button } from "@/components/starwind/button";
 import { serviceTimes } from "@/lib/church-data";
 
 const { bibleStudy, sundayMorning, sundayNight, sundaySchool } = serviceTimes;
@@ -48,11 +49,20 @@ const { bibleStudy, sundayMorning, sundayNight, sundaySchool } = serviceTimes;
         <li class="flex items-start gap-3">
           <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-primary"></span>
           <span
-            ><strong class="text-foreground">Location</strong> — 123 Victory Lane,
-            Fresno, CA 93701</span
+            ><strong class="text-foreground">Location</strong> — 1717 N Gateway Blvd
+            Ste. #105, Fresno, CA 93727</span
           >
         </li>
       </ul>
+      <div>
+        <Button
+          href="https://maps.app.goo.gl/Ysiz9UYS1mijVrJH7"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Open in Google Maps
+        </Button>
+      </div>
     </div>
   </div>
 </section>
