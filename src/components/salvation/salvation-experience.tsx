@@ -2,7 +2,6 @@
 
 import { actions } from "astro:actions";
 import {
-  ArrowLeft,
   ArrowRight,
   CheckCircle2,
   ChevronLeft,
@@ -429,21 +428,13 @@ export const SalvationExperience = () => {
         >
           {!submissionContent ? (
             <>
-              <div className="mb-5 flex items-end justify-between gap-4">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#5d7c72]">
-                    Step {currentStepIndex + 1} of {totalSalvationSteps}
-                  </p>
-                  <h1 className="mt-2 text-3xl font-semibold tracking-tight text-[#17302b] sm:text-4xl md:text-5xl">
-                    {currentStep.title}
-                  </h1>
-                </div>
-                <div className="hidden items-center gap-2 rounded-full bg-white/70 px-3 py-2 text-sm text-[#4d655f] shadow-sm md:inline-flex">
-                  <ArrowLeft className="size-4" />
-                  <span>Back</span>
-                  <ArrowRight className="size-4" />
-                  <span>Next</span>
-                </div>
+              <div className="mb-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#5d7c72]">
+                  Step {currentStepIndex + 1} of {totalSalvationSteps}
+                </p>
+                <h1 className="mt-2 text-3xl font-semibold tracking-tight text-[#17302b] sm:text-4xl md:text-5xl">
+                  {currentStep.title}
+                </h1>
               </div>
 
               <div
@@ -462,16 +453,16 @@ export const SalvationExperience = () => {
               </div>
 
               <div
-                className={`${stepContainerClasses} min-h-[26rem] md:min-h-[31rem]`}
+                className={`${stepContainerClasses} min-h-[34rem] md:h-[42rem]`}
                 onTouchEnd={onTouchEnd}
                 onTouchStart={onTouchStart}
               >
                 {isResponseStep ? (
                   <form
-                    className="flex h-full flex-col"
+                    className="grid h-full grid-rows-[1fr_auto] gap-8"
                     onSubmit={handleSubmit}
                   >
-                    <div className="space-y-5">
+                    <div className="flex min-h-0 flex-col justify-center space-y-5 overflow-y-auto pr-1">
                       <p className="text-lg leading-relaxed text-[#38524b]">
                         {currentStep.body}
                       </p>
@@ -633,7 +624,7 @@ export const SalvationExperience = () => {
                       ) : null}
                     </div>
 
-                    <div className="mt-8 flex flex-col gap-4 border-t border-[#d8e4de] pt-5 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="grid gap-4 border-t border-[#d8e4de] pt-5 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
                       <button
                         className="inline-flex items-center justify-center gap-2 rounded-full border border-[#bfd5cc] px-5 py-3 text-sm font-semibold text-[#23413a] transition hover:border-[#8cb7a6] hover:bg-white"
                         onClick={handleBack}
@@ -653,8 +644,8 @@ export const SalvationExperience = () => {
                     </div>
                   </form>
                 ) : (
-                  <div className="flex h-full flex-col justify-between gap-8">
-                    <div>
+                  <div className="grid h-full grid-rows-[1fr_auto] gap-8">
+                    <div className="flex min-h-0 flex-col justify-center overflow-y-auto pr-1">
                       <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#5c7a71]">
                         {currentStep.lead}
                       </p>
@@ -662,7 +653,7 @@ export const SalvationExperience = () => {
                         {currentStep.body}
                       </p>
 
-                      <div className="mt-8 grid gap-4">
+                      <div className="mt-8 grid gap-4 md:grid-cols-2">
                         {currentStep.verses.map((verse) => (
                           <article
                             className="rounded-[1.75rem] border border-[#d7e5df] bg-[#f7fbf8] px-5 py-4 shadow-sm"
@@ -679,12 +670,12 @@ export const SalvationExperience = () => {
                       </div>
                     </div>
 
-                    <div className="flex flex-col gap-4 border-t border-[#d8e4de] pt-5 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="grid gap-4 border-t border-[#d8e4de] pt-5 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
                       <div className="inline-flex items-center gap-2 text-sm text-[#567068]">
                         <MoveRight className="size-4" />
-                        <span>Keep moving through the story.</span>
+                        <span>Swipe or use the buttons to keep moving.</span>
                       </div>
-                      <div className="flex items-center gap-3 self-end">
+                      <div className="flex items-center justify-end gap-3">
                         <button
                           className="inline-flex items-center justify-center gap-2 rounded-full border border-[#bfd5cc] px-5 py-3 text-sm font-semibold text-[#23413a] transition hover:border-[#8cb7a6] hover:bg-white disabled:cursor-not-allowed disabled:opacity-50"
                           disabled={currentStepIndex === 0}
