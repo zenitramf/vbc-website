@@ -1,0 +1,15 @@
+---
+import SalvationExperience from "@/components/salvation/salvation-experience";
+import MainLayout from "@/layouts/main-layout.astro";
+---
+
+<MainLayout title="What Does It Mean to Be Saved? | Fresno Victory Baptist Church">
+  <Fragment slot="head">
+    <meta
+      name="description"
+      content="Read a guided salvation presentation, follow the gospel story one step at a time, and let Fresno Victory follow up with you."
+    />
+  </Fragment>
+
+  <SalvationExperience client:load />
+</MainLayout>
