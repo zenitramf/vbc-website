@@ -10,8 +10,16 @@ import NextStepsSection from "../components/next-steps-section.astro";
 import FooterComponent from "../components/footer-component.astro";
 import heroBg from "@/images/home-page_fvbc_hero.webp";
 
-const heroImageDesktop = await getImage({ src: heroBg, width: 1920, format: "webp" });
-const heroImageMobile = await getImage({ src: heroBg, width: 640, format: "webp" });
+const heroImageDesktop = await getImage({
+  format: "webp",
+  src: heroBg,
+  width: 1920,
+});
+const heroImageMobile = await getImage({
+  format: "webp",
+  src: heroBg,
+  width: 640,
+});
 ---
 
 <MainLayout title="Fresno Victory Baptist Church">
