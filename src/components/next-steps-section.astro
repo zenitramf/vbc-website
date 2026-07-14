@@ -1,44 +1,47 @@
 ---
-import { Image } from "astro:assets";
-import heroBg from "@/images/home-page_fvbc_hero.webp";
 import { Button } from "@/components/starwind/button";
-import { Badge } from "@/components/starwind/badge";
+import { unsplash } from "@/lib/unsplash";
 ---
 
-<section class="bg-muted py-20 px-8 md:px-16 lg:px-24">
+<section class="relative overflow-hidden bg-background px-8 py-24 md:px-16 lg:px-24">
   <div
-    class="max-w-6xl mx-auto grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center"
+    class="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 lg:grid-cols-2"
   >
-    <!-- Content (reversed layout from Plan a Visit) -->
-    <div class="flex flex-col gap-6 lg:order-1">
-      <Badge variant="secondary" class="self-start">Next Steps</Badge>
-      <h2 class="text-3xl font-bold text-foreground md:text-4xl">
+    <div class="reveal flex flex-col gap-6 lg:order-1">
+      <p class="text-sm font-bold uppercase tracking-[0.2em] text-primary">
+        Next Steps
+      </p>
+      <h2
+        class="font-display text-4xl font-bold tracking-tight text-foreground md:text-5xl"
+      >
         Ready to go deeper?
       </h2>
-      <p class="text-muted-foreground text-lg leading-relaxed">
+      <p class="text-lg leading-relaxed text-muted-foreground">
         Whether you're brand new or have been coming for years, there's always a
         next step. Join a small group, serve on a team, or talk with a pastor —
         we'll help you find where you belong.
       </p>
       <div class="flex flex-col gap-3 sm:flex-row">
-        <Button size="lg">
-          <a href="/groups">Join a Group</a>
-        </Button>
-        <Button size="lg" variant="outline">
-          <a href="/serve">Serve With Us</a>
-        </Button>
+        <Button size="lg" href="/groups">Join a Group</Button>
+        <Button size="lg" variant="secondary" href="/serve">Serve With Us</Button>
       </div>
     </div>
 
-    <!-- Image -->
-    <div class="relative overflow-hidden rounded-xl aspect-4/3 lg:order-2">
-      <Image
-        src={heroBg}
-        alt="VBC community serving together"
+    <div class="reveal reveal-delay-1 relative overflow-hidden aspect-4/3 lg:order-2">
+      <img
+        src={unsplash.nextSteps}
+        alt="People serving and growing together in community"
         class="h-full w-full object-cover"
-        widths={[600, 900]}
-        sizes="(max-width: 1024px) 100vw, 50vw"
+        width="1400"
+        height="1050"
+        loading="lazy"
+        decoding="async"
       />
+      <div
+        class="pointer-events-none absolute inset-0 bg-linear-to-br from-primary/30 via-transparent to-cta/25"
+        aria-hidden="true"
+      >
+      </div>
     </div>
   </div>
 </section>

@@ -1,12 +1,14 @@
 ---
 import { Image } from "astro:assets";
+import { serviceTimes } from "@/lib/church-data";
+
+const { sundayMorning } = serviceTimes;
 ---
 
-<footer class="bg-foreground text-background py-16 px-8 md:px-16 lg:px-24">
-  <div class="max-w-6xl mx-auto">
-    <div class="grid grid-cols-1 gap-12 md:grid-cols-4">
-      <!-- Brand -->
-      <div class="md:col-span-1 flex flex-col gap-4">
+<footer class="bg-foreground px-8 py-16 text-background md:px-16 lg:px-24">
+  <div class="mx-auto max-w-6xl">
+    <div class="mb-12 grid grid-cols-1 gap-12 md:grid-cols-4">
+      <div class="flex flex-col gap-4 md:col-span-1">
         <Image
           src="/vbc_logo.svg"
           alt="Victory Baptist Church"
@@ -14,15 +16,16 @@ import { Image } from "astro:assets";
           height={48}
           class="h-12 w-12 brightness-0 invert"
         />
-        <p class="text-sm text-background/70 leading-relaxed">
+        <p class="text-sm leading-relaxed text-background/70">
           Victory Baptist Church<br />
-          123 Victory Lane<br />
-          Fresno, CA 93701
+          1717 N Gateway Blvd Ste. #105<br />
+          Fresno, CA 93727
         </p>
-        <p class="text-sm text-background/70">Sunday Service — 10:00 AM</p>
+        <p class="text-sm text-background/70">
+          Sunday Service — {sundayMorning.time}
+        </p>
       </div>
 
-      <!-- Visit -->
       <div class="flex flex-col gap-3">
         <h3
           class="text-sm font-semibold uppercase tracking-widest text-background/50"
@@ -31,29 +34,28 @@ import { Image } from "astro:assets";
         </h3>
         <nav class="flex flex-col gap-2">
           <a
-            href="/plan-a-visit"
-            class="text-sm text-background/80 hover:text-background transition-colors"
+            href="#visit"
+            class="text-sm text-background/80 transition-colors hover:text-background"
             >Plan a Visit</a
           >
           <a
             href="/about"
-            class="text-sm text-background/80 hover:text-background transition-colors"
+            class="text-sm text-background/80 transition-colors hover:text-background"
             >About Us</a
           >
           <a
             href="/staff"
-            class="text-sm text-background/80 hover:text-background transition-colors"
+            class="text-sm text-background/80 transition-colors hover:text-background"
             >Our Staff</a
           >
           <a
             href="/events"
-            class="text-sm text-background/80 hover:text-background transition-colors"
+            class="text-sm text-background/80 transition-colors hover:text-background"
             >Events</a
           >
         </nav>
       </div>
 
-      <!-- Connect -->
       <div class="flex flex-col gap-3">
         <h3
           class="text-sm font-semibold uppercase tracking-widest text-background/50"
@@ -63,28 +65,27 @@ import { Image } from "astro:assets";
         <nav class="flex flex-col gap-2">
           <a
             href="/groups"
-            class="text-sm text-background/80 hover:text-background transition-colors"
+            class="text-sm text-background/80 transition-colors hover:text-background"
             >Small Groups</a
           >
           <a
             href="/serve"
-            class="text-sm text-background/80 hover:text-background transition-colors"
+            class="text-sm text-background/80 transition-colors hover:text-background"
             >Serve</a
           >
           <a
             href="/give"
-            class="text-sm text-background/80 hover:text-background transition-colors"
+            class="text-sm text-background/80 transition-colors hover:text-background"
             >Give</a
           >
           <a
             href="/messages"
-            class="text-sm text-background/80 hover:text-background transition-colors"
+            class="text-sm text-background/80 transition-colors hover:text-background"
             >Messages</a
           >
         </nav>
       </div>
 
-      <!-- Contact -->
       <div class="flex flex-col gap-3">
         <h3
           class="text-sm font-semibold uppercase tracking-widest text-background/50"
@@ -94,33 +95,33 @@ import { Image } from "astro:assets";
         <nav class="flex flex-col gap-2">
           <a
             href="tel:+15591234567"
-            class="text-sm text-background/80 hover:text-background transition-colors"
+            class="text-sm text-background/80 transition-colors hover:text-background"
             >(559) 123-4567</a
           >
           <a
             href="mailto:info@vbc.org"
-            class="text-sm text-background/80 hover:text-background transition-colors"
+            class="text-sm text-background/80 transition-colors hover:text-background"
             >info@vbc.org</a
           >
           <a
             href="https://www.facebook.com"
             rel="noopener"
             target="_blank"
-            class="text-sm text-background/80 hover:text-background transition-colors"
+            class="text-sm text-background/80 transition-colors hover:text-background"
             >Facebook</a
           >
           <a
             href="https://www.instagram.com"
             rel="noopener"
             target="_blank"
-            class="text-sm text-background/80 hover:text-background transition-colors"
+            class="text-sm text-background/80 transition-colors hover:text-background"
             >Instagram</a
           >
         </nav>
       </div>
     </div>
 
-    <p class="text-sm text-background/40 text-center">
+    <p class="text-center text-sm text-background/40">
       &copy; {new Date().getFullYear()} Victory Baptist Church. All rights reserved.
     </p>
   </div>

@@ -1,57 +1,79 @@
 ---
-import { Image } from "astro:assets";
-import heroBg from "@/images/home-page_fvbc_hero.webp";
-import { Badge } from "@/components/starwind/badge";
 import { Button } from "@/components/starwind/button";
 import { serviceTimes } from "@/lib/church-data";
+import { unsplash } from "@/lib/unsplash";
 
-const { bibleStudy, sundayMorning, sundayNight, sundaySchool } = serviceTimes;
+const { bibleStudy, sundayMorning, sundaySchool } = serviceTimes;
 ---
 
-<section class="bg-muted py-20 px-8 md:px-16 lg:px-24">
+<section
+  id="visit"
+  class="relative overflow-hidden bg-background px-8 py-24 md:px-16 lg:px-24"
+>
   <div
-    class="max-w-6xl mx-auto grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center"
+    class="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 lg:grid-cols-2"
   >
-    <!-- Image -->
-    <div class="relative overflow-hidden rounded-xl aspect-4/3">
-      <Image
-        src={heroBg}
-        alt="Sunday service at Victory Baptist Church"
+    <div class="reveal relative overflow-hidden aspect-4/3">
+      <img
+        src={unsplash.service}
+        alt="Congregation gathered for Sunday worship"
         class="h-full w-full object-cover"
-        widths={[600, 900]}
-        sizes="(max-width: 1024px) 100vw, 50vw"
+        width="1400"
+        height="1050"
+        loading="lazy"
+        decoding="async"
       />
+      <div
+        class="pointer-events-none absolute inset-0 bg-linear-to-t from-primary/35 via-transparent to-transparent"
+        aria-hidden="true"
+      >
+      </div>
     </div>
 
-    <!-- Content -->
-    <div class="flex flex-col gap-6">
-      <Badge class="self-start">Plan Your Visit</Badge>
-      <h2 class="text-3xl font-bold text-foreground md:text-4xl">
-        We'd love to meet you.
+    <div class="reveal reveal-delay-1 flex flex-col gap-6">
+      <p
+        class="text-sm font-bold uppercase tracking-[0.2em] text-primary"
+      >
+        Plan Your Visit
+      </p>
+      <h2
+        class="font-display text-4xl font-bold tracking-tight text-foreground md:text-5xl"
+      >
+        We'd love to meet you this week
       </h2>
-      <ul class="flex flex-col gap-3 text-muted-foreground">
+      <p class="text-lg leading-relaxed text-muted-foreground">
+        Come as you are. Find a seat, meet friendly faces, and hear the gospel
+        preached clearly from Scripture.
+      </p>
+      <ul class="flex flex-col gap-4 text-muted-foreground">
         <li class="flex items-start gap-3">
-          <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-primary"></span>
           <span
-            ><strong class="text-foreground">Thursday Bible Study</strong> — {
+            class="mt-2 h-2.5 w-2.5 shrink-0 rounded-sm bg-cta"
+            aria-hidden="true"></span>
+          <span>
+            <strong class="text-foreground">Thursday Bible Study</strong> — {
               bibleStudy.time
             }
           </span>
         </li>
         <li class="flex items-start gap-3">
-          <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-primary"></span>
           <span
-            ><strong class="text-foreground">Sunday Service</strong> — {
+            class="mt-2 h-2.5 w-2.5 shrink-0 rounded-sm bg-primary"
+            aria-hidden="true"></span>
+          <span>
+            <strong class="text-foreground">Sunday</strong> — {
               sundaySchool.time
-            } Bible Study | {sundayMorning.time} Main Service</span
-          >
+            } Bible Study · {sundayMorning.time} Main Service
+          </span>
         </li>
         <li class="flex items-start gap-3">
-          <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-primary"></span>
           <span
-            ><strong class="text-foreground">Location</strong> — 1717 N Gateway Blvd
-            Ste. #105, Fresno, CA 93727</span
-          >
+            class="mt-2 h-2.5 w-2.5 shrink-0 rounded-sm bg-primary"
+            aria-hidden="true"></span>
+          <span>
+            <strong class="text-foreground">Location</strong> — 1717 N Gateway
+            Blvd Ste. #105, Fresno, CA 93727
+          </span>
         </li>
       </ul>
       <div>
@@ -59,6 +81,7 @@ const { bibleStudy, sundayMorning, sundayNight, sundaySchool } = serviceTimes;
           href="https://maps.app.goo.gl/Ysiz9UYS1mijVrJH7"
           target="_blank"
           rel="noopener noreferrer"
+          size="lg"
         >
           Open in Google Maps
         </Button>

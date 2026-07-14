@@ -4,30 +4,29 @@ import heroBg from "@/images/home-page_fvbc_hero.webp";
 import { Button } from "@/components/starwind/button";
 
 const navLinks = [
-  { href: "#heaven", label: "Heaven" },
+  { href: "/salvation", label: "Heaven" },
   { href: "#about", label: "About Us" },
-  { href: "#sermons", label: "Sermons" },
-  { href: "#give", label: "Give" },
+  { href: "/messages", label: "Sermons" },
+  { href: "/give", label: "Give" },
 ];
 ---
 
 <section class="hero">
-  <!-- Background image -->
-  <Image
-    src={heroBg}
-    alt="Fresno Victory Baptist Church"
-    class="hero__bg"
-    widths={[640, 1280, 1920]}
-    sizes="100vw"
-    loading="eager"
-    fetchpriority="high"
-    decoding="sync"
-  />
+  <div class="hero__media" aria-hidden="true">
+    <Image
+      src={heroBg}
+      alt=""
+      class="hero__bg"
+      widths={[640, 1280, 1920]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+      decoding="sync"
+    />
+  </div>
 
-  <!-- Gradient overlay: light on left, darker on right to make text pop -->
   <div class="hero__overlay"></div>
 
-  <!-- Hidden checkbox — drives the CSS-only mobile menu toggle -->
   <input
     type="checkbox"
     id="hero-nav-cbox"
@@ -35,20 +34,17 @@ const navLinks = [
     aria-hidden="true"
   />
 
-  <!-- Navigation bar -->
   <nav class="hero__nav" aria-label="Main navigation">
-    <!-- Logo -->
-    <div class="hero__logo">
+    <a href="/" class="hero__logo" aria-label="Victory Baptist Church home">
       <Image
         src="/vbc_logo.svg"
-        alt="Victory Baptist Church"
+        alt=""
         width={56}
         height={56}
         class="hero__logo-img"
       />
-    </div>
+    </a>
 
-    <!-- Desktop nav links (hidden on mobile) -->
     <ul class="hero__nav-links" role="list">
       {
         navLinks.map((link) => (
@@ -61,12 +57,10 @@ const navLinks = [
       }
     </ul>
 
-    <!-- Desktop CTA (hidden on mobile) -->
     <div class="hero__nav-cta">
       <Button variant="cta" size="sm" href="#visit">Plan a Visit</Button>
     </div>
 
-    <!-- Mobile hamburger label (hidden on desktop) -->
     <label for="hero-nav-cbox" class="hero__hamburger" aria-label="Toggle menu">
       <span class="hero__hamburger-bar"></span>
       <span class="hero__hamburger-bar"></span>
@@ -74,7 +68,6 @@ const navLinks = [
     </label>
   </nav>
 
-  <!-- Mobile menu overlay -->
   <div class="hero__mobile-menu" id="mobile-menu">
     <ul class="hero__mobile-links" role="list">
       {
@@ -92,22 +85,18 @@ const navLinks = [
     </div>
   </div>
 
-  <!-- Hero content -->
   <div class="hero__content">
-    <!-- Large headline — left column -->
+    <p class="hero__brand">Victory Baptist Church</p>
     <h1 class="hero__headline">
-      Bible-Centered.<br />Christ Focused
+      Bible-centered worship for Fresno families
     </h1>
-
-    <!-- Right column — subtitle + CTAs -->
-    <div class="hero__right">
-      <div class="hero__tagline">
-        <p class="hero__church-name">Welcome to Victory Baptist Church</p>
-        <p class="hero__location">Independent, Fundamental</p>
-      </div>
-
-      <Button variant="cta"> Plan a Visit </Button>
-      <Button variant="outline">View Sermons</Button>
+    <p class="hero__support">
+      An independent Baptist church gathering each week to exalt Christ, grow in
+      the Word, and serve our city.
+    </p>
+    <div class="hero__actions">
+      <Button variant="cta" size="lg" href="#visit">Plan a Visit</Button>
+      <Button variant="outline" size="lg" href="/messages">View Sermons</Button>
     </div>
   </div>
 </section>
@@ -124,47 +113,77 @@ const navLinks = [
     document.body.style.overflow = "";
   };
 
-  // Lock body scroll when menu opens, release when it closes
   cbox?.addEventListener("change", () => {
     document.body.style.overflow = cbox.checked ? "hidden" : "";
   });
 
-  // Close on any nav link click inside the mobile menu
   for (const link of document.querySelectorAll(".hero__mobile-link")) {
     link.addEventListener("click", closeMenu);
   }
 
-  // Close on Escape key
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && cbox?.checked) {
       closeMenu();
     }
   });
 
-  // ── Nav scroll state (desktop only) ─────────────────────────────
   const nav = document.querySelector(".hero__nav") as HTMLElement | null;
 
-  function updateNav() {
-    if (!nav) return;
+  const updateNav = () => {
+    if (!nav) {
+      return;
+    }
     const isDesktop = window.innerWidth >= 768;
-    nav.classList.toggle("hero__nav--scrolled", isDesktop && window.scrollY > 10);
-  }
+    nav.classList.toggle(
+      "hero__nav--scrolled",
+      isDesktop && window.scrollY > 10
+    );
+  };
 
   window.addEventListener("scroll", updateNav, { passive: true });
   window.addEventListener("resize", updateNav, { passive: true });
   updateNav();
+
+  const revealEls = document.querySelectorAll(".reveal");
+  if (revealEls.length > 0 && "IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        }
+      },
+      { rootMargin: "0px 0px -10% 0px", threshold: 0.15 }
+    );
+
+    for (const el of revealEls) {
+      observer.observe(el);
+    }
+  } else {
+    for (const el of revealEls) {
+      el.classList.add("is-visible");
+    }
+  }
 </script>
 
 <style>
   .hero {
     position: relative;
     height: 100svh;
-    min-height: 600px;
+    min-height: 640px;
     width: 100%;
     overflow: hidden;
     display: flex;
-    align-items: center;
-    background-color: #1c1c1c;
+    align-items: flex-end;
+    background-color: #0f2744;
+  }
+
+  .hero__media {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
   }
 
   .hero__bg {
@@ -174,25 +193,22 @@ const navLinks = [
     height: 100%;
     object-fit: cover;
     object-position: center 30%;
+    animation: ken-burns 24s ease-out both;
   }
 
-  /* Subtle gradient — keeps image vivid, darkens edges for legibility */
   .hero__overlay {
     position: absolute;
     inset: 0;
     background:
       linear-gradient(
-        to right,
-        rgba(0, 0, 0, 0.55) 0%,
-        rgba(0, 0, 0, 0.25) 50%,
-        rgba(0, 0, 0, 0.45) 100%
+        115deg,
+        rgba(15, 39, 68, 0.88) 0%,
+        rgba(30, 58, 138, 0.55) 42%,
+        rgba(22, 163, 74, 0.28) 100%
       ),
-      linear-gradient(to top, rgba(0, 0, 0, 0.4) 0%, transparent 60%);
+      linear-gradient(to top, rgba(15, 39, 68, 0.85) 0%, transparent 55%);
   }
 
-  /* ── Navigation ─────────────────────────────────── */
-
-  /* Mobile: absolute, transparent, no scroll effect */
   .hero__nav {
     position: absolute;
     top: 0;
@@ -206,14 +222,12 @@ const navLinks = [
     background: transparent;
   }
 
-  /* Scrolled state — desktop only (applied via media query below) */
-  .hero__nav--scrolled {
-    /* intentionally empty on mobile */
-  }
-
-  /* Desktop CTA — hidden on mobile, and hidden until scrolled */
   .hero__nav-cta {
     display: none;
+  }
+
+  .hero__logo {
+    display: block;
   }
 
   .hero__logo-img {
@@ -223,7 +237,6 @@ const navLinks = [
     display: block;
   }
 
-  /* Desktop nav links — hidden on mobile */
   .hero__nav-links {
     display: none;
     list-style: none;
@@ -233,10 +246,10 @@ const navLinks = [
   }
 
   .hero__nav-link {
-    color: rgba(255, 255, 255, 0.88);
+    color: rgba(255, 255, 255, 0.9);
     text-decoration: none;
     font-size: 0.9375rem;
-    font-weight: 500;
+    font-weight: 600;
     letter-spacing: 0.01em;
     transition: color 0.15s ease;
   }
@@ -245,26 +258,20 @@ const navLinks = [
     color: #fff;
   }
 
-  /* ── Hidden checkbox ───────────────────────────── */
-
   .hero__cbox {
     display: none;
   }
 
-  /* ── Hamburger label — visible on mobile only ───── */
-
   .hero__hamburger {
     position: relative;
-    display: block; /* shown on mobile */
+    display: block;
     width: 44px;
     height: 44px;
     overflow: hidden;
     background-color: transparent;
     cursor: pointer;
-    transition: background-color 300ms ease-in-out;
   }
 
-  /* Individual bars — reference centering trick */
   .hero__hamburger-bar {
     position: absolute;
     display: block;
@@ -287,51 +294,42 @@ const navLinks = [
     top: 65%;
   }
 
-  /* ── Checked state: bars become an X ───────────── */
-
   #hero-nav-cbox:checked ~ .hero__nav .hero__hamburger-bar:nth-child(1) {
     top: 50%;
     transform: translate(-50%, -50%) rotate(45deg);
   }
   #hero-nav-cbox:checked ~ .hero__nav .hero__hamburger-bar:nth-child(2) {
-    left: -150%; /* slide center bar out of sight */
+    left: -150%;
   }
   #hero-nav-cbox:checked ~ .hero__nav .hero__hamburger-bar:nth-child(3) {
     top: 50%;
     transform: translate(-50%, -50%) rotate(-45deg);
   }
 
-  /* ── Mobile menu overlay ────────────────────────── */
-
   .hero__mobile-menu {
     position: fixed;
     inset: 0;
     z-index: 100;
-    background: rgba(0, 0, 0, 0.95);
+    background: rgba(15, 39, 68, 0.97);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    /* Grow from top-right corner (hamburger position) */
     clip-path: circle(0% at calc(100% - 2rem - 22px) calc(1.5rem + 22px));
     transition: clip-path 0.45s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* Open state driven by the checkbox sibling */
   #hero-nav-cbox:checked ~ .hero__mobile-menu {
     clip-path: circle(150% at calc(100% - 2rem - 22px) calc(1.5rem + 22px));
   }
 
-  /* Raise nav above the overlay when open so the X label stays clickable */
   .hero:has(#hero-nav-cbox:checked) .hero__nav {
     z-index: 101;
   }
 
-  /* Hide logo when mobile menu is open */
   .hero:has(#hero-nav-cbox:checked) .hero__logo {
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.2s ease;
   }
 
   .hero__logo {
@@ -342,10 +340,6 @@ const navLinks = [
     list-style: none;
     padding: 0;
     margin: 0;
-    width: 100%;
-  }
-
-  .hero__mobile-item {
     width: 100%;
   }
 
@@ -363,11 +357,7 @@ const navLinks = [
     font-size: 2rem;
     font-weight: 700;
     letter-spacing: -0.02em;
-    transition: color 0.15s ease;
-  }
-
-  .hero__mobile-link:hover {
-    color: rgba(255, 255, 255, 0.65);
+    font-family: var(--font-display);
   }
 
   .hero__mobile-cta {
@@ -386,68 +376,88 @@ const navLinks = [
     max-width: 320px;
     text-align: center;
     padding: 1rem 2rem;
-    background: #fff;
-    color: #000;
+    background: var(--cta);
+    color: #fff;
     text-decoration: none;
     font-size: 1rem;
     font-weight: 700;
-    letter-spacing: 0.02em;
-    border-radius: 0.375rem;
-    transition: background 0.15s ease, color 0.15s ease;
+    border-radius: 0.5rem;
   }
-
-  .hero__mobile-cta-btn:hover {
-    background: rgba(255, 255, 255, 0.85);
-  }
-
-  /* ── Hero content ───────────────────────────────── */
 
   .hero__content {
     position: relative;
     z-index: 10;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 3rem;
     width: 100%;
-    max-width: 72rem;
-    margin-inline: auto;
-    padding-inline: 2rem;
+    max-width: 48rem;
+    margin-inline: auto 0;
+    padding: 0 2rem 4.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .hero__brand {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.75rem, 8vw, 4.75rem);
+    font-weight: 800;
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    color: #fff;
+    text-wrap: balance;
+    animation: fade-up 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   .hero__headline {
-    font-size: clamp(3rem, 8vw, 5.5rem);
-    font-weight: 800;
-    line-height: 1.05;
-    color: #fff;
-    letter-spacing: -0.02em;
-    text-wrap: balance;
-  }
-
-  .hero__right {
-    display: flex;
-    flex-direction: column;
-    gap: 1.75rem;
-  }
-
-  .hero__church-name {
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: #fff;
     margin: 0;
+    max-width: 28rem;
+    font-family: var(--font-sans);
+    font-size: clamp(1.25rem, 2.6vw, 1.625rem);
+    font-weight: 600;
+    line-height: 1.35;
+    color: rgba(255, 255, 255, 0.95);
+    animation: fade-up 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
   }
 
-  .hero__location {
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.75);
-    margin: 0.25rem 0 0;
+  .hero__support {
+    margin: 0;
+    max-width: 32rem;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.78);
+    animation: fade-up 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.22s both;
   }
 
-  /* ── Responsive breakpoints ─────────────────────── */
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.875rem;
+    margin-top: 0.5rem;
+    animation: fade-up 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.32s both;
+  }
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(1.25rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes ken-burns {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.08);
+    }
+  }
 
   @media (min-width: 768px) {
     .hero__nav {
-      /* 3-col grid: logo | links | cta
-         CTA column starts at 0 width and grows on scroll */
       position: fixed;
       display: grid;
       grid-template-columns: 1fr auto 0fr;
@@ -461,9 +471,8 @@ const navLinks = [
     }
 
     .hero__nav--scrolled {
-      background: #333333;
-      box-shadow: 0 1px 12px rgba(0, 0, 0, 0.35);
-      /* CTA column opens up to match its natural width */
+      background: rgba(15, 39, 68, 0.94);
+      box-shadow: 0 1px 12px rgba(0, 0, 0, 0.25);
       grid-template-columns: 1fr auto 1fr;
       padding-top: 0.875rem;
       padding-bottom: 0.875rem;
@@ -473,26 +482,24 @@ const navLinks = [
       display: none;
     }
 
-    /* Links: right-aligned in middle column by default */
     .hero__nav-links {
       display: flex;
       justify-content: flex-end;
-      transition: justify-content 0.4s ease;
     }
 
-    /* When scrolled, links center themselves in the middle column */
     .hero__nav--scrolled .hero__nav-links {
       justify-content: center;
     }
 
-    /* CTA: hidden (zero width, no opacity) until scrolled */
     .hero__nav-cta {
       display: flex;
       justify-content: flex-end;
       overflow: hidden;
       opacity: 0;
       transform: translateX(8px);
-      transition: opacity 0.25s ease 0.1s, transform 0.25s ease 0.1s;
+      transition:
+        opacity 0.25s ease 0.1s,
+        transform 0.25s ease 0.1s;
       pointer-events: none;
     }
 
@@ -503,7 +510,7 @@ const navLinks = [
     }
 
     .hero__content {
-      padding-inline: 4rem;
+      padding: 0 4rem 5.5rem;
     }
   }
 
@@ -513,11 +520,18 @@ const navLinks = [
     }
 
     .hero__content {
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
       padding-inline: 6rem;
+      padding-bottom: 6rem;
     }
   }
 
-
+  @media (prefers-reduced-motion: reduce) {
+    .hero__bg,
+    .hero__brand,
+    .hero__headline,
+    .hero__support,
+    .hero__actions {
+      animation: none;
+    }
+  }
 </style>
