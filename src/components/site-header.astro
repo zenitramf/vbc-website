@@ -1,0 +1,397 @@
+---
+import { Image } from "astro:assets";
+import { Button } from "@/components/starwind/button";
+import { giveHref, primaryNav, visitHref } from "@/lib/site-nav";
+
+interface Props {
+  variant?: "solid" | "transparent";
+}
+
+const { variant = "solid" }: Props = Astro.props;
+const {pathname} = Astro.url;
+---
+
+<header class:list={["site-header", variant === "solid" && "site-header--solid"]}>
+  <input
+    type="checkbox"
+    id="site-nav-cbox"
+    class="site-header__cbox"
+    aria-hidden="true"
+  />
+
+  <nav class="site-header__nav" aria-label="Main navigation">
+    <a href="/" class="site-header__logo" aria-label="Victory Baptist Church home">
+      <Image
+        src="/vbc_logo.svg"
+        alt=""
+        width={48}
+        height={48}
+        class="site-header__logo-img"
+      />
+      <span class="site-header__brand">Victory Baptist Church</span>
+    </a>
+
+    <ul class="site-header__links" role="list">
+      {
+        primaryNav.map((item) =>
+          item.children ? (
+            <li class="site-header__item site-header__item--has-children">
+              <button type="button" class="site-header__link site-header__parent">
+                {item.label}
+                <span class="site-header__caret" aria-hidden="true">▾</span>
+              </button>
+              <ul class="site-header__dropdown" role="list">
+                {item.children.map((child) => (
+                  <li>
+                    <a
+                      href={child.href}
+                      class:list={[
+                        "site-header__dropdown-link",
+                        pathname.startsWith(child.href.replace(/\/$/, "")) &&
+                          "is-active",
+                      ]}
+                    >
+                      {child.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ) : (
+            <li class="site-header__item">
+              <a
+                href={item.href}
+                class:list={[
+                  "site-header__link",
+                  item.href &&
+                    pathname.startsWith(item.href.replace(/\/$/, "")) &&
+                    "is-active",
+                ]}
+              >
+                {item.label}
+              </a>
+            </li>
+          )
+        )
+      }
+      <li class="site-header__item">
+        <a
+          href={giveHref}
+          class="site-header__link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Give
+        </a>
+      </li>
+    </ul>
+
+    <div class="site-header__cta">
+      <Button variant="cta" size="sm" href={visitHref}>Visit Us</Button>
+    </div>
+
+    <label for="site-nav-cbox" class="site-header__hamburger" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </label>
+  </nav>
+
+  <div class="site-header__mobile" id="site-mobile-menu">
+    <ul class="site-header__mobile-links" role="list">
+      {
+        primaryNav.flatMap((item) =>
+          item.children
+            ? item.children.map((child) => (
+                <li>
+                  <a href={child.href} class="site-header__mobile-link">
+                    {child.label}
+                  </a>
+                </li>
+              ))
+            : [
+                <li>
+                  <a href={item.href} class="site-header__mobile-link">
+                    {item.label}
+                  </a>
+                </li>,
+              ]
+        )
+      }
+      <li>
+        <a
+          href={giveHref}
+          class="site-header__mobile-link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Give
+        </a>
+      </li>
+      <li>
+        <a href={visitHref} class="site-header__mobile-link">Visit Us</a>
+      </li>
+    </ul>
+  </div>
+</header>
+
+<script>
+  const cbox = document.querySelector("#site-nav-cbox") as HTMLInputElement | null;
+
+  const closeMenu = () => {
+    if (cbox) {
+      cbox.checked = false;
+    }
+    document.body.style.overflow = "";
+  };
+
+  cbox?.addEventListener("change", () => {
+    document.body.style.overflow = cbox.checked ? "hidden" : "";
+  });
+
+  for (const link of document.querySelectorAll(".site-header__mobile-link")) {
+    link.addEventListener("click", closeMenu);
+  }
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && cbox?.checked) {
+      closeMenu();
+    }
+  });
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+  }
+
+  .site-header--solid {
+    background: rgba(15, 39, 68, 0.97);
+    box-shadow: 0 1px 12px rgba(0, 0, 0, 0.18);
+  }
+
+  .site-header__cbox {
+    display: none;
+  }
+
+  .site-header__nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.875rem 1.5rem;
+    max-width: 80rem;
+    margin-inline: auto;
+  }
+
+  .site-header__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: #fff;
+    min-width: 0;
+  }
+
+  .site-header__logo-img {
+    width: 2.75rem;
+    height: 2.75rem;
+    filter: brightness(0) invert(1);
+    flex-shrink: 0;
+  }
+
+  .site-header__brand {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .site-header__links {
+    display: none;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .site-header__link,
+  .site-header__parent {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    background: none;
+    border: 0;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+  }
+
+  .site-header__link:hover,
+  .site-header__parent:hover,
+  .site-header__link.is-active {
+    color: #fff;
+  }
+
+  .site-header__caret {
+    font-size: 0.7rem;
+    opacity: 0.8;
+  }
+
+  .site-header__item--has-children {
+    position: relative;
+  }
+
+  .site-header__dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 12rem;
+    margin: 0;
+    padding: 0.5rem 0;
+    list-style: none;
+    background: #0f2744;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(0.35rem);
+    transition:
+      opacity 0.15s ease,
+      transform 0.15s ease,
+      visibility 0.15s ease;
+  }
+
+  .site-header__item--has-children:hover .site-header__dropdown,
+  .site-header__item--has-children:focus-within .site-header__dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .site-header__dropdown-link {
+    display: block;
+    padding: 0.6rem 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .site-header__dropdown-link:hover,
+  .site-header__dropdown-link.is-active {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+  }
+
+  .site-header__cta {
+    display: none;
+  }
+
+  .site-header__hamburger {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+  }
+
+  .site-header__hamburger span {
+    position: absolute;
+    left: 50%;
+    width: 26px;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+    transform: translate(-50%, -50%);
+    transition: all 0.25s ease;
+  }
+
+  .site-header__hamburger span:nth-child(1) {
+    top: 35%;
+  }
+  .site-header__hamburger span:nth-child(2) {
+    top: 50%;
+  }
+  .site-header__hamburger span:nth-child(3) {
+    top: 65%;
+  }
+
+  #site-nav-cbox:checked ~ .site-header__nav .site-header__hamburger span:nth-child(1) {
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+  #site-nav-cbox:checked ~ .site-header__nav .site-header__hamburger span:nth-child(2) {
+    opacity: 0;
+  }
+  #site-nav-cbox:checked ~ .site-header__nav .site-header__hamburger span:nth-child(3) {
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+
+  .site-header__mobile {
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    background: rgba(15, 39, 68, 0.98);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    clip-path: circle(0% at calc(100% - 1.5rem - 22px) calc(0.875rem + 22px));
+    transition: clip-path 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  #site-nav-cbox:checked ~ .site-header__mobile {
+    clip-path: circle(150% at calc(100% - 1.5rem - 22px) calc(0.875rem + 22px));
+  }
+
+  .site-header:has(#site-nav-cbox:checked) .site-header__nav {
+    z-index: 35;
+    position: relative;
+  }
+
+  .site-header__mobile-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  .site-header__mobile-link {
+    display: block;
+    text-align: center;
+    padding: 1.1rem 1.5rem;
+    color: #fff;
+    text-decoration: none;
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  @media (min-width: 900px) {
+    .site-header__nav {
+      padding-inline: 2.5rem;
+    }
+
+    .site-header__links {
+      display: flex;
+    }
+
+    .site-header__cta {
+      display: block;
+    }
+
+    .site-header__hamburger,
+    .site-header__mobile {
+      display: none;
+    }
+  }
+</style>

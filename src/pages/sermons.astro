@@ -1,0 +1,40 @@
+---
+import PageLayout from "@/layouts/page-layout.astro";
+import { Button } from "@/components/starwind/button";
+---
+
+<PageLayout
+  title="Sermons | Victory Baptist Church"
+  description="Listen to recent sermons and Bible teaching from Victory Baptist Church in Fresno."
+>
+  <section class="bg-muted px-8 py-16 md:px-16 md:py-20 lg:px-24">
+    <div class="mx-auto max-w-3xl">
+      <p class="mb-4 text-sm font-semibold uppercase tracking-widest text-primary">
+        Media
+      </p>
+      <h1 class="mb-6 font-display text-4xl font-bold text-foreground md:text-5xl">
+        Sermons
+      </h1>
+      <p class="text-lg leading-relaxed text-muted-foreground">
+        Catch up on recent preaching and Thursday night Bible study. New messages
+        are added regularly as we teach through Scripture.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-background px-8 py-16 md:px-16 lg:px-24">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="mb-4 font-display text-2xl font-bold text-foreground">
+        Latest Teaching
+      </h2>
+      <p class="mb-8 text-muted-foreground leading-relaxed">
+        Sermon archives and livestream links will live here. In the meantime,
+        visit our media page or reach out if you would like a recent message.
+      </p>
+      <div class="flex flex-wrap gap-3">
+        <Button href="/media/" size="lg">View Media</Button>
+        <Button href="/visit/" variant="secondary" size="lg">Join Us Live</Button>
+      </div>
+    </div>
+  </section>
+</PageLayout>

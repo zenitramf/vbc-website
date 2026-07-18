@@ -1,0 +1,60 @@
+---
+import PageLayout from "@/layouts/page-layout.astro";
+import { Button } from "@/components/starwind/button";
+---
+
+<PageLayout
+  title="Events | Victory Baptist Church"
+  description="Upcoming events at Victory Baptist Church in Fresno."
+>
+  <section class="bg-muted px-8 py-16 md:px-16 md:py-20 lg:px-24">
+    <div class="mx-auto max-w-3xl">
+      <p class="mb-4 text-sm font-semibold uppercase tracking-widest text-primary">
+        Calendar
+      </p>
+      <h1 class="mb-6 font-display text-4xl font-bold text-foreground md:text-5xl">
+        Events
+      </h1>
+      <p class="text-lg leading-relaxed text-muted-foreground">
+        From weekly services to outreach nights and special gatherings, there is
+        always a place for you at VBC.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-background px-8 py-16 md:px-16 lg:px-24">
+    <div class="mx-auto max-w-3xl space-y-8">
+      <article class="border-t border-border pt-6">
+        <h2 class="mb-2 font-display text-2xl font-bold text-foreground">
+          Weekly Services
+        </h2>
+        <p class="text-muted-foreground leading-relaxed">
+          Join us Sunday morning, Sunday night, and Thursday for Bible study and
+          worship.
+        </p>
+      </article>
+      <article class="border-t border-border pt-6">
+        <h2 class="mb-2 font-display text-2xl font-bold text-foreground">
+          Soul-Winning Outreach
+        </h2>
+        <p class="mb-4 text-muted-foreground leading-relaxed">
+          Weekly door-to-door evangelism and community outreach throughout the
+          year. Ask a greeter how to get involved.
+        </p>
+        <Button href="/#soul-winning" variant="cta">Learn About Outreach</Button>
+      </article>
+      <article class="border-t border-border pt-6">
+        <h2 class="mb-2 font-display text-2xl font-bold text-foreground">
+          Missions Conference
+        </h2>
+        <p class="mb-4 text-muted-foreground leading-relaxed">
+          Hear from missionaries and learn how you can participate in the Great
+          Commission.
+        </p>
+        <Button href="/missions-conference/" variant="secondary">
+          Missions Conference
+        </Button>
+      </article>
+    </div>
+  </section>
+</PageLayout>

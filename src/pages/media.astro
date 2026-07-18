@@ -1,0 +1,37 @@
+---
+import PageLayout from "@/layouts/page-layout.astro";
+import { Button } from "@/components/starwind/button";
+---
+
+<PageLayout
+  title="Media | Victory Baptist Church"
+  description="Sermons, livestreams, and media from Victory Baptist Church."
+>
+  <section class="bg-muted px-8 py-16 md:px-16 md:py-20 lg:px-24">
+    <div class="mx-auto max-w-3xl">
+      <p class="mb-4 text-sm font-semibold uppercase tracking-widest text-primary">
+        Watch &amp; Listen
+      </p>
+      <h1 class="mb-6 font-display text-4xl font-bold text-foreground md:text-5xl">
+        Media
+      </h1>
+      <p class="text-lg leading-relaxed text-muted-foreground">
+        Find recent sermons, livestreams, and teaching resources from Victory
+        Baptist Church.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-background px-8 py-16 md:px-16 lg:px-24">
+    <div class="mx-auto max-w-3xl">
+      <p class="mb-8 text-muted-foreground leading-relaxed">
+        Browse our sermon archive for the latest messages, or plan a visit to
+        worship with us in person.
+      </p>
+      <div class="flex flex-wrap gap-3">
+        <Button href="/sermons/" size="lg">Browse Sermons</Button>
+        <Button href="/visit/" variant="secondary" size="lg">Visit Us</Button>
+      </div>
+    </div>
+  </section>
+</PageLayout>

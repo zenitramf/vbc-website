@@ -1,0 +1,79 @@
+---
+import PageLayout from "@/layouts/page-layout.astro";
+import { Button } from "@/components/starwind/button";
+import { churchInfo, serviceTimes } from "@/lib/church-data";
+---
+
+<PageLayout
+  title="Plan Your Visit | Victory Baptist Church"
+  description="Plan your visit to Victory Baptist Church in Fresno — service times, directions, and what to expect."
+>
+  <section class="bg-muted px-8 py-16 md:px-16 md:py-20 lg:px-24">
+    <div class="mx-auto max-w-3xl">
+      <p class="mb-4 text-sm font-semibold uppercase tracking-widest text-primary">
+        Welcome
+      </p>
+      <h1 class="mb-6 font-display text-4xl font-bold text-foreground md:text-5xl">
+        Plan Your Visit
+      </h1>
+      <p class="text-lg leading-relaxed text-muted-foreground">
+        Come as you are. Find a seat, meet friendly faces, and hear the gospel
+        preached clearly from Scripture.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-background px-8 py-16 md:px-16 lg:px-24">
+    <div class="mx-auto grid max-w-5xl gap-12 md:grid-cols-2">
+      <div>
+        <h2 class="mb-5 font-display text-2xl font-bold text-foreground">
+          Service Times
+        </h2>
+        <ul class="space-y-4 text-muted-foreground">
+          <li>
+            <strong class="text-foreground">Sunday School</strong> —{" "}
+            {serviceTimes.sundaySchool.time}
+          </li>
+          <li>
+            <strong class="text-foreground">Sunday Morning</strong> —{" "}
+            {serviceTimes.sundayMorning.time}
+          </li>
+          <li>
+            <strong class="text-foreground">Sunday Night</strong> —{" "}
+            {serviceTimes.sundayNight.time}
+          </li>
+          <li>
+            <strong class="text-foreground">Thursday Bible Study</strong> —{" "}
+            {serviceTimes.bibleStudy.time}
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="mb-5 font-display text-2xl font-bold text-foreground">
+          Location
+        </h2>
+        <p class="mb-6 text-muted-foreground leading-relaxed">
+          {churchInfo.addressLine1}<br />
+          {churchInfo.addressLine2}
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <Button
+            href={churchInfo.mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            size="lg"
+          >
+            Open in Google Maps
+          </Button>
+          <Button
+            href={`mailto:${churchInfo.email}`}
+            variant="secondary"
+            size="lg"
+          >
+            Contact Us
+          </Button>
+        </div>
+      </div>
+    </div>
+  </section>
+</PageLayout>

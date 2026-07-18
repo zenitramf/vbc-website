@@ -1,0 +1,41 @@
+---
+import PageLayout from "@/layouts/page-layout.astro";
+import { Button } from "@/components/starwind/button";
+---
+
+<PageLayout
+  title="Missions Conference | Victory Baptist Church"
+  description="Join Victory Baptist Church for our annual missions conference."
+>
+  <section class="bg-muted px-8 py-16 md:px-16 md:py-20 lg:px-24">
+    <div class="mx-auto max-w-3xl">
+      <p class="mb-4 text-sm font-semibold uppercase tracking-widest text-primary">
+        Great Commission
+      </p>
+      <h1 class="mb-6 font-display text-4xl font-bold text-foreground md:text-5xl">
+        Missions Conference
+      </h1>
+      <p class="text-lg leading-relaxed text-muted-foreground">
+        There is a great need for the gospel in California and around the world.
+        Join us as we hear from missionaries about the work God is doing and the
+        opportunities we have to participate in the Great Commission.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-background px-8 py-16 md:px-16 lg:px-24">
+    <div class="mx-auto max-w-3xl">
+      <p class="mb-8 text-muted-foreground leading-relaxed">
+        Details for the next conference will be posted here as dates are
+        confirmed. Until then, you can support missions through prayer, giving,
+        and weekly soul-winning.
+      </p>
+      <div class="flex flex-wrap gap-3">
+        <Button href="/#soul-winning" variant="cta" size="lg">
+          Soul-Winning Ministry
+        </Button>
+        <Button href="/visit/" variant="secondary" size="lg">Plan a Visit</Button>
+      </div>
+    </div>
+  </section>
+</PageLayout>

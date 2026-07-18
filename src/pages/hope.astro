@@ -1,0 +1,24 @@
+---
+import PageLayout from "@/layouts/page-layout.astro";
+import { Button } from "@/components/starwind/button";
+---
+
+<PageLayout
+  title="Hope Is Alive! | Victory Baptist Church"
+  description="Hope is alive through Jesus Christ. Learn the Bible way to heaven."
+>
+  <section class="bg-muted px-8 py-16 md:px-16 md:py-20 lg:px-24">
+    <div class="mx-auto max-w-3xl">
+      <h1 class="mb-6 font-display text-4xl font-bold text-foreground md:text-5xl">
+        Hope Is Alive!
+      </h1>
+      <p class="mb-8 text-lg leading-relaxed text-muted-foreground">
+        Real hope is found in the finished work of Jesus Christ. Discover what
+        the Bible says about salvation and eternal life.
+      </p>
+      <Button href="/salvation/" variant="cta" size="lg">
+        Bible Way to Heaven
+      </Button>
+    </div>
+  </section>
+</PageLayout>

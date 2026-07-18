@@ -19,7 +19,9 @@
     {
       "bucket_name": "fvbc-images",
       "binding": "fvbc_images",
-      "remote": true,
+      // Use local R2 emulation for builds/dev without Wrangler login.
+      // Set "remote": true when you need live bucket access in wrangler dev.
+      "remote": false,
     },
   ],
   /**

@@ -1,17 +1,15 @@
-import { defineConfig } from "astro/config";
 import cloudflare from "@astrojs/cloudflare";
-import tailwindcss from "@tailwindcss/vite";
-
-import react from "@astrojs/react";
-
 import mdx from "@astrojs/mdx";
+import react from "@astrojs/react";
+import tailwindcss from "@tailwindcss/vite";
+import { defineConfig } from "astro/config";
 
 // https://astro.build/config
 export default defineConfig({
   adapter: cloudflare({
     imageService: "passthrough",
     platformProxy: {
-      enabled: true,
+      enabled: process.env.CF_PLATFORM_PROXY === "1",
     },
   }),
 
@@ -20,6 +18,15 @@ export default defineConfig({
   },
 
   integrations: [react(), mdx()],
+
+  redirects: {
+    "/about/": "/about-vbc/",
+    "/give/": "https://tithe.ly/give_new/www/#/tithely/give-one-time/1285261",
+    "/messages/": "/sermons/",
+    "/staff/": "/meet-the-staff/",
+  },
+
+  trailingSlash: "always",
 
   vite: {
     plugins: [tailwindcss()],

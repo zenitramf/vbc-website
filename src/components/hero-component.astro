@@ -2,12 +2,16 @@
 import { Image } from "astro:assets";
 import heroBg from "@/images/home-page_fvbc_hero.webp";
 import { Button } from "@/components/starwind/button";
+import { giveHref, primaryNav, visitHref } from "@/lib/site-nav";
 
-const navLinks = [
-  { href: "/salvation", label: "Heaven" },
-  { href: "#about", label: "About Us" },
-  { href: "/messages", label: "Sermons" },
-  { href: "/give", label: "Give" },
+const mobileLinks = [
+  ...primaryNav.flatMap((item) =>
+    item.children
+      ? item.children.map((child) => ({ href: child.href, label: child.label }))
+      : [{ href: item.href ?? "/", label: item.label }]
+  ),
+  { external: true, href: giveHref, label: "Give" },
+  { href: "/#ministries", label: "Ministries" },
 ];
 ---
 
@@ -47,18 +51,48 @@ const navLinks = [
 
     <ul class="hero__nav-links" role="list">
       {
-        navLinks.map((link) => (
-          <li>
-            <a href={link.href} class="hero__nav-link">
-              {link.label}
-            </a>
-          </li>
-        ))
+        primaryNav.map((item) =>
+          item.children ? (
+            <li class="hero__nav-item hero__nav-item--has-children">
+              <button type="button" class="hero__nav-link hero__nav-parent">
+                {item.label}
+                <span class="hero__caret" aria-hidden="true">
+                  ▾
+                </span>
+              </button>
+              <ul class="hero__dropdown" role="list">
+                {item.children.map((child) => (
+                  <li>
+                    <a href={child.href} class="hero__dropdown-link">
+                      {child.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ) : (
+            <li class="hero__nav-item">
+              <a href={item.href} class="hero__nav-link">
+                {item.label}
+              </a>
+            </li>
+          )
+        )
       }
+      <li class="hero__nav-item">
+        <a
+          href={giveHref}
+          class="hero__nav-link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Give
+        </a>
+      </li>
     </ul>
 
     <div class="hero__nav-cta">
-      <Button variant="cta" size="sm" href="#visit">Plan a Visit</Button>
+      <Button variant="cta" size="sm" href={visitHref}>Visit Us</Button>
     </div>
 
     <label for="hero-nav-cbox" class="hero__hamburger" aria-label="Toggle menu">
@@ -71,9 +105,18 @@ const navLinks = [
   <div class="hero__mobile-menu" id="mobile-menu">
     <ul class="hero__mobile-links" role="list">
       {
-        navLinks.map((link) => (
+        mobileLinks.map((link) => (
           <li class="hero__mobile-item">
-            <a href={link.href} class="hero__mobile-link">
+            <a
+              href={link.href}
+              class="hero__mobile-link"
+              target={"external" in link && link.external ? "_blank" : undefined}
+              rel={
+                "external" in link && link.external
+                  ? "noopener noreferrer"
+                  : undefined
+              }
+            >
               {link.label}
             </a>
           </li>
@@ -81,22 +124,24 @@ const navLinks = [
       }
     </ul>
     <div class="hero__mobile-cta">
-      <a href="#visit" class="hero__mobile-cta-btn">Plan a Visit</a>
+      <a href={visitHref} class="hero__mobile-cta-btn">Visit Us</a>
     </div>
   </div>
 
   <div class="hero__content">
     <p class="hero__brand">Victory Baptist Church</p>
     <h1 class="hero__headline">
-      Bible-centered worship for Fresno families
+      Reaching Fresno with the gospel of Jesus Christ
     </h1>
     <p class="hero__support">
-      An independent Baptist church gathering each week to exalt Christ, grow in
-      the Word, and serve our city.
+      An independent Baptist church committed to soul-winning, sound Bible
+      teaching, and serving our community.
     </p>
     <div class="hero__actions">
-      <Button variant="cta" size="lg" href="#visit">Plan a Visit</Button>
-      <Button variant="outline" size="lg" href="/messages">View Sermons</Button>
+      <Button variant="cta" size="lg" href={visitHref}>Plan a Visit</Button>
+      <Button variant="outline" size="lg" href="/#ministries">
+        Our Ministries
+      </Button>
     </div>
   </div>
 </section>
@@ -242,19 +287,78 @@ const navLinks = [
     list-style: none;
     margin: 0;
     padding: 0;
-    gap: 2rem;
+    gap: 0.5rem;
+    align-items: center;
   }
 
-  .hero__nav-link {
+  .hero__nav-item {
+    position: relative;
+  }
+
+  .hero__nav-link,
+  .hero__nav-parent {
     color: rgba(255, 255, 255, 0.9);
     text-decoration: none;
     font-size: 0.9375rem;
     font-weight: 600;
     letter-spacing: 0.01em;
     transition: color 0.15s ease;
+    background: none;
+    border: 0;
+    padding: 0.4rem 0.65rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
   }
 
-  .hero__nav-link:hover {
+  .hero__nav-link:hover,
+  .hero__nav-parent:hover {
+    color: #fff;
+  }
+
+  .hero__caret {
+    font-size: 0.65rem;
+    opacity: 0.8;
+  }
+
+  .hero__dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 12rem;
+    margin: 0;
+    padding: 0.45rem 0;
+    list-style: none;
+    background: rgba(15, 39, 68, 0.97);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(0.35rem);
+    transition:
+      opacity 0.15s ease,
+      transform 0.15s ease,
+      visibility 0.15s ease;
+  }
+
+  .hero__nav-item--has-children:hover .hero__dropdown,
+  .hero__nav-item--has-children:focus-within .hero__dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .hero__dropdown-link {
+    display: block;
+    padding: 0.55rem 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .hero__dropdown-link:hover {
+    background: rgba(255, 255, 255, 0.08);
     color: #fff;
   }
 
@@ -351,10 +455,10 @@ const navLinks = [
     display: block;
     width: 100%;
     text-align: center;
-    padding: 1.25rem 2rem;
+    padding: 1.15rem 2rem;
     color: #fff;
     text-decoration: none;
-    font-size: 2rem;
+    font-size: 1.75rem;
     font-weight: 700;
     letter-spacing: -0.02em;
     font-family: var(--font-display);
@@ -410,7 +514,7 @@ const navLinks = [
 
   .hero__headline {
     margin: 0;
-    max-width: 28rem;
+    max-width: 30rem;
     font-family: var(--font-sans);
     font-size: clamp(1.25rem, 2.6vw, 1.625rem);
     font-weight: 600;

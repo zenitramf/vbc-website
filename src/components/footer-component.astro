@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
-import { serviceTimes } from "@/lib/church-data";
+import { churchInfo, serviceTimes } from "@/lib/church-data";
+import { footerNav } from "@/lib/site-nav";
 
 const { sundayMorning } = serviceTimes;
 ---
@@ -17,9 +18,9 @@ const { sundayMorning } = serviceTimes;
           class="h-12 w-12 brightness-0 invert"
         />
         <p class="text-sm leading-relaxed text-background/70">
-          Victory Baptist Church<br />
-          1717 N Gateway Blvd Ste. #105<br />
-          Fresno, CA 93727
+          {churchInfo.name}<br />
+          {churchInfo.addressLine1}<br />
+          {churchInfo.addressLine2}
         </p>
         <p class="text-sm text-background/70">
           Sunday Service — {sundayMorning.time}
@@ -33,26 +34,16 @@ const { sundayMorning } = serviceTimes;
           Visit
         </h3>
         <nav class="flex flex-col gap-2">
-          <a
-            href="#visit"
-            class="text-sm text-background/80 transition-colors hover:text-background"
-            >Plan a Visit</a
-          >
-          <a
-            href="/about"
-            class="text-sm text-background/80 transition-colors hover:text-background"
-            >About Us</a
-          >
-          <a
-            href="/staff"
-            class="text-sm text-background/80 transition-colors hover:text-background"
-            >Our Staff</a
-          >
-          <a
-            href="/events"
-            class="text-sm text-background/80 transition-colors hover:text-background"
-            >Events</a
-          >
+          {
+            footerNav.visit.map((link) => (
+              <a
+                href={link.href}
+                class="text-sm text-background/80 transition-colors hover:text-background"
+              >
+                {link.label}
+              </a>
+            ))
+          }
         </nav>
       </div>
 
@@ -63,26 +54,22 @@ const { sundayMorning } = serviceTimes;
           Connect
         </h3>
         <nav class="flex flex-col gap-2">
-          <a
-            href="/groups"
-            class="text-sm text-background/80 transition-colors hover:text-background"
-            >Small Groups</a
-          >
-          <a
-            href="/serve"
-            class="text-sm text-background/80 transition-colors hover:text-background"
-            >Serve</a
-          >
-          <a
-            href="/give"
-            class="text-sm text-background/80 transition-colors hover:text-background"
-            >Give</a
-          >
-          <a
-            href="/messages"
-            class="text-sm text-background/80 transition-colors hover:text-background"
-            >Messages</a
-          >
+          {
+            footerNav.connect.map((link) => (
+              <a
+                href={link.href}
+                class="text-sm text-background/80 transition-colors hover:text-background"
+                target={"external" in link && link.external ? "_blank" : undefined}
+                rel={
+                  "external" in link && link.external
+                    ? "noopener noreferrer"
+                    : undefined
+                }
+              >
+                {link.label}
+              </a>
+            ))
+          }
         </nav>
       </div>
 
@@ -90,33 +77,25 @@ const { sundayMorning } = serviceTimes;
         <h3
           class="text-sm font-semibold uppercase tracking-widest text-background/50"
         >
-          Contact
+          More
         </h3>
         <nav class="flex flex-col gap-2">
+          {
+            footerNav.more.map((link) => (
+              <a
+                href={link.href}
+                class="text-sm text-background/80 transition-colors hover:text-background"
+              >
+                {link.label}
+              </a>
+            ))
+          }
           <a
-            href="tel:+15591234567"
+            href={`mailto:${churchInfo.email}`}
             class="text-sm text-background/80 transition-colors hover:text-background"
-            >(559) 123-4567</a
           >
-          <a
-            href="mailto:info@vbc.org"
-            class="text-sm text-background/80 transition-colors hover:text-background"
-            >info@vbc.org</a
-          >
-          <a
-            href="https://www.facebook.com"
-            rel="noopener"
-            target="_blank"
-            class="text-sm text-background/80 transition-colors hover:text-background"
-            >Facebook</a
-          >
-          <a
-            href="https://www.instagram.com"
-            rel="noopener"
-            target="_blank"
-            class="text-sm text-background/80 transition-colors hover:text-background"
-            >Instagram</a
-          >
+            {churchInfo.email}
+          </a>
         </nav>
       </div>
     </div>

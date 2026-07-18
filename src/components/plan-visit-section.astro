@@ -77,14 +77,18 @@ const { bibleStudy, sundayMorning, sundaySchool } = serviceTimes;
         </li>
       </ul>
       <div>
-        <Button
-          href="https://maps.app.goo.gl/Ysiz9UYS1mijVrJH7"
-          target="_blank"
-          rel="noopener noreferrer"
-          size="lg"
-        >
-          Open in Google Maps
-        </Button>
+        <div class="flex flex-wrap gap-3">
+          <Button href="/visit/" size="lg" variant="cta">Plan Your Visit</Button>
+          <Button
+            href="https://maps.app.goo.gl/Ysiz9UYS1mijVrJH7"
+            target="_blank"
+            rel="noopener noreferrer"
+            size="lg"
+            variant="secondary"
+          >
+            Open in Google Maps
+          </Button>
+        </div>
       </div>
     </div>
   </div>

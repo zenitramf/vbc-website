@@ -1,0 +1,66 @@
+---
+import { Button } from "@/components/starwind/button";
+import { ministries } from "@/lib/church-data";
+
+const featured = ministries.find((m) => m.featured) ?? ministries[0];
+const others = ministries.filter((m) => m.id !== featured.id);
+---
+
+<section
+  id="ministries"
+  class="relative overflow-hidden bg-background px-8 py-24 md:px-16 lg:px-24"
+>
+  <div class="relative mx-auto max-w-6xl">
+    <div class="reveal mb-12 max-w-2xl">
+      <p class="mb-4 text-sm font-bold uppercase tracking-[0.2em] text-primary">
+        Ministries
+      </p>
+      <h2
+        class="font-display text-4xl font-bold tracking-tight text-foreground md:text-5xl"
+      >
+        Reaching people. Building disciples.
+      </h2>
+      <p class="mt-5 text-lg leading-relaxed text-muted-foreground">
+        Victory Baptist Church offers ministries for every stage of life. Our
+        first priority is soul-winning — sharing the gospel in Fresno and around
+        the world.
+      </p>
+    </div>
+
+    <article
+      id={featured.id}
+      class="reveal reveal-delay-1 mb-14 border-l-4 border-cta pl-6 md:pl-8"
+    >
+      <p class="mb-2 text-sm font-bold uppercase tracking-[0.18em] text-cta">
+        Featured
+      </p>
+      <h3 class="mb-4 font-display text-3xl font-bold text-foreground md:text-4xl">
+        {featured.name}
+      </h3>
+      <p class="max-w-3xl text-lg leading-relaxed text-muted-foreground">
+        {featured.summary}
+      </p>
+      <div class="mt-6">
+        <Button href="/salvation/" size="lg">Bible Way to Heaven</Button>
+      </div>
+    </article>
+
+    <ul
+      class="reveal reveal-delay-2 grid list-none grid-cols-1 gap-x-10 gap-y-8 p-0 md:grid-cols-2 lg:grid-cols-3"
+      role="list"
+    >
+      {
+        others.map((ministry) => (
+          <li id={ministry.id} class="border-t border-border pt-5">
+            <h3 class="mb-2 font-display text-xl font-bold text-foreground">
+              {ministry.name}
+            </h3>
+            <p class="text-sm leading-relaxed text-muted-foreground md:text-base">
+              {ministry.summary}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

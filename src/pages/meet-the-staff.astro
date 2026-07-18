@@ -1,0 +1,43 @@
+---
+import PageLayout from "@/layouts/page-layout.astro";
+import { Button } from "@/components/starwind/button";
+import { churchInfo } from "@/lib/church-data";
+---
+
+<PageLayout
+  title="Meet The Staff | Victory Baptist Church"
+  description="Meet Pastor Ryan Willis and the staff of Victory Baptist Church in Fresno."
+>
+  <section class="bg-muted px-8 py-16 md:px-16 md:py-20 lg:px-24">
+    <div class="mx-auto max-w-3xl">
+      <p class="mb-4 text-sm font-semibold uppercase tracking-widest text-primary">
+        Leadership
+      </p>
+      <h1 class="mb-6 font-display text-4xl font-bold text-foreground md:text-5xl">
+        Meet The Staff
+      </h1>
+      <p class="text-lg leading-relaxed text-muted-foreground">
+        Get to know the pastors and leaders who shepherd Victory Baptist Church
+        and serve Fresno with humility and love.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-background px-8 py-16 md:px-16 lg:px-24">
+    <div class="mx-auto max-w-3xl border-t border-border pt-10">
+      <h2 class="mb-3 font-display text-3xl font-bold text-foreground">
+        Pastor Ryan Willis and Family
+      </h2>
+      <p class="mb-8 text-lg leading-relaxed text-muted-foreground">
+        Pastor Ryan Willis leads Victory Baptist Church with a passion for
+        preaching the Word, training soul-winners, and caring for the flock. He
+        and his family are glad to welcome you and help you take your next step
+        with Christ.
+      </p>
+      <div class="flex flex-wrap gap-3">
+        <Button href={`mailto:${churchInfo.email}`} size="lg">Contact Us</Button>
+        <Button href="/visit/" variant="secondary" size="lg">Plan a Visit</Button>
+      </div>
+    </div>
+  </section>
+</PageLayout>

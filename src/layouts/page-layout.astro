@@ -1,0 +1,25 @@
+---
+import MainLayout from "@/layouts/main-layout.astro";
+import SiteHeader from "@/components/site-header.astro";
+import FooterComponent from "@/components/footer-component.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description }: Props = Astro.props;
+---
+
+<MainLayout title={title}>
+  {
+    description && (
+      <Fragment slot="head">
+        <meta name="description" content={description} />
+      </Fragment>
+    )
+  }
+  <SiteHeader />
+  <slot />
+  <FooterComponent />
+</MainLayout>

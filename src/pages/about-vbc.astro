@@ -1,0 +1,156 @@
+---
+import PageLayout from "@/layouts/page-layout.astro";
+import { Button } from "@/components/starwind/button";
+import { churchInfo, serviceTimes } from "@/lib/church-data";
+
+const beliefs = [
+  {
+    body: "We believe the Bible is the inerrant, inspired Word of God and our final authority for faith and practice.",
+    title: "The Bible",
+  },
+  {
+    body: "We believe God eternally exists as Father, Son, and Holy Spirit: three Persons, yet one God.",
+    title: "God",
+  },
+  {
+    body: "We believe Jesus Christ is the only begotten Son of God, true God and true man, born of a virgin and without sin.",
+    title: "Jesus Christ",
+  },
+  {
+    body: "We believe the Holy Spirit is God, equal with the Father and the Son, and active in the life of every believer.",
+    title: "The Holy Spirit",
+  },
+  {
+    body: "We believe mankind fell through sin and now stands in need of redemption through Jesus Christ.",
+    title: "Sin",
+  },
+  {
+    body: "We believe Christ died as our substitute, rose bodily from the dead, and ascended to Heaven.",
+    title: "Sacrifice of Christ",
+  },
+  {
+    body: "We believe salvation is God's gift of grace, received by personal faith in the Lord Jesus Christ.",
+    title: "Salvation",
+  },
+  {
+    body: "We believe all who are truly saved are kept by God's power and are secure in Christ forever.",
+    title: "Eternal Security",
+  },
+  {
+    body: "We believe the local church exists for edification, exhortation, and evangelism according to Christ's command.",
+    title: "Service",
+  },
+  {
+    body: "We believe in a literal interpretation of Scripture, Christ's return, and the coming fulfillment of God's prophetic plan.",
+    title: "The Last Days",
+  },
+];
+---
+
+<PageLayout
+  title="About VBC | Victory Baptist Church"
+  description="Learn about Victory Baptist Church in Fresno — our mission, beliefs, and commitment to the gospel."
+>
+  <section class="bg-muted px-8 py-16 md:px-16 md:py-20 lg:px-24">
+    <div class="mx-auto max-w-3xl">
+      <p class="mb-4 text-sm font-semibold uppercase tracking-widest text-primary">
+        About VBC
+      </p>
+      <h1 class="mb-6 font-display text-4xl font-bold text-foreground md:text-5xl">
+        Who We Are
+      </h1>
+      <p class="text-lg leading-relaxed text-muted-foreground">
+        We are an independent Baptist church in south-east Fresno with a heart to
+        reach our community and the world with the gospel of Jesus Christ. We are
+        committed to sound Bible teaching and preaching so lives may be changed
+        and enriched through Jesus Christ.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-background px-8 py-16 md:px-16 lg:px-24">
+    <div class="mx-auto grid max-w-5xl gap-10 md:grid-cols-3">
+      <div>
+        <h2 class="mb-3 font-display text-2xl font-bold text-foreground">
+          Exalt the Savior
+        </h2>
+        <p class="text-muted-foreground leading-relaxed">
+          We center every service on the Lord Jesus Christ and worship Him in
+          spirit and in truth.
+        </p>
+      </div>
+      <div>
+        <h2 class="mb-3 font-display text-2xl font-bold text-foreground">
+          Edify the Saints
+        </h2>
+        <p class="text-muted-foreground leading-relaxed">
+          We teach and apply Scripture so believers grow stronger in faith,
+          doctrine, and daily obedience.
+        </p>
+      </div>
+      <div>
+        <h2 class="mb-3 font-display text-2xl font-bold text-foreground">
+          Evangelize the Sinner
+        </h2>
+        <p class="text-muted-foreground leading-relaxed">
+          We gladly share the good news of salvation through Christ with Fresno
+          and beyond.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-muted px-8 py-16 md:px-16 lg:px-24">
+    <div class="mx-auto max-w-5xl">
+      <h2 class="mb-8 font-display text-3xl font-bold text-foreground md:text-4xl">
+        Our Beliefs
+      </h2>
+      <div class="grid gap-8 md:grid-cols-2">
+        {
+          beliefs.map((belief) => (
+            <div>
+              <h3 class="mb-2 text-lg font-semibold text-foreground">
+                {belief.title}
+              </h3>
+              <p class="text-sm leading-relaxed text-muted-foreground md:text-base">
+                {belief.body}
+              </p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-background px-8 py-16 md:px-16 lg:px-24">
+    <div class="mx-auto grid max-w-5xl gap-10 md:grid-cols-2">
+      <div>
+        <h2 class="mb-4 font-display text-2xl font-bold text-foreground">
+          Service Times
+        </h2>
+        <ul class="space-y-2 text-muted-foreground">
+          <li>
+            <strong class="text-foreground">Sunday:</strong>
+            {" "}
+            {serviceTimes.sundaySchool.time}, {serviceTimes.sundayMorning.time},{" "}
+            {serviceTimes.sundayNight.time}
+          </li>
+          <li>
+            <strong class="text-foreground">Thursday:</strong>
+            {" "}
+            {serviceTimes.bibleStudy.time}
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="mb-4 font-display text-2xl font-bold text-foreground">
+          Visit Us
+        </h2>
+        <p class="mb-4 text-muted-foreground">
+          {churchInfo.addressLine1}<br />{churchInfo.addressLine2}
+        </p>
+        <Button href="/visit/" variant="cta">Plan Your Visit</Button>
+      </div>
+    </div>
+  </section>
+</PageLayout>

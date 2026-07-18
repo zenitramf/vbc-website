@@ -3,6 +3,7 @@
 import { getImage } from "astro:assets";
 import MainLayout from "../layouts/main-layout.astro";
 import HeroComponent from "../components/hero-component.astro";
+import MinistriesSection from "../components/ministries-section.astro";
 import AboutSection from "../components/about-section.astro";
 import PlanVisitSection from "../components/plan-visit-section.astro";
 import StaffCalendarSection from "../components/staff-calendar-section.astro";
@@ -34,6 +35,7 @@ const heroImageMobile = await getImage({
     />
   </Fragment>
   <HeroComponent />
+  <MinistriesSection />
   <AboutSection />
   <PlanVisitSection />
   <StaffCalendarSection />
