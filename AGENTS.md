@@ -121,3 +121,16 @@ Oxlint + Oxfmt's linter will catch most issues automatically. Focus your attenti
 ---
 
 Most formatting and common issues are automatically fixed by Oxlint + Oxfmt. Run `pnpm dlx ultracite fix` before committing to ensure compliance.
+
+---
+
+## Cursor Cloud specific instructions
+
+This repo is a single **Astro 6** website (`vbc-website`, Fresno Victory Baptist Church) deployed to Cloudflare Workers via the `@astrojs/cloudflare` adapter. There is no backend, database, or other service to run — the only service is the Astro dev server.
+
+- Package manager is **pnpm** (see `pnpm-lock.yaml` / `.npmrc` with `node-linker=hoisted`). Dependencies are refreshed automatically by the startup update script (`pnpm install`).
+- Run the dev server with `pnpm dev` — serves at `http://localhost:4321/`. Standard scripts live in `package.json` (`dev`, `build`, `preview`, `check`, `fix`, `generate-types`).
+- `pnpm build` runs `astro build` (adapter target is Cloudflare/`server` mode, output prerendered to `dist/`). `pnpm preview` builds then runs `wrangler dev`.
+- Lint/format: `pnpm check` (Ultracite/Oxlint+Oxfmt). Note the committed source currently has pre-existing formatting issues, so `pnpm check` exits non-zero on a clean checkout; that is not caused by your changes. Use `pnpm fix` to auto-format.
+- Cloudflare binding types are generated into `worker-configuration.d.ts` via `pnpm generate-types` (wrangler); `astro build` also regenerates types.
+- The R2 bucket binding (`fvbc_images`) uses local emulation by default (`"remote": false` in `wrangler.jsonc`), so no Cloudflare login is needed for local dev or builds.
