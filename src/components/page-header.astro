@@ -1,0 +1,53 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+}
+
+const { eyebrow, title }: Props = Astro.props;
+---
+
+<section
+  class="relative isolate flex min-h-[20rem] flex-col justify-center overflow-hidden border-b border-border bg-linear-to-b from-accent/60 via-muted to-background px-8 py-16 md:min-h-[24rem] md:px-16 lg:px-24"
+>
+  <!-- soft glows -->
+  <div
+    class="pointer-events-none absolute -right-20 -top-24 -z-10 h-72 w-72 rounded-full bg-primary/15 blur-3xl md:h-96 md:w-96"
+    aria-hidden="true"
+  >
+  </div>
+  <div
+    class="pointer-events-none absolute -bottom-24 -left-16 -z-10 h-64 w-64 rounded-full bg-cta/10 blur-3xl md:h-80 md:w-80"
+    aria-hidden="true"
+  >
+  </div>
+  <!-- top accent hairline -->
+  <div
+    class="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/50 to-transparent"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="animate-fade-up relative mx-auto w-full max-w-3xl">
+    {
+      eyebrow && (
+        <p class="mb-5 flex items-center gap-3 text-sm font-bold uppercase tracking-[0.2em] text-primary">
+          <span class="h-px w-8 bg-primary" aria-hidden="true" />
+          {eyebrow}
+        </p>
+      )
+    }
+    <h1
+      class="font-display text-4xl font-bold tracking-tight text-foreground md:text-6xl"
+    >
+      {title}
+    </h1>
+    {
+      Astro.slots.has("default") && (
+        <div class="mt-6 max-w-2xl space-y-6 text-lg leading-relaxed text-muted-foreground">
+          <slot />
+        </div>
+      )
+    }
+  </div>
+</section>

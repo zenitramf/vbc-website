@@ -1,5 +1,6 @@
 ---
 import PageLayout from "@/layouts/page-layout.astro";
+import PageHeader from "@/components/page-header.astro";
 import { Button } from "@/components/starwind/button";
 ---
 
@@ -7,20 +8,12 @@ import { Button } from "@/components/starwind/button";
   title="Events | Victory Baptist Church"
   description="Upcoming events at Victory Baptist Church in Fresno."
 >
-  <section class="bg-muted px-8 py-16 md:px-16 md:py-20 lg:px-24">
-    <div class="mx-auto max-w-3xl">
-      <p class="mb-4 text-sm font-semibold uppercase tracking-widest text-primary">
-        Calendar
-      </p>
-      <h1 class="mb-6 font-display text-4xl font-bold text-foreground md:text-5xl">
-        Events
-      </h1>
-      <p class="text-lg leading-relaxed text-muted-foreground">
-        From weekly services to outreach nights and special gatherings, there is
-        always a place for you at VBC.
-      </p>
-    </div>
-  </section>
+  <PageHeader eyebrow="Calendar" title="Events">
+    <p>
+      From weekly services to outreach nights and special gatherings, there is
+      always a place for you at VBC.
+    </p>
+  </PageHeader>
 
   <section class="bg-background px-8 py-16 md:px-16 lg:px-24">
     <div class="mx-auto max-w-3xl space-y-8">

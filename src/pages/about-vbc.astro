@@ -1,5 +1,6 @@
 ---
 import PageLayout from "@/layouts/page-layout.astro";
+import PageHeader from "@/components/page-header.astro";
 import { Button } from "@/components/starwind/button";
 import { churchInfo, serviceTimes } from "@/lib/church-data";
 
@@ -51,22 +52,14 @@ const beliefs = [
   title="About VBC | Victory Baptist Church"
   description="Learn about Victory Baptist Church in Fresno — our mission, beliefs, and commitment to the gospel."
 >
-  <section class="bg-muted px-8 py-16 md:px-16 md:py-20 lg:px-24">
-    <div class="mx-auto max-w-3xl">
-      <p class="mb-4 text-sm font-semibold uppercase tracking-widest text-primary">
-        About VBC
-      </p>
-      <h1 class="mb-6 font-display text-4xl font-bold text-foreground md:text-5xl">
-        Who We Are
-      </h1>
-      <p class="text-lg leading-relaxed text-muted-foreground">
-        We are an independent Baptist church in south-east Fresno with a heart to
-        reach our community and the world with the gospel of Jesus Christ. We are
-        committed to sound Bible teaching and preaching so lives may be changed
-        and enriched through Jesus Christ.
-      </p>
-    </div>
-  </section>
+  <PageHeader eyebrow="About VBC" title="Who We Are">
+    <p>
+      We are an independent Baptist church in south-east Fresno with a heart to
+      reach our community and the world with the gospel of Jesus Christ. We are
+      committed to sound Bible teaching and preaching so lives may be changed
+      and enriched through Jesus Christ.
+    </p>
+  </PageHeader>
 
   <section class="bg-background px-8 py-16 md:px-16 lg:px-24">
     <div class="mx-auto grid max-w-5xl gap-10 md:grid-cols-3">

@@ -1,5 +1,6 @@
 ---
 import PageLayout from "@/layouts/page-layout.astro";
+import PageHeader from "@/components/page-header.astro";
 import { Prose } from "@/components/starwind/prose";
 
 interface Props {
@@ -17,13 +18,7 @@ const description = frontmatter?.description;
 ---
 
 <PageLayout title={`${pageTitle} | Victory Baptist Church`} description={description}>
-  <section class="bg-muted px-8 py-14 md:px-16 lg:px-24">
-    <div class="mx-auto max-w-3xl">
-      <h1 class="font-display text-4xl font-bold tracking-tight text-foreground md:text-5xl">
-        {pageTitle}
-      </h1>
-    </div>
-  </section>
+  <PageHeader title={pageTitle} />
   <section class="bg-background px-8 py-12 md:px-16 lg:px-24">
     <div class="mx-auto max-w-3xl">
       <Prose>
