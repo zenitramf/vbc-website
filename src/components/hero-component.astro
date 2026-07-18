@@ -1,5 +1,4 @@
 ---
-import { Image } from "astro:assets";
 import heroBg from "@/images/home-page_fvbc_hero.webp";
 import { Button } from "@/components/starwind/button";
 import { giveHref, primaryNav, visitHref } from "@/lib/site-nav";
@@ -17,12 +16,13 @@ const mobileLinks = [
 
 <section class="hero">
   <div class="hero__media" aria-hidden="true">
-    <Image
-      src={heroBg}
+    {/* Serve the built asset directly — Astro Image `/_image/` URLs 404 on Cloudflare. */}
+    <img
+      src={heroBg.src}
+      width={heroBg.width}
+      height={heroBg.height}
       alt=""
       class="hero__bg"
-      widths={[640, 1280, 1920]}
-      sizes="100vw"
       loading="eager"
       fetchpriority="high"
       decoding="sync"
@@ -40,11 +40,11 @@ const mobileLinks = [
 
   <nav class="hero__nav" aria-label="Main navigation">
     <a href="/" class="hero__logo" aria-label="Victory Baptist Church home">
-      <Image
+      <img
         src="/vbc_logo.svg"
         alt=""
-        width={56}
-        height={56}
+        width="56"
+        height="56"
         class="hero__logo-img"
       />
     </a>
