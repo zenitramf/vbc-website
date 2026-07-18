@@ -1,0 +1,1694 @@
+---
+import PageLayout from "@/layouts/page-layout.astro";
+import { churchInfo } from "@/lib/church-data";
+
+const salvationContactHref = `mailto:${churchInfo.email}?subject=${encodeURIComponent(
+  "I have a question about salvation"
+)}`;
+---
+
+<PageLayout
+  title="What Does It Mean To Be Saved? | Victory Baptist Church"
+  description="The Bible way to heaven — how to know you have eternal life through Jesus Christ."
+>
+  <div class="salvation-page">
+    <div class="reading-progress" data-reading-progress aria-hidden="true">
+    </div>
+
+    <section class="salvation-hero" aria-labelledby="salvation-title">
+      <div class="hero-radiance" aria-hidden="true"></div>
+      <div class="hero-lines" aria-hidden="true"></div>
+      <div class="hero-cross" aria-hidden="true">
+        <span></span>
+      </div>
+
+      <div class="salvation-shell hero-grid">
+        <div class="hero-copy">
+          <p class="hero-eyebrow">
+            <span aria-hidden="true"></span>
+            The Bible Way to Heaven
+          </p>
+          <h1 id="salvation-title">You can <em>know.</em></h1>
+          <p class="hero-intro">
+            Every person eventually asks questions like these:
+          </p>
+          <ul class="hero-questions" role="list">
+            <li>What happens after I die?</li>
+            <li>Can I know that I will spend eternity with God?</li>
+          </ul>
+          <p class="hero-answer">
+            The Bible says we can know. God does not want us to live in
+            uncertainty. He wants us to know the way of salvation.
+          </p>
+          <div class="hero-actions">
+            <a
+              class="salvation-button salvation-button--light"
+              href="#our-need"
+            >
+              Read the Bible’s answer
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="m5 12 14 0m-6-6 6 6-6 6"></path>
+              </svg>
+            </a>
+            <a
+              class="salvation-button salvation-button--outline"
+              href={salvationContactHref}
+            >
+              Talk with someone
+            </a>
+          </div>
+        </div>
+
+        <blockquote class="hero-scripture">
+          <div class="scripture-mark" aria-hidden="true">“</div>
+          <p>
+            These things have I written unto you that believe on the name of the
+            Son of God; that ye may know that ye have eternal life…
+          </p>
+          <footer>
+            <cite>1 John 5:13</cite>
+            <span>King James Version</span>
+          </footer>
+        </blockquote>
+      </div>
+
+      <a class="hero-scroll-cue" href="#message-map">
+        <span>Follow the message</span>
+        <svg aria-hidden="true" viewBox="0 0 24 24">
+          <path d="m6 9 6 6 6-6"></path>
+        </svg>
+      </a>
+    </section>
+
+    <nav
+      id="message-map"
+      class="message-map"
+      aria-label="The message of salvation"
+    >
+      <ol class="salvation-shell">
+        <li>
+          <a href="#our-need">
+            <span class="map-number">01</span>
+            <span class="map-copy">
+              <strong>Our Need</strong>
+              <small>Sin separates</small>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a href="#gods-gift">
+            <span class="map-number">02</span>
+            <span class="map-copy">
+              <strong>God’s Gift</strong>
+              <small>Christ saves</small>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a href="#your-response">
+            <span class="map-number">03</span>
+            <span class="map-copy">
+              <strong>Your Response</strong>
+              <small>Trust Christ</small>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a href="#questions">
+            <span class="map-number">04</span>
+            <span class="map-copy">
+              <strong>Let’s Talk</strong>
+              <small>We are here</small>
+            </span>
+          </a>
+        </li>
+      </ol>
+    </nav>
+
+    <section id="our-need" class="story-section story-section--need">
+      <div class="salvation-shell story-grid">
+        <header class="story-heading">
+          <p class="section-eyebrow"><span>01</span> Our Need</p>
+          <h2>The problem we cannot solve ourselves.</h2>
+          <p>
+            Before someone can be saved, they must first admit they are lost in
+            sin.
+          </p>
+        </header>
+
+        <div class="story-copy">
+          <div class="story-block">
+            <h3>Sin separates us from God.</h3>
+            <blockquote class="verse-card verse-card--simple">
+              <p>For all have sinned, and come short of the glory of God.</p>
+              <footer><cite>Romans 3:23</cite></footer>
+            </blockquote>
+            <p>
+              Since Adam and Eve, sin has affected every person. Sin is anything
+              contrary to God’s holiness, and our sin separates us from Him.
+            </p>
+
+            <blockquote class="verse-card verse-card--dark">
+              <span class="verse-label">The consequence—and the promise</span>
+              <p>
+                For the wages of sin is death; but the gift of God is eternal
+                life through Jesus Christ our Lord.
+              </p>
+              <footer><cite>Romans 6:23</cite></footer>
+            </blockquote>
+            <p>
+              The penalty for sin is spiritual death and eternal separation from
+              God.
+            </p>
+          </div>
+
+          <div class="story-divider" aria-hidden="true">
+            <span></span>
+            <svg viewBox="0 0 24 24">
+              <path d="M12 3v18M7 8h10"></path>
+            </svg>
+            <span></span>
+          </div>
+
+          <div class="story-block">
+            <h3>Good works and religion cannot save us.</h3>
+            <p>
+              People often try to reach God through religion, effort, or
+              morality. But none of those can remove sin.
+            </p>
+
+            <div class="verse-pair">
+              <blockquote class="verse-card verse-card--quiet">
+                <p>
+                  There is a way which seemeth right unto a man, but the end
+                  thereof are the ways of death.
+                </p>
+                <footer><cite>Proverbs 14:12</cite></footer>
+              </blockquote>
+
+              <blockquote class="verse-card verse-card--gold">
+                <p>
+                  For by grace are ye saved through faith; and that not of
+                  yourselves: it is the gift of God: Not of works, lest any man
+                  should boast.
+                </p>
+                <footer><cite>Ephesians 2:8–9</cite></footer>
+              </blockquote>
+            </div>
+
+            <p class="story-conclusion">
+              Salvation is not something we earn. <strong
+                >It is a gift God gives.</strong
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section
+      id="gods-gift"
+      class="turning-point"
+      aria-labelledby="turning-title"
+    >
+      <div class="turning-glow" aria-hidden="true"></div>
+      <div class="salvation-shell turning-content">
+        <p class="section-eyebrow section-eyebrow--light">
+          <span>02</span> God’s Answer
+        </p>
+        <h2 id="turning-title">But God.</h2>
+        <p>
+          The story of salvation does not end with what we have done. It turns
+          on what God has done for us through His Son.
+        </p>
+      </div>
+    </section>
+
+    <section class="answer-section" aria-labelledby="answer-title">
+      <div class="salvation-shell answer-shell">
+        <header class="answer-heading">
+          <p class="answer-kicker">
+            Though we were separated from God, He loved us.
+          </p>
+          <h2 id="answer-title">Jesus Christ paid the price for our sin.</h2>
+        </header>
+
+        <blockquote class="john-card">
+          <footer class="john-reference">
+            <cite>John <strong>3:16</strong></cite>
+          </footer>
+          <p>
+            For God so loved the world, that he gave his only begotten Son, that
+            whosoever believeth in him should not perish, but have everlasting
+            life.
+          </p>
+        </blockquote>
+
+        <div
+          class="gospel-facts"
+          aria-label="The death and resurrection of Jesus Christ"
+        >
+          <article>
+            <span>At the cross</span>
+            <h3>Jesus died for our sins.</h3>
+          </article>
+          <article>
+            <span>Three days later</span>
+            <h3>Jesus rose again.</h3>
+          </article>
+        </div>
+
+        <div class="answer-finish">
+          <p>
+            Through His death and resurrection, He paid the debt we could never
+            pay ourselves.
+          </p>
+          <blockquote class="romans-card">
+            <p>
+              But God commendeth his love toward us, in that, while we were yet
+              sinners, Christ died for us.
+            </p>
+            <footer><cite>Romans 5:8</cite></footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <section
+      id="your-response"
+      class="response-section"
+      aria-labelledby="response-title"
+    >
+      <div class="response-rings" aria-hidden="true"></div>
+      <div class="salvation-shell response-grid">
+        <header class="story-heading response-heading">
+          <p class="section-eyebrow"><span>03</span> Your Response</p>
+          <h2 id="response-title">Trust Jesus Christ alone.</h2>
+          <p>Salvation is received by faith—not achieved by effort.</p>
+        </header>
+
+        <div class="response-copy">
+          <p class="response-lead">
+            To be saved, we must stop trusting ourselves, our works, or our
+            religion, and place our faith in Jesus Christ alone for forgiveness
+            and eternal life.
+          </p>
+
+          <blockquote class="call-verse">
+            <span class="verse-label">God’s invitation</span>
+            <p>
+              For whosoever shall call upon the name of the Lord shall be saved.
+            </p>
+            <footer><cite>Romans 10:13</cite></footer>
+          </blockquote>
+
+          <p>
+            If you are ready to turn to Christ, you can call on Him in faith and
+            ask Him to save you.
+          </p>
+
+          <aside class="prayer-card" aria-labelledby="prayer-title">
+            <div class="prayer-heading">
+              <span aria-hidden="true"></span>
+              <p>A Prayer of Faith</p>
+              <span aria-hidden="true"></span>
+            </div>
+            <h3 id="prayer-title">Calling on the Lord</h3>
+            <p class="prayer-note">
+              A prayer is not a formula. Salvation is by grace through faith in
+              Jesus Christ. If you are ready to call on Him in faith, you may
+              pray something like this:
+            </p>
+            <blockquote>
+              <p>
+                Dear God, I know that I am separated from you because of sin. I
+                confess that in my sin, I cannot save myself. Right now, I turn
+                to you alone to be my Saviour. I ask you to save me from the
+                penalty of my sin, and I trust you to provide eternal life to
+                me.
+              </p>
+              <footer>— Amen</footer>
+            </blockquote>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section
+      id="questions"
+      class="questions-section"
+      aria-labelledby="questions-title"
+    >
+      <div class="questions-light" aria-hidden="true"></div>
+      <div class="salvation-shell questions-grid">
+        <div>
+          <p class="section-eyebrow section-eyebrow--light">
+            <span>04</span> We Are Here
+          </p>
+          <h2 id="questions-title">Do you have questions?</h2>
+        </div>
+        <div class="questions-copy">
+          <p>
+            If you would like to talk with someone about salvation or about
+            having a relationship with God, we would love to help. If you
+            trusted Christ today, we would love to hear from you, too.
+          </p>
+          <div class="questions-actions">
+            <a
+              class="salvation-button salvation-button--cta"
+              href={salvationContactHref}
+            >
+              Talk with someone about salvation
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="m5 12 14 0m-6-6 6 6-6 6"></path>
+              </svg>
+            </a>
+            <a
+              class="salvation-button salvation-button--outline"
+              href="/visit/"
+            >
+              Visit Victory Baptist Church
+            </a>
+          </div>
+          <a class="questions-email" href={`mailto:${churchInfo.email}`}>
+            {churchInfo.email}
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+</PageLayout>
+
+<script>
+  const progressBar = document.querySelector<HTMLElement>(
+    "[data-reading-progress]"
+  );
+  let animationFrame = 0;
+
+  const updateReadingProgress = () => {
+    const scrollableHeight =
+      document.documentElement.scrollHeight - window.innerHeight;
+    const progress =
+      scrollableHeight > 0 ? window.scrollY / scrollableHeight : 0;
+    const boundedProgress = Math.min(Math.max(progress, 0), 1);
+
+    progressBar?.style.setProperty("transform", `scaleX(${boundedProgress})`);
+    animationFrame = 0;
+  };
+
+  const requestProgressUpdate = () => {
+    if (animationFrame === 0) {
+      animationFrame = window.requestAnimationFrame(updateReadingProgress);
+    }
+  };
+
+  window.addEventListener("scroll", requestProgressUpdate, { passive: true });
+  window.addEventListener("resize", requestProgressUpdate, { passive: true });
+  updateReadingProgress();
+</script>
+
+<style>
+  .salvation-page {
+    --salvation-navy: #081b31;
+    --salvation-navy-soft: #102b4a;
+    --salvation-cream: #fbf8f1;
+    --salvation-paper: #fffdf8;
+    --salvation-gold: #c9973f;
+    --salvation-gold-dark: #855f20;
+    --salvation-gold-light: #f4d58d;
+    --salvation-ink: #1f2933;
+    --salvation-copy: #53606c;
+    --salvation-line: rgba(8, 27, 49, 0.13);
+
+    overflow: clip;
+    color: var(--salvation-ink);
+    background: var(--salvation-paper);
+  }
+
+  .reading-progress {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 60;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      var(--salvation-gold-light),
+      var(--salvation-gold)
+    );
+    transform: scaleX(0);
+    transform-origin: left center;
+    will-change: transform;
+  }
+
+  .salvation-shell {
+    width: min(calc(100% - 2.5rem), 74rem);
+    margin-inline: auto;
+  }
+
+  .salvation-hero {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    min-height: calc(100svh - 4.5rem);
+    align-items: center;
+    overflow: hidden;
+    padding-block: clamp(4.5rem, 9vw, 8rem) clamp(6rem, 10vw, 8rem);
+    color: #fff;
+    background:
+      radial-gradient(
+        circle at 78% 48%,
+        rgba(51, 124, 185, 0.24),
+        transparent 29rem
+      ),
+      radial-gradient(
+        circle at 12% 4%,
+        rgba(201, 151, 63, 0.14),
+        transparent 26rem
+      ),
+      linear-gradient(
+        135deg,
+        #061426 0%,
+        var(--salvation-navy) 48%,
+        #0d2949 100%
+      );
+  }
+
+  .hero-radiance {
+    position: absolute;
+    top: 50%;
+    right: -12rem;
+    z-index: -2;
+    width: min(56rem, 70vw);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      rgba(244, 213, 141, 0.17) 0%,
+      rgba(49, 128, 194, 0.09) 37%,
+      transparent 68%
+    );
+    transform: translateY(-50%);
+  }
+
+  .hero-lines {
+    position: absolute;
+    inset: 0;
+    z-index: -3;
+    opacity: 0.09;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.25) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.25) 1px, transparent 1px);
+    background-size: 5rem 5rem;
+    mask-image: linear-gradient(to right, transparent, #000 35%, #000);
+  }
+
+  .hero-cross {
+    position: absolute;
+    top: 50%;
+    right: clamp(4rem, 12vw, 14rem);
+    z-index: -1;
+    width: 0.13rem;
+    height: min(29rem, 48vw);
+    border-radius: 999px;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      rgba(244, 213, 141, 0.5) 20%,
+      rgba(244, 213, 141, 0.8) 72%,
+      transparent
+    );
+    box-shadow: 0 0 4rem rgba(244, 213, 141, 0.18);
+    transform: translateY(-50%);
+  }
+
+  .hero-cross span {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    width: min(13rem, 22vw);
+    height: 0.13rem;
+    border-radius: inherit;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(244, 213, 141, 0.75) 22%,
+      rgba(244, 213, 141, 0.75) 78%,
+      transparent
+    );
+    transform: translateX(-50%);
+  }
+
+  .hero-grid {
+    display: grid;
+    align-items: center;
+    gap: clamp(3rem, 7vw, 7rem);
+  }
+
+  .hero-copy {
+    max-width: 43rem;
+  }
+
+  .hero-eyebrow,
+  .section-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0 0 1.5rem;
+    color: var(--salvation-gold-dark);
+    font-size: 0.73rem;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .hero-eyebrow {
+    color: var(--salvation-gold-light);
+    animation: hero-rise 0.75s 0.05s both cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .hero-eyebrow > span {
+    width: 2.5rem;
+    height: 1px;
+    background: currentColor;
+  }
+
+  .hero-copy h1 {
+    max-width: 8ch;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 12vw, 8.2rem);
+    font-weight: 700;
+    line-height: 0.92;
+    letter-spacing: -0.055em;
+    text-wrap: balance;
+    animation: hero-rise 0.85s 0.14s both cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .hero-copy h1 em {
+    display: block;
+    color: var(--salvation-gold-light);
+    font-weight: 700;
+  }
+
+  .hero-intro {
+    margin: 2.25rem 0 0.9rem;
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    animation: hero-rise 0.8s 0.24s both cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .hero-questions {
+    display: grid;
+    gap: 0.45rem;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: clamp(1.18rem, 2vw, 1.45rem);
+    line-height: 1.35;
+    list-style: none;
+    animation: hero-rise 0.8s 0.31s both cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .hero-questions li {
+    display: flex;
+    gap: 0.8rem;
+    align-items: baseline;
+  }
+
+  .hero-questions li::before {
+    color: var(--salvation-gold-light);
+    content: "—";
+  }
+
+  .hero-answer {
+    max-width: 39rem;
+    margin: 1.4rem 0 0;
+    color: rgba(255, 255, 255, 0.76);
+    font-size: 1rem;
+    line-height: 1.75;
+    text-wrap: pretty;
+    animation: hero-rise 0.8s 0.38s both cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .hero-actions,
+  .questions-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .hero-actions {
+    margin-top: 2rem;
+    animation: hero-rise 0.8s 0.46s both cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .salvation-button {
+    display: inline-flex;
+    min-height: 3.25rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    padding: 0.8rem 1.3rem;
+    border: 1px solid transparent;
+    border-radius: 0.55rem;
+    font-size: 0.9rem;
+    font-weight: 800;
+    line-height: 1.25;
+    text-align: center;
+    text-decoration: none;
+    transition:
+      background-color 180ms ease,
+      border-color 180ms ease,
+      color 180ms ease,
+      transform 180ms ease;
+  }
+
+  .salvation-button:hover {
+    transform: translateY(-2px);
+  }
+
+  .salvation-button:focus-visible,
+  .message-map a:focus-visible,
+  .hero-scroll-cue:focus-visible,
+  .questions-email:focus-visible {
+    outline: 3px solid var(--salvation-gold-light);
+    outline-offset: 4px;
+  }
+
+  .salvation-button svg {
+    width: 1.15rem;
+    height: 1.15rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+  }
+
+  .salvation-button--light {
+    color: var(--salvation-navy);
+    background: #fff;
+    box-shadow: 0 0.8rem 2.5rem rgba(0, 0, 0, 0.2);
+  }
+
+  .salvation-button--light:hover {
+    background: var(--salvation-gold-light);
+  }
+
+  .salvation-button--outline {
+    border-color: rgba(255, 255, 255, 0.38);
+    color: #fff;
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .salvation-button--outline:hover {
+    border-color: rgba(255, 255, 255, 0.75);
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .salvation-button--cta {
+    color: var(--cta-foreground);
+    background: var(--cta);
+    box-shadow: 0 1rem 2.5rem rgba(22, 163, 74, 0.2);
+  }
+
+  .salvation-button--cta:hover {
+    background: #12813c;
+  }
+
+  .hero-scripture {
+    position: relative;
+    max-width: 31rem;
+    margin: 0;
+    padding: clamp(2rem, 5vw, 3.5rem);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 0.25rem;
+    background: linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.11),
+      rgba(255, 255, 255, 0.035)
+    );
+    box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(0.8rem);
+    animation: hero-card 1s 0.28s both cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .hero-scripture::after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--salvation-gold-light),
+      transparent
+    );
+    content: "";
+  }
+
+  .scripture-mark {
+    height: 3.2rem;
+    color: var(--salvation-gold-light);
+    font-family: var(--font-display);
+    font-size: 5rem;
+    line-height: 1;
+    opacity: 0.9;
+  }
+
+  .hero-scripture > p {
+    margin: 1rem 0 2rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.45rem, 3vw, 2.15rem);
+    font-weight: 500;
+    line-height: 1.48;
+    letter-spacing: -0.015em;
+    text-wrap: pretty;
+  }
+
+  .hero-scripture footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  .hero-scripture cite,
+  .verse-card cite,
+  .john-reference,
+  .romans-card cite,
+  .call-verse cite {
+    font-style: normal;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .hero-scripture cite {
+    color: var(--salvation-gold-light);
+    font-size: 0.8rem;
+  }
+
+  .hero-scripture footer span {
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .hero-scroll-cue {
+    position: absolute;
+    bottom: 1.6rem;
+    left: 50%;
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.52);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transform: translateX(-50%);
+  }
+
+  .hero-scroll-cue svg {
+    width: 1rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+  }
+
+  .message-map {
+    z-index: 20;
+    border-bottom: 1px solid var(--salvation-line);
+    background: rgba(255, 253, 248, 0.96);
+    backdrop-filter: blur(1rem);
+  }
+
+  .message-map ol {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-block: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .message-map li:nth-child(odd) {
+    border-right: 1px solid var(--salvation-line);
+  }
+
+  .message-map li:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--salvation-line);
+  }
+
+  .message-map a {
+    display: flex;
+    min-height: 5.4rem;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.9rem 0.75rem;
+    color: var(--salvation-ink);
+    text-decoration: none;
+    transition: background-color 180ms ease;
+  }
+
+  .message-map a:hover {
+    background: rgba(201, 151, 63, 0.08);
+  }
+
+  .map-number {
+    color: var(--salvation-gold-dark);
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 700;
+  }
+
+  .map-copy {
+    display: grid;
+    gap: 0.12rem;
+    min-width: 0;
+  }
+
+  .map-copy strong {
+    font-family: var(--font-display);
+    font-size: 0.98rem;
+  }
+
+  .map-copy small {
+    overflow: hidden;
+    color: var(--salvation-copy);
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .story-section,
+  .answer-section,
+  .response-section {
+    position: relative;
+    padding-block: clamp(5.5rem, 10vw, 9rem);
+    scroll-margin-top: 8rem;
+  }
+
+  .story-section--need {
+    background:
+      linear-gradient(
+        90deg,
+        transparent 49.95%,
+        rgba(8, 27, 49, 0.035) 50%,
+        transparent 50.05%
+      ),
+      var(--salvation-paper);
+  }
+
+  .story-grid,
+  .response-grid {
+    display: grid;
+    gap: 3.5rem;
+  }
+
+  .story-heading {
+    max-width: 30rem;
+  }
+
+  .section-eyebrow span {
+    display: inline-grid;
+    width: 2.1rem;
+    height: 2.1rem;
+    place-items: center;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    letter-spacing: 0;
+  }
+
+  .story-heading h2,
+  .answer-heading h2,
+  .response-heading h2,
+  .questions-section h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+
+  .story-heading > p:last-child,
+  .response-heading > p:last-child {
+    margin: 1.5rem 0 0;
+    color: var(--salvation-copy);
+    font-size: 1.05rem;
+    line-height: 1.75;
+    text-wrap: pretty;
+  }
+
+  .story-copy {
+    min-width: 0;
+  }
+
+  .story-block h3 {
+    margin: 0 0 1.3rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.7rem, 4vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+
+  .story-block > p:not(.story-conclusion),
+  .response-copy > p:not(.response-lead) {
+    max-width: 65ch;
+    margin: 1.4rem 0;
+    color: var(--salvation-copy);
+    font-size: 1rem;
+    line-height: 1.85;
+  }
+
+  .verse-card {
+    position: relative;
+    margin: 2rem 0;
+    padding: 1.6rem;
+    border-radius: 0.2rem;
+  }
+
+  .verse-card p,
+  .john-card > p,
+  .romans-card > p,
+  .call-verse > p {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 500;
+    line-height: 1.55;
+    text-wrap: pretty;
+  }
+
+  .verse-card p {
+    font-size: clamp(1.25rem, 3vw, 1.65rem);
+  }
+
+  .verse-card footer,
+  .romans-card footer,
+  .call-verse footer {
+    margin-top: 1.25rem;
+  }
+
+  .verse-card cite,
+  .romans-card cite,
+  .call-verse cite {
+    color: var(--salvation-gold-dark);
+    font-size: 0.72rem;
+  }
+
+  .verse-card--simple {
+    padding-left: 1.8rem;
+    border-left: 3px solid var(--salvation-gold);
+    background: rgba(201, 151, 63, 0.065);
+  }
+
+  .verse-card--dark {
+    margin-block: 2.5rem;
+    padding: clamp(1.8rem, 5vw, 3rem);
+    color: #fff;
+    background:
+      radial-gradient(
+        circle at 100% 0%,
+        rgba(51, 124, 185, 0.25),
+        transparent 45%
+      ),
+      var(--salvation-navy);
+    box-shadow: 0 1.5rem 3.5rem rgba(8, 27, 49, 0.16);
+  }
+
+  .verse-label {
+    display: block;
+    margin-bottom: 1.25rem;
+    color: var(--salvation-gold-light);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .verse-card--dark p {
+    font-size: clamp(1.45rem, 3.5vw, 2.15rem);
+  }
+
+  .verse-card--dark cite {
+    color: var(--salvation-gold-light);
+  }
+
+  .story-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-block: clamp(3.5rem, 7vw, 5.5rem);
+    color: rgba(133, 95, 32, 0.72);
+  }
+
+  .story-divider span {
+    height: 1px;
+    flex: 1;
+    background: var(--salvation-line);
+  }
+
+  .story-divider svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-width: 1.2;
+  }
+
+  .verse-pair {
+    display: grid;
+    gap: 1rem;
+    margin-block: 2rem;
+  }
+
+  .verse-pair .verse-card {
+    height: 100%;
+    margin: 0;
+  }
+
+  .verse-card--quiet {
+    border: 1px solid var(--salvation-line);
+    background: #fff;
+  }
+
+  .verse-card--gold {
+    border: 1px solid rgba(133, 95, 32, 0.16);
+    background: linear-gradient(145deg, #f7e6bb, #fff9e9);
+  }
+
+  .story-conclusion {
+    margin: clamp(2.5rem, 6vw, 4rem) 0 0;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--salvation-line);
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 4vw, 2.3rem);
+    line-height: 1.35;
+    text-wrap: balance;
+  }
+
+  .story-conclusion strong {
+    color: var(--salvation-gold-dark);
+  }
+
+  .turning-point {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding-block: clamp(5rem, 10vw, 8rem);
+    color: #fff;
+    background: var(--salvation-navy);
+    scroll-margin-top: 8rem;
+  }
+
+  .turning-point::before,
+  .turning-point::after {
+    position: absolute;
+    top: 50%;
+    z-index: -1;
+    width: 45%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(244, 213, 141, 0.32));
+    content: "";
+  }
+
+  .turning-point::before {
+    left: -8%;
+  }
+
+  .turning-point::after {
+    right: -8%;
+    transform: rotate(180deg);
+  }
+
+  .turning-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: -2;
+    width: 36rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      rgba(201, 151, 63, 0.14),
+      transparent 67%
+    );
+    transform: translate(-50%, -50%);
+  }
+
+  .turning-content {
+    max-width: 52rem;
+    text-align: center;
+  }
+
+  .section-eyebrow--light {
+    justify-content: center;
+    color: var(--salvation-gold-light);
+  }
+
+  .turning-content h2 {
+    margin: 0;
+    color: var(--salvation-gold-light);
+    font-family: var(--font-display);
+    font-size: clamp(4.8rem, 15vw, 9rem);
+    font-weight: 700;
+    line-height: 0.9;
+    letter-spacing: -0.06em;
+  }
+
+  .turning-content > p:last-child {
+    max-width: 46rem;
+    margin: 2rem auto 0;
+    color: rgba(255, 255, 255, 0.76);
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    line-height: 1.8;
+    text-wrap: balance;
+  }
+
+  .answer-section {
+    background:
+      radial-gradient(
+        circle at 5% 50%,
+        rgba(201, 151, 63, 0.11),
+        transparent 25rem
+      ),
+      var(--salvation-cream);
+  }
+
+  .answer-shell {
+    max-width: 68rem;
+  }
+
+  .answer-heading {
+    max-width: 51rem;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .answer-kicker {
+    margin: 0 0 1.2rem;
+    color: var(--salvation-gold-dark);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .john-card {
+    position: relative;
+    display: grid;
+    gap: 2rem;
+    margin: clamp(3rem, 7vw, 5rem) 0;
+    padding: clamp(2rem, 6vw, 4.5rem);
+    overflow: hidden;
+    border: 1px solid rgba(133, 95, 32, 0.2);
+    border-radius: 0.25rem;
+    background: var(--salvation-paper);
+    box-shadow: 0 1.75rem 4.5rem rgba(74, 55, 25, 0.08);
+  }
+
+  .john-card::before {
+    position: absolute;
+    top: -10rem;
+    right: -9rem;
+    width: 23rem;
+    aspect-ratio: 1;
+    border: 1px solid rgba(201, 151, 63, 0.2);
+    border-radius: 50%;
+    box-shadow:
+      0 0 0 2.5rem rgba(201, 151, 63, 0.05),
+      0 0 0 5rem rgba(201, 151, 63, 0.03);
+    content: "";
+  }
+
+  .john-reference {
+    position: relative;
+    color: var(--salvation-gold-dark);
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+  }
+
+  .john-reference cite {
+    font-style: normal;
+  }
+
+  .john-reference strong {
+    display: block;
+    margin-top: 0.3rem;
+    color: var(--salvation-navy);
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 8vw, 6rem);
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+  }
+
+  .john-card > p {
+    position: relative;
+    max-width: 36ch;
+    font-size: clamp(1.55rem, 4vw, 2.6rem);
+    line-height: 1.5;
+  }
+
+  .gospel-facts {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .gospel-facts article {
+    padding: clamp(1.5rem, 4vw, 2.4rem);
+    border-top: 3px solid var(--salvation-gold);
+    background: var(--salvation-navy);
+    color: #fff;
+  }
+
+  .gospel-facts span {
+    color: var(--salvation-gold-light);
+    font-size: 0.67rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .gospel-facts h3 {
+    margin: 0.7rem 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2.15rem);
+    line-height: 1.2;
+  }
+
+  .answer-finish {
+    display: grid;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+    margin-top: clamp(3rem, 7vw, 5.5rem);
+  }
+
+  .answer-finish > p {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.65rem, 4vw, 2.45rem);
+    line-height: 1.4;
+    text-wrap: balance;
+  }
+
+  .romans-card {
+    margin: 0;
+    padding-left: 1.6rem;
+    border-left: 2px solid var(--salvation-gold);
+  }
+
+  .romans-card > p {
+    font-size: clamp(1.2rem, 2.5vw, 1.55rem);
+  }
+
+  .response-section {
+    isolation: isolate;
+    background: var(--salvation-paper);
+  }
+
+  .response-rings {
+    position: absolute;
+    top: 8rem;
+    left: -12rem;
+    z-index: -1;
+    width: 30rem;
+    aspect-ratio: 1;
+    border: 1px solid rgba(201, 151, 63, 0.1);
+    border-radius: 50%;
+    box-shadow:
+      0 0 0 3rem rgba(201, 151, 63, 0.03),
+      0 0 0 6rem rgba(201, 151, 63, 0.02);
+  }
+
+  .response-lead {
+    max-width: 54rem;
+    margin: 0 0 2rem;
+    color: var(--salvation-ink);
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 3vw, 1.85rem);
+    line-height: 1.55;
+    text-wrap: pretty;
+  }
+
+  .call-verse {
+    position: relative;
+    margin: 2.5rem 0;
+    padding: clamp(2rem, 5vw, 3.5rem);
+    overflow: hidden;
+    color: #fff;
+    background:
+      linear-gradient(120deg, rgba(33, 91, 140, 0.5), transparent 55%),
+      var(--salvation-navy);
+    box-shadow: 0 1.5rem 3.5rem rgba(8, 27, 49, 0.15);
+  }
+
+  .call-verse::after {
+    position: absolute;
+    top: -5rem;
+    right: -5rem;
+    width: 13rem;
+    aspect-ratio: 1;
+    border: 1px solid rgba(244, 213, 141, 0.22);
+    border-radius: 50%;
+    box-shadow: 0 0 0 2rem rgba(244, 213, 141, 0.05);
+    content: "";
+  }
+
+  .call-verse > p {
+    position: relative;
+    max-width: 28ch;
+    font-size: clamp(1.55rem, 4vw, 2.4rem);
+  }
+
+  .call-verse cite {
+    color: var(--salvation-gold-light);
+  }
+
+  .prayer-card {
+    position: relative;
+    margin-top: clamp(3.5rem, 8vw, 6rem);
+    padding: clamp(2rem, 6vw, 4.5rem);
+    border: 1px solid rgba(133, 95, 32, 0.2);
+    background:
+      linear-gradient(rgba(255, 253, 248, 0.93), rgba(255, 253, 248, 0.93)),
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 1.7rem,
+        rgba(133, 95, 32, 0.1) 1.7rem,
+        rgba(133, 95, 32, 0.1) calc(1.7rem + 1px)
+      );
+    box-shadow: 0 2rem 5rem rgba(74, 55, 25, 0.09);
+    text-align: center;
+  }
+
+  .prayer-heading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.9rem;
+  }
+
+  .prayer-heading span {
+    width: 2rem;
+    height: 1px;
+    background: var(--salvation-gold);
+  }
+
+  .prayer-heading p {
+    margin: 0;
+    color: var(--salvation-gold-dark);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
+  }
+
+  .prayer-card h3 {
+    margin: 1.2rem 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3rem);
+  }
+
+  .prayer-note {
+    max-width: 42rem;
+    margin: 1rem auto 0;
+    color: var(--salvation-copy);
+    font-size: 0.92rem;
+    line-height: 1.7;
+  }
+
+  .prayer-card blockquote {
+    max-width: 40rem;
+    margin: 2rem auto 0;
+  }
+
+  .prayer-card blockquote p {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    font-style: italic;
+    line-height: 1.75;
+    text-wrap: pretty;
+  }
+
+  .prayer-card blockquote footer {
+    margin-top: 1.5rem;
+    color: var(--salvation-gold-dark);
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .questions-section {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding-block: clamp(5.5rem, 10vw, 8.5rem);
+    color: #fff;
+    background:
+      radial-gradient(
+        circle at 90% 20%,
+        rgba(44, 120, 181, 0.24),
+        transparent 28rem
+      ),
+      var(--salvation-navy);
+    scroll-margin-top: 8rem;
+  }
+
+  .questions-light {
+    position: absolute;
+    right: -11rem;
+    bottom: -21rem;
+    z-index: -1;
+    width: 38rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      rgba(244, 213, 141, 0.17),
+      transparent 67%
+    );
+  }
+
+  .questions-grid {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  .questions-section h2 {
+    color: #fff;
+  }
+
+  .questions-copy > p {
+    max-width: 43rem;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: clamp(1.05rem, 2.3vw, 1.25rem);
+    line-height: 1.8;
+    text-wrap: pretty;
+  }
+
+  .questions-actions {
+    margin-top: 2rem;
+  }
+
+  .questions-email {
+    display: inline-block;
+    margin-top: 1.5rem;
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 0.85rem;
+    text-underline-offset: 0.3rem;
+  }
+
+  @keyframes hero-rise {
+    from {
+      opacity: 0;
+      transform: translateY(1.25rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes hero-card {
+    from {
+      opacity: 0;
+      transform: translateX(1.5rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @media (min-width: 42rem) {
+    .salvation-shell {
+      width: min(calc(100% - 4rem), 74rem);
+    }
+
+    .message-map a {
+      gap: 1rem;
+      padding-inline: 1.25rem;
+    }
+
+    .verse-card {
+      padding: 2rem;
+    }
+
+    .gospel-facts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 56.25rem) {
+    .story-section,
+    .turning-point,
+    .response-section,
+    .questions-section {
+      scroll-margin-top: 11rem;
+    }
+
+    .salvation-hero {
+      min-height: max(44rem, calc(100svh - 4.5rem));
+    }
+
+    .hero-grid {
+      grid-template-columns: minmax(0, 1.15fr) minmax(19rem, 0.85fr);
+    }
+
+    .hero-scroll-cue {
+      display: flex;
+    }
+
+    .message-map {
+      position: sticky;
+      top: 4.5rem;
+    }
+
+    .message-map ol {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .message-map li:not(:last-child) {
+      border-right: 1px solid var(--salvation-line);
+    }
+
+    .message-map li:nth-child(-n + 2) {
+      border-bottom: 0;
+    }
+
+    .story-grid,
+    .response-grid {
+      grid-template-columns: minmax(17rem, 0.78fr) minmax(0, 1.22fr);
+      gap: clamp(4rem, 9vw, 8rem);
+    }
+
+    .story-heading {
+      position: sticky;
+      top: 11rem;
+      align-self: start;
+    }
+
+    .verse-pair {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .john-card {
+      grid-template-columns: 0.35fr 1fr;
+      align-items: center;
+    }
+
+    .answer-finish {
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    }
+
+    .questions-grid {
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+      gap: 6rem;
+      align-items: start;
+    }
+  }
+
+  @media (max-width: 30rem) {
+    .salvation-shell {
+      width: min(calc(100% - 2rem), 74rem);
+    }
+
+    .hero-copy h1 {
+      font-size: clamp(3.5rem, 20vw, 5rem);
+    }
+
+    .hero-actions,
+    .questions-actions {
+      flex-direction: column;
+    }
+
+    .salvation-button {
+      width: 100%;
+    }
+
+    .message-map a {
+      gap: 0.55rem;
+      padding-inline: 0.5rem;
+    }
+
+    .map-number {
+      font-size: 1.1rem;
+    }
+
+    .map-copy strong {
+      font-size: 0.87rem;
+    }
+
+    .map-copy small {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-eyebrow,
+    .hero-copy h1,
+    .hero-intro,
+    .hero-questions,
+    .hero-answer,
+    .hero-actions,
+    .hero-scripture {
+      animation: none;
+    }
+
+    .salvation-button {
+      transition: none;
+    }
+
+    .salvation-button:hover {
+      transform: none;
+    }
+  }
+</style>

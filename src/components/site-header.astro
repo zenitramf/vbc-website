@@ -10,16 +10,15 @@ const { variant = "solid" }: Props = Astro.props;
 const { pathname } = Astro.url;
 ---
 
-<header class:list={["site-header", variant === "solid" && "site-header--solid"]}>
-  <input
-    type="checkbox"
-    id="site-nav-cbox"
-    class="site-header__cbox"
-    aria-hidden="true"
-  />
-
+<header
+  class:list={["site-header", variant === "solid" && "site-header--solid"]}
+>
   <nav class="site-header__nav" aria-label="Main navigation">
-    <a href="/" class="site-header__logo" aria-label="Victory Baptist Church home">
+    <a
+      href="/"
+      class="site-header__logo"
+      aria-label="Victory Baptist Church home"
+    >
       <img
         src="/vbc_logo.svg"
         alt=""
@@ -35,9 +34,14 @@ const { pathname } = Astro.url;
         primaryNav.map((item) =>
           item.children ? (
             <li class="site-header__item site-header__item--has-children">
-              <button type="button" class="site-header__link site-header__parent">
+              <button
+                type="button"
+                class="site-header__link site-header__parent"
+              >
                 {item.label}
-                <span class="site-header__caret" aria-hidden="true">▾</span>
+                <span class="site-header__caret" aria-hidden="true">
+                  ▾
+                </span>
               </button>
               <ul class="site-header__dropdown" role="list">
                 {item.children.map((child) => (
@@ -89,14 +93,26 @@ const { pathname } = Astro.url;
       <Button variant="cta" size="sm" href={visitHref}>Visit Us</Button>
     </div>
 
-    <label for="site-nav-cbox" class="site-header__hamburger" aria-label="Toggle menu">
+    <button
+      type="button"
+      class="site-header__hamburger"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="site-mobile-menu"
+    >
       <span></span>
       <span></span>
       <span></span>
-    </label>
+    </button>
   </nav>
 
-  <div class="site-header__mobile" id="site-mobile-menu">
+  <nav
+    class="site-header__mobile"
+    id="site-mobile-menu"
+    aria-label="Mobile navigation"
+    aria-hidden="true"
+    inert
+  >
     <ul class="site-header__mobile-links" role="list">
       {
         primaryNav.flatMap((item) =>
@@ -131,30 +147,110 @@ const { pathname } = Astro.url;
         <a href={visitHref} class="site-header__mobile-link">Visit Us</a>
       </li>
     </ul>
-  </div>
+  </nav>
 </header>
 
 <script>
-  const cbox = document.querySelector("#site-nav-cbox") as HTMLInputElement | null;
+  const header = document.querySelector<HTMLElement>(".site-header");
+  const menuButton = document.querySelector<HTMLButtonElement>(
+    ".site-header__hamburger"
+  );
+  const mobileMenu = document.querySelector<HTMLElement>("#site-mobile-menu");
+  const mobileLinks = [
+    ...document.querySelectorAll<HTMLAnchorElement>(
+      ".site-header__mobile-link"
+    ),
+  ];
+  const desktopMedia = window.matchMedia("(min-width: 900px)");
 
-  const closeMenu = () => {
-    if (cbox) {
-      cbox.checked = false;
-    }
-    document.body.style.overflow = "";
+  const isMenuOpen = () => menuButton?.getAttribute("aria-expanded") === "true";
+
+  const synchronizeMenuState = (open: boolean) => {
+    menuButton?.setAttribute("aria-expanded", String(open));
+    menuButton?.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    header?.classList.toggle("site-header--menu-open", open);
+    mobileMenu?.classList.toggle("is-open", open);
+    mobileMenu?.setAttribute("aria-hidden", String(!open));
+    mobileMenu?.toggleAttribute("inert", !open);
+    document.body.style.overflow = open ? "hidden" : "";
   };
 
-  cbox?.addEventListener("change", () => {
-    document.body.style.overflow = cbox.checked ? "hidden" : "";
+  const moveMenuFocus = (open: boolean) => {
+    if (open) {
+      const [firstMobileLink] = mobileLinks;
+      window.requestAnimationFrame(() => firstMobileLink?.focus());
+      return;
+    }
+
+    menuButton?.focus();
+  };
+
+  const setMenuOpen = (open: boolean, moveFocus: boolean) => {
+    synchronizeMenuState(open);
+    if (moveFocus) {
+      moveMenuFocus(open);
+    }
+  };
+
+  const getFocusableElements = () => {
+    const logo = header?.querySelector<HTMLAnchorElement>(".site-header__logo");
+    return [logo, menuButton, ...mobileLinks].filter(
+      (element): element is HTMLElement => element !== null
+    );
+  };
+
+  const getWrapDestination = (
+    event: KeyboardEvent,
+    firstElement: HTMLElement | undefined,
+    lastElement: HTMLElement | undefined
+  ) => {
+    if (event.shiftKey && document.activeElement === firstElement) {
+      return lastElement;
+    }
+    if (!event.shiftKey && document.activeElement === lastElement) {
+      return firstElement;
+    }
+  };
+
+  const trapMenuFocus = (event: KeyboardEvent) => {
+    if (event.key !== "Tab") {
+      return;
+    }
+
+    const focusableElements = getFocusableElements();
+    const [firstElement] = focusableElements;
+    const lastElement = focusableElements.at(-1);
+    const destination = getWrapDestination(event, firstElement, lastElement);
+    if (destination) {
+      event.preventDefault();
+      destination.focus();
+    }
+  };
+
+  menuButton?.addEventListener("click", () => {
+    const open = !isMenuOpen();
+    setMenuOpen(open, open);
   });
 
-  for (const link of document.querySelectorAll(".site-header__mobile-link")) {
-    link.addEventListener("click", closeMenu);
+  for (const link of mobileLinks) {
+    link.addEventListener("click", () => setMenuOpen(false, false));
   }
 
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && cbox?.checked) {
-      closeMenu();
+  document.addEventListener("keydown", (event) => {
+    if (!isMenuOpen()) {
+      return;
+    }
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setMenuOpen(false, true);
+      return;
+    }
+    trapMenuFocus(event);
+  });
+
+  desktopMedia.addEventListener("change", (event) => {
+    if (event.matches && isMenuOpen()) {
+      setMenuOpen(false, false);
     }
   });
 </script>
@@ -169,10 +265,6 @@ const { pathname } = Astro.url;
   .site-header--solid {
     background: rgba(15, 39, 68, 0.97);
     box-shadow: 0 1px 12px rgba(0, 0, 0, 0.18);
-  }
-
-  .site-header__cbox {
-    display: none;
   }
 
   .site-header__nav {
@@ -299,7 +391,17 @@ const { pathname } = Astro.url;
     position: relative;
     width: 44px;
     height: 44px;
+    padding: 0;
+    border: 0;
+    color: inherit;
+    background: transparent;
     cursor: pointer;
+  }
+
+  .site-header__hamburger:focus-visible {
+    border-radius: 0.25rem;
+    outline: 2px solid #fff;
+    outline-offset: 2px;
   }
 
   .site-header__hamburger span {
@@ -323,14 +425,16 @@ const { pathname } = Astro.url;
     top: 65%;
   }
 
-  #site-nav-cbox:checked ~ .site-header__nav .site-header__hamburger span:nth-child(1) {
+  .site-header__hamburger[aria-expanded="true"] span:nth-child(1) {
     top: 50%;
     transform: translate(-50%, -50%) rotate(45deg);
   }
-  #site-nav-cbox:checked ~ .site-header__nav .site-header__hamburger span:nth-child(2) {
+
+  .site-header__hamburger[aria-expanded="true"] span:nth-child(2) {
     opacity: 0;
   }
-  #site-nav-cbox:checked ~ .site-header__nav .site-header__hamburger span:nth-child(3) {
+
+  .site-header__hamburger[aria-expanded="true"] span:nth-child(3) {
     top: 50%;
     transform: translate(-50%, -50%) rotate(-45deg);
   }
@@ -339,21 +443,28 @@ const { pathname } = Astro.url;
     position: fixed;
     inset: 0;
     z-index: 30;
-    background: rgba(15, 39, 68, 0.98);
     display: flex;
     align-items: center;
     justify-content: center;
+    visibility: hidden;
+    background: rgba(15, 39, 68, 0.98);
     clip-path: circle(0% at calc(100% - 1.5rem - 22px) calc(0.875rem + 22px));
-    transition: clip-path 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    transition:
+      clip-path 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      visibility 0s linear 0.4s;
   }
 
-  #site-nav-cbox:checked ~ .site-header__mobile {
+  .site-header__mobile.is-open {
+    visibility: visible;
     clip-path: circle(150% at calc(100% - 1.5rem - 22px) calc(0.875rem + 22px));
+    pointer-events: auto;
+    transition-delay: 0s;
   }
 
-  .site-header:has(#site-nav-cbox:checked) .site-header__nav {
-    z-index: 35;
+  .site-header--menu-open .site-header__nav {
     position: relative;
+    z-index: 35;
   }
 
   .site-header__mobile-links {
@@ -373,6 +484,13 @@ const { pathname } = Astro.url;
     font-size: 1.75rem;
     font-weight: 700;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-header__hamburger span,
+    .site-header__mobile {
+      transition: none;
+    }
   }
 
   @media (min-width: 900px) {

@@ -20,6 +20,8 @@ const { title, description }: Props = Astro.props;
     )
   }
   <SiteHeader />
-  <slot />
+  <main id="main-content" class="site-main" tabindex="-1">
+    <slot />
+  </main>
   <FooterComponent />
 </MainLayout>

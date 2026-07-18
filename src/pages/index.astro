@@ -13,18 +13,15 @@ import heroBg from "@/images/home-page_fvbc_hero.webp";
 
 <MainLayout title="Fresno Victory Baptist Church">
   <Fragment slot="head">
-    <link
-      rel="preload"
-      as="image"
-      href={heroBg.src}
-      fetchpriority="high"
-    />
+    <link rel="preload" as="image" href={heroBg.src} fetchpriority="high" />
   </Fragment>
-  <HeroComponent />
-  <MinistriesSection />
-  <AboutSection />
-  <PlanVisitSection />
-  <StaffCalendarSection />
-  <NextStepsSection />
+  <main id="main-content" class="site-main" tabindex="-1">
+    <HeroComponent />
+    <MinistriesSection />
+    <AboutSection />
+    <PlanVisitSection />
+    <StaffCalendarSection />
+    <NextStepsSection />
+  </main>
   <FooterComponent />
 </MainLayout>
