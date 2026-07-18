@@ -12,13 +12,8 @@ export interface NavItem {
 /** Primary navigation matching fresnovictory.com route structure. */
 export const primaryNav: NavItem[] = [
   { href: "/salvation/", label: "Heaven" },
-  {
-    children: [
-      { href: "/about-vbc/", label: "About VBC" },
-      { href: "/meet-the-staff/", label: "Meet The Staff" },
-    ],
-    label: "About Us",
-  },
+  { href: "/about-vbc/", label: "About VBC" },
+  { href: "/meet-the-staff/", label: "Meet The Staff" },
   { href: "/sermons/", label: "Sermons" },
 ];
 
