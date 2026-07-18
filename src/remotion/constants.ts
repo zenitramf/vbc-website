@@ -19,70 +19,78 @@ export interface GospelScene {
   body: string;
   durationInFrames: number;
   id: string;
+  kind: "story" | "cta";
   title: string;
-  verseQuote: string;
-  verseReference: string;
+  verseQuote?: string;
+  verseReference?: string;
 }
 
 export const gospelScenes: GospelScene[] = [
   {
-    body: "God wants you to know the way of salvation — not guess.",
+    body: "If you've ever wondered what happens after this life — God wants you to know, not guess.",
     durationInFrames: VIDEO_FPS * 6,
     id: "know",
+    kind: "story",
     title: "You Can Know",
     verseQuote:
       "These things have I written unto you that believe on the name of the Son of God; that ye may know that ye have eternal life...",
     verseReference: "1 John 5:13",
   },
   {
-    body: "Before we can be saved, we must admit we are lost in sin.",
+    body: "Every one of us has sinned. Our sin separates us from a holy God.",
     durationInFrames: VIDEO_FPS * 8,
     id: "problem",
-    title: "The Problem",
+    kind: "story",
+    title: "We've All Fallen Short",
     verseQuote: "For all have sinned, and come short of the glory of God.",
     verseReference: "Romans 3:23",
   },
   {
-    body: "Sin brings spiritual death and eternal separation from God.",
+    body: "Sin isn't a small thing. Its wages are spiritual death and eternal separation from God.",
     durationInFrames: VIDEO_FPS * 7,
     id: "penalty",
-    title: "The Penalty",
+    kind: "story",
+    title: "Sin Separates Us",
     verseQuote:
       "For the wages of sin is death; but the gift of God is eternal life through Jesus Christ our Lord.",
     verseReference: "Romans 6:23",
   },
   {
-    body: "Religion, effort, and good works cannot remove our sin.",
-    durationInFrames: VIDEO_FPS * 8,
+    body: "Trying harder, being religious, or doing good things still cannot erase our sin.",
+    durationInFrames: VIDEO_FPS * 7,
     id: "not-works",
-    title: "Not by Works",
+    kind: "story",
+    title: "We Can't Earn It",
     verseQuote:
       "For by grace are ye saved through faith; and that not of yourselves: it is the gift of God: Not of works, lest any man should boast.",
     verseReference: "Ephesians 2:8-9",
   },
   {
-    body: "Jesus died for our sins and rose again, paying the debt we could never pay.",
-    durationInFrames: VIDEO_FPS * 10,
+    body: "God loved us anyway. Jesus died for our sins and rose again, paying the debt we never could.",
+    durationInFrames: VIDEO_FPS * 9,
     id: "gift",
-    title: "God's Gift",
+    kind: "story",
+    title: "But God Loved Us",
     verseQuote:
       "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
     verseReference: "John 3:16",
   },
   {
-    body: "Turn from trusting yourself and place your faith in Jesus Christ alone.",
+    body: "Salvation is a gift. Turn from trusting yourself, and place your faith in Jesus Christ alone.",
     durationInFrames: VIDEO_FPS * 8,
     id: "response",
-    title: "How to Be Saved",
+    kind: "story",
+    title: "Call on Jesus",
     verseQuote:
       "For whosoever shall call upon the name of the Lord shall be saved.",
     verseReference: "Romans 10:13",
   },
   {
-    body: "Call on Him today. If you have questions, we would love to help.",
-    durationInFrames: VIDEO_FPS * 8,
+    body: "If you're ready, call on Him now. If you have questions, we'd love to talk with you.",
+    durationInFrames: VIDEO_FPS * 10,
     id: "close",
-    title: "Trust Christ Alone",
+    kind: "cta",
+    title: "Will You Trust Him Today?",
     verseQuote:
       "But God commendeth his love toward us, in that, while we were yet sinners, Christ died for us.",
     verseReference: "Romans 5:8",

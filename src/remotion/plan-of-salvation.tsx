@@ -1,5 +1,6 @@
 import { AbsoluteFill, Sequence } from "remotion";
 
+import { ClosingCta } from "@/remotion/components/closing-cta";
 import { GospelScene } from "@/remotion/components/gospel-scene";
 import { gospelScenes, sceneOffsets } from "@/remotion/constants";
 import "@/remotion/fonts";
@@ -12,11 +13,11 @@ export const PlanOfSalvation = () => (
         durationInFrames={scene.durationInFrames}
         from={sceneOffsets[sceneIndex]}
       >
-        <GospelScene
-          scene={scene}
-          sceneIndex={sceneIndex}
-          totalScenes={gospelScenes.length}
-        />
+        {scene.kind === "cta" ? (
+          <ClosingCta scene={scene} />
+        ) : (
+          <GospelScene scene={scene} />
+        )}
       </Sequence>
     ))}
   </AbsoluteFill>

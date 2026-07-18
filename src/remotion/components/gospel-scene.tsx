@@ -13,8 +13,6 @@ import { displayFont, sansFont } from "@/remotion/fonts";
 
 interface GospelSceneProps {
   scene: GospelSceneData;
-  sceneIndex: number;
-  totalScenes: number;
 }
 
 const useSceneMotion = () => {
@@ -53,18 +51,13 @@ const useSceneMotion = () => {
   };
 };
 
-export const GospelScene = ({
-  scene,
-  sceneIndex,
-  totalScenes,
-}: GospelSceneProps) => {
+export const GospelScene = ({ scene }: GospelSceneProps) => {
   const motion = useSceneMotion();
-  const isClosing = scene.id === "close";
-  const progress = (sceneIndex + 1) / totalScenes;
+  const hasVerse = Boolean(scene.verseQuote && scene.verseReference);
 
   return (
     <AbsoluteFill>
-      <SceneBackdrop emphasize={isClosing || scene.id === "gift"} />
+      <SceneBackdrop emphasize={scene.id === "gift"} />
 
       <AbsoluteFill
         style={{
@@ -80,29 +73,15 @@ export const GospelScene = ({
             transform: `translateY(${motion.titleY}px)`,
           }}
         >
-          <div
-            style={{
-              color: colors.accent,
-              fontFamily: sansFont,
-              fontSize: 28,
-              fontWeight: 600,
-              letterSpacing: "0.18em",
-              marginBottom: 22,
-              textTransform: "uppercase",
-            }}
-          >
-            Plan of Salvation · {sceneIndex + 1}/{totalScenes}
-          </div>
-
           <h1
             style={{
               fontFamily: displayFont,
-              fontSize: 92,
+              fontSize: 88,
               fontWeight: 700,
               letterSpacing: "-0.02em",
-              lineHeight: 1.05,
+              lineHeight: 1.08,
               margin: 0,
-              maxWidth: 1200,
+              maxWidth: 1220,
             }}
           >
             {scene.title}
@@ -124,9 +103,9 @@ export const GospelScene = ({
             color: colors.muted,
             fontSize: 36,
             fontWeight: 500,
-            lineHeight: 1.4,
+            lineHeight: 1.45,
             margin: "34px 0 0",
-            maxWidth: 1050,
+            maxWidth: 1100,
             opacity: motion.bodyOpacity,
             transform: `translateY(${motion.bodyY}px)`,
           }}
@@ -134,83 +113,46 @@ export const GospelScene = ({
           {scene.body}
         </p>
 
-        <blockquote
-          style={{
-            borderLeft: `4px solid ${colors.accent}`,
-            margin: "48px 0 0",
-            maxWidth: 1180,
-            opacity: motion.verseOpacity,
-            paddingLeft: 28,
-            transform: `translateY(${motion.verseY}px)`,
-          }}
-        >
-          <p
+        {hasVerse ? (
+          <blockquote
             style={{
-              fontFamily: displayFont,
-              fontSize: 34,
-              fontStyle: "italic",
-              fontWeight: 500,
-              lineHeight: 1.45,
-              margin: 0,
+              borderLeft: `4px solid ${colors.accent}`,
+              margin: "48px 0 0",
+              maxWidth: 1180,
+              opacity: motion.verseOpacity,
+              paddingLeft: 28,
+              transform: `translateY(${motion.verseY}px)`,
             }}
           >
-            “{scene.verseQuote}”
-          </p>
-          <cite
-            style={{
-              color: isClosing ? colors.cta : colors.accent,
-              display: "block",
-              fontFamily: sansFont,
-              fontSize: 26,
-              fontStyle: "normal",
-              fontWeight: 700,
-              letterSpacing: "0.04em",
-              marginTop: 18,
-            }}
-          >
-            {scene.verseReference}
-          </cite>
-        </blockquote>
+            <p
+              style={{
+                fontFamily: displayFont,
+                fontSize: 34,
+                fontStyle: "italic",
+                fontWeight: 500,
+                lineHeight: 1.45,
+                margin: 0,
+              }}
+            >
+              “{scene.verseQuote}”
+            </p>
+            <cite
+              style={{
+                color: colors.accent,
+                display: "block",
+                fontFamily: sansFont,
+                fontSize: 26,
+                fontStyle: "normal",
+                fontWeight: 700,
+                letterSpacing: "0.04em",
+                marginTop: 18,
+              }}
+            >
+              {scene.verseReference}
+            </cite>
+          </blockquote>
+        ) : null}
       </AbsoluteFill>
-
-      <div
-        style={{
-          bottom: 56,
-          left: 160,
-          position: "absolute",
-          right: 160,
-        }}
-      >
-        <div
-          style={{
-            background: "rgba(247, 244, 239, 0.12)",
-            borderRadius: 999,
-            height: 6,
-            overflow: "hidden",
-            width: "100%",
-          }}
-        >
-          <div
-            style={{
-              background: colors.accent,
-              borderRadius: 999,
-              height: "100%",
-              width: `${progress * 100}%`,
-            }}
-          />
-        </div>
-        <div
-          style={{
-            color: colors.muted,
-            fontFamily: sansFont,
-            fontSize: 22,
-            fontWeight: 500,
-            marginTop: 14,
-          }}
-        >
-          Fresno Victory Baptist Church
-        </div>
-      </div>
     </AbsoluteFill>
   );
 };
