@@ -128,20 +128,28 @@ const mobileLinks = [
     </div>
   </div>
 
+  <div class="hero__values" aria-label="Our focus">
+    <span>Grow</span>
+    <span>Believe</span>
+    <span>Go</span>
+  </div>
+
   <div class="hero__content">
-    <div class="hero__rule" aria-hidden="true"></div>
+    <p class="hero__eyebrow">Faith in motion</p>
     <h1 class="hero__headline">
-      Grow in faith. Share the gospel. Reach the lost.
+      <span>Grow deep.</span>
+      <span>Live bold.</span>
+      <span class="hero__headline-accent">Go tell.</span>
     </h1>
     <p class="hero__support">
       {/* Growth, faith, and evangelism — the heartbeat of every gathering. */}
-      Faith deepens when we walk with Christ. Lives change when we boldly tell
-      others about Him. Come grow with us as we evangelize Fresno for Jesus.
+      A growing faith should become a going faith. Be rooted in truth, alive in
+      Christ, and ready to carry the gospel into Fresno.
     </p>
     <div class="hero__actions">
       <Button variant="cta" size="lg" href={visitHref}>Plan a Visit</Button>
       <Button variant="outline" size="lg" href="/#soul-winning">
-        Soul-Winning
+        Join the Mission
       </Button>
     </div>
   </div>
@@ -216,10 +224,11 @@ const mobileLinks = [
 
 <style>
   .hero {
-    --hero-ink: #071a2e;
-    --hero-blue: #1d4ed8;
-    --hero-green: #16a34a;
-    --hero-sky: #38bdf8;
+    --hero-ink: #06162a;
+    --hero-blue: #1746df;
+    --hero-green: #a3e635;
+    --hero-sky: #22d3ee;
+    --hero-yellow: #fde047;
 
     position: relative;
     height: 100svh;
@@ -228,8 +237,7 @@ const mobileLinks = [
     overflow: hidden;
     display: flex;
     align-items: center;
-    justify-content: center;
-    background-color: var(--hero-ink);
+    background-color: var(--hero-blue);
   }
 
   .hero__media {
@@ -244,26 +252,21 @@ const mobileLinks = [
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 28%;
+    object-position: center 30%;
+    filter: saturate(1.22) contrast(1.04);
     animation: ken-burns 26s ease-out both;
   }
 
   .hero__overlay {
     position: absolute;
     inset: 0;
-    background:
-      radial-gradient(
-        ellipse 80% 70% at 50% 45%,
-        rgba(7, 26, 46, 0.25) 0%,
-        rgba(7, 26, 46, 0.72) 70%,
-        rgba(7, 26, 46, 0.9) 100%
-      ),
-      linear-gradient(
-        160deg,
-        rgba(29, 78, 216, 0.45) 0%,
-        rgba(7, 26, 46, 0.35) 48%,
-        rgba(22, 163, 74, 0.4) 100%
-      );
+    background: linear-gradient(
+      100deg,
+      rgba(23, 70, 223, 0.98) 0%,
+      rgba(23, 70, 223, 0.94) 48%,
+      rgba(6, 22, 42, 0.45) 75%,
+      rgba(6, 22, 42, 0.2) 100%
+    );
   }
 
   .hero__nav {
@@ -497,46 +500,90 @@ const mobileLinks = [
     border-radius: 0.5rem;
   }
 
+  .hero__values {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 12;
+    display: none;
+    width: 52%;
+    min-height: 5rem;
+    align-items: center;
+    justify-content: space-around;
+    padding: 1rem 2rem 1rem 7rem;
+    background: var(--hero-green);
+    color: var(--hero-ink);
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .hero__values span {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.4rem;
+  }
+
+  .hero__values span:not(:last-child)::after {
+    width: 1.8rem;
+    height: 2px;
+    background: currentColor;
+    content: "";
+    opacity: 0.45;
+  }
+
   .hero__content {
     position: relative;
     z-index: 10;
-    width: min(100%, 46rem);
-    margin-inline: auto;
-    padding: 6.5rem 1.75rem 3.5rem;
+    width: min(100%, 43rem);
+    padding: 7rem 1.75rem 3rem;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 1.35rem;
+    align-items: flex-start;
+    text-align: left;
+    gap: 1.25rem;
   }
 
-  .hero__rule {
-    width: 3.5rem;
-    height: 0.2rem;
-    border-radius: 2px;
-    background: linear-gradient(90deg, var(--hero-sky), var(--hero-green));
-    transform-origin: center;
-    animation: rule-grow 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  .hero__eyebrow {
+    margin: 0;
+    padding: 0.42rem 0.65rem;
+    background: var(--hero-yellow);
+    color: var(--hero-ink);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.19em;
+    text-transform: uppercase;
+    animation: fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   .hero__headline {
     margin: 0;
     font-family: var(--font-display);
-    font-size: clamp(2.4rem, 7.2vw, 4.35rem);
+    font-size: clamp(3.2rem, 14vw, 5.7rem);
     font-weight: 800;
-    line-height: 1.02;
-    letter-spacing: -0.03em;
+    line-height: 0.85;
+    letter-spacing: -0.055em;
     color: #fff;
-    text-wrap: balance;
     animation: fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+  }
+
+  .hero__headline span {
+    display: block;
+  }
+
+  .hero__headline-accent {
+    color: var(--hero-green);
   }
 
   .hero__support {
     margin: 0;
-    max-width: 34rem;
-    font-size: clamp(1.05rem, 2.1vw, 1.2rem);
-    line-height: 1.65;
-    color: rgba(255, 255, 255, 0.86);
+    max-width: 32rem;
+    padding-left: 1rem;
+    border-left: 3px solid var(--hero-sky);
+    font-size: clamp(1rem, 2vw, 1.16rem);
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
     text-wrap: pretty;
     animation: fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.22s both;
   }
@@ -544,9 +591,8 @@ const mobileLinks = [
   .hero__actions {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     gap: 0.875rem;
-    margin-top: 0.35rem;
+    margin-top: 0.5rem;
     animation: fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.34s both;
   }
 
@@ -561,17 +607,6 @@ const mobileLinks = [
     }
   }
 
-  @keyframes rule-grow {
-    from {
-      opacity: 0;
-      transform: scaleX(0.2);
-    }
-    to {
-      opacity: 1;
-      transform: scaleX(1);
-    }
-  }
-
   @keyframes ken-burns {
     from {
       transform: scale(1.04);
@@ -582,6 +617,32 @@ const mobileLinks = [
   }
 
   @media (min-width: 768px) {
+    .hero::before {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 2;
+      width: 57%;
+      background: var(--hero-blue);
+      clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%);
+      content: "";
+    }
+
+    .hero__media {
+      left: 42%;
+    }
+
+    .hero__overlay {
+      z-index: 1;
+      background: linear-gradient(
+        90deg,
+        rgba(23, 70, 223, 0.55) 0%,
+        rgba(6, 22, 42, 0.08) 50%,
+        rgba(6, 22, 42, 0.28) 100%
+      );
+    }
+
     .hero__nav {
       position: fixed;
       display: grid;
@@ -635,7 +696,13 @@ const mobileLinks = [
     }
 
     .hero__content {
-      padding-inline: 4rem;
+      width: 58%;
+      margin-right: auto;
+      padding: 7rem 3rem 6rem 4rem;
+    }
+
+    .hero__values {
+      display: flex;
     }
   }
 
@@ -645,13 +712,14 @@ const mobileLinks = [
     }
 
     .hero__content {
-      padding-inline: 6rem;
+      padding-left: 6rem;
+      padding-right: 4rem;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .hero__bg,
-    .hero__rule,
+    .hero__eyebrow,
     .hero__headline,
     .hero__support,
     .hero__actions {
