@@ -104,8 +104,25 @@ const gatherings = [
       </li>
     </ul>
 
-    <div class="hero__nav-cta">
-      <Button variant="cta" size="sm" href={visitHref}>Visit Us</Button>
+    <div class="hero__nav-end">
+      <div
+        class="hero__nav-times"
+        aria-label="Service times"
+        aria-hidden="true"
+      >
+        {
+          gatherings.map((g) => (
+            <div class="hero__nav-times-item">
+              <span class="hero__nav-times-label">{g.label}</span>
+              <span class="hero__nav-times-value">{g.time}</span>
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="hero__nav-cta">
+        <Button variant="cta" size="sm" href={visitHref}>Visit Us</Button>
+      </div>
     </div>
 
     <label for="hero-nav-cbox" class="hero__hamburger" aria-label="Toggle menu">
@@ -197,20 +214,49 @@ const gatherings = [
   });
 
   const nav = document.querySelector(".hero__nav") as HTMLElement | null;
+  const heroTimes = document.querySelector(".hero__times") as HTMLElement | null;
+  const navTimes = document.querySelector(
+    ".hero__nav-times"
+  ) as HTMLElement | null;
+  let timesFrame = 0;
+
+  const shouldShowNavTimes = (navElement: HTMLElement, isDesktop: boolean) => {
+    if (!(isDesktop && heroTimes && window.innerWidth >= 1024)) {
+      return false;
+    }
+
+    const navBottom = navElement.getBoundingClientRect().bottom;
+    const timesTop = heroTimes.getBoundingClientRect().top;
+    return timesTop <= navBottom + 8;
+  };
+
+  const syncTimesVisibility = (showTimes: boolean) => {
+    nav?.classList.toggle("hero__nav--show-times", showTimes);
+    heroTimes?.classList.toggle("hero__times--docked", showTimes);
+    heroTimes?.setAttribute("aria-hidden", showTimes ? "true" : "false");
+    navTimes?.setAttribute("aria-hidden", showTimes ? "false" : "true");
+  };
 
   const updateNav = () => {
     if (!nav) {
       return;
     }
     const isDesktop = window.innerWidth >= 768;
-    nav.classList.toggle(
-      "hero__nav--scrolled",
-      isDesktop && window.scrollY > 10
-    );
+    const isScrolled = isDesktop && window.scrollY > 10;
+    const showTimes = shouldShowNavTimes(nav, isDesktop);
+    nav.classList.toggle("hero__nav--scrolled", isScrolled);
+    syncTimesVisibility(showTimes);
+    timesFrame = 0;
   };
 
-  window.addEventListener("scroll", updateNav, { passive: true });
-  window.addEventListener("resize", updateNav, { passive: true });
+  const requestNavUpdate = () => {
+    if (timesFrame === 0) {
+      timesFrame = window.requestAnimationFrame(updateNav);
+    }
+  };
+
+  window.addEventListener("scroll", requestNavUpdate, { passive: true });
+  window.addEventListener("resize", requestNavUpdate, { passive: true });
   updateNav();
 
   const revealEls = document.querySelectorAll(".reveal");
@@ -343,12 +389,21 @@ const gatherings = [
     background: transparent;
   }
 
+  .hero__nav-end {
+    display: none;
+  }
+
   .hero__nav-cta {
+    display: none;
+  }
+
+  .hero__nav-times {
     display: none;
   }
 
   .hero__logo {
     display: block;
+    flex-shrink: 0;
     transition: opacity 0.2s ease;
   }
 
@@ -721,6 +776,15 @@ const gatherings = [
     color: #fff;
   }
 
+  .hero__times--docked {
+    opacity: 0;
+    transform: translateY(0.65rem);
+    pointer-events: none;
+    transition:
+      opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
   @keyframes fade-up {
     from {
       opacity: 0;
@@ -808,9 +872,12 @@ const gatherings = [
       justify-content: center;
     }
 
-    .hero__nav-cta {
+    .hero__nav-end {
       display: flex;
+      align-items: center;
       justify-content: flex-end;
+      gap: 1.25rem;
+      min-width: 0;
       overflow: hidden;
       opacity: 0;
       transform: translateX(8px);
@@ -820,10 +887,16 @@ const gatherings = [
       pointer-events: none;
     }
 
-    .hero__nav--scrolled .hero__nav-cta {
+    .hero__nav--scrolled .hero__nav-end {
       opacity: 1;
       transform: translateX(0);
       pointer-events: auto;
+    }
+
+    .hero__nav-cta {
+      display: flex;
+      justify-content: flex-end;
+      flex-shrink: 0;
     }
 
     .hero__content {
@@ -832,12 +905,115 @@ const gatherings = [
 
     .hero__times {
       display: flex;
+      transition:
+        opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
     }
   }
 
   @media (min-width: 1024px) {
     .hero__nav {
       padding-inline: 6rem;
+    }
+
+    .hero__nav-times {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      max-width: 0;
+      opacity: 0;
+      overflow: hidden;
+      transform: translateY(0.45rem) scale(0.98);
+      pointer-events: none;
+      transition:
+        max-width 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .hero__nav--show-times .hero__nav-times {
+      max-width: 28rem;
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .hero__nav-times-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+      padding-inline: 0.7rem;
+      opacity: 0;
+      transform: translateY(0.35rem);
+      transition:
+        opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      transition-delay: 0s;
+    }
+
+    .hero__nav-times-item:not(:first-child) {
+      border-left: 1px solid rgba(255, 255, 255, 0.14);
+    }
+
+    .hero__nav--show-times .hero__nav-times-item:nth-child(1) {
+      transition-delay: 0.08s;
+    }
+
+    .hero__nav--show-times .hero__nav-times-item:nth-child(2) {
+      transition-delay: 0.13s;
+    }
+
+    .hero__nav--show-times .hero__nav-times-item:nth-child(3) {
+      transition-delay: 0.18s;
+    }
+
+    .hero__nav--show-times .hero__nav-times-item:nth-child(4) {
+      transition-delay: 0.23s;
+    }
+
+    .hero__nav--show-times .hero__nav-times-item {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hero__nav-times-label {
+      font-size: 0.52rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.55);
+      white-space: nowrap;
+    }
+
+    .hero__nav-times-value {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #fff;
+      white-space: nowrap;
+      line-height: 1.1;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .hero__nav-end {
+      gap: 1.5rem;
+    }
+
+    .hero__nav--show-times .hero__nav-times {
+      max-width: 32rem;
+    }
+
+    .hero__nav-times-item {
+      padding-inline: 0.9rem;
+    }
+
+    .hero__nav-times-label {
+      font-size: 0.58rem;
+      letter-spacing: 0.12em;
+    }
+
+    .hero__nav-times-value {
+      font-size: 0.88rem;
     }
   }
 
@@ -851,6 +1027,13 @@ const gatherings = [
     .hero__actions,
     .hero__times {
       animation: none;
+    }
+
+    .hero__nav-times,
+    .hero__nav-times-item,
+    .hero__times,
+    .hero__times--docked {
+      transition: none;
     }
   }
 </style>
