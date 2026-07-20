@@ -27,6 +27,11 @@ export const footerNav = {
     { href: "/sermons/", label: "Sermons" },
     { href: "/media/", label: "Media" },
     { external: true, href: giveHref, label: "Give" },
+    {
+      external: true,
+      href: "https://portal.fresnovictory.com",
+      label: "Portal",
+    },
   ],
   more: [
     { href: "/salvation/", label: "Heaven" },
