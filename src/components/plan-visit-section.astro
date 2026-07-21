@@ -1,7 +1,7 @@
 ---
 import { Button } from "@/components/starwind/button";
+import churchFrontage from "@/images/church_frontage.webp";
 import { serviceTimes } from "@/lib/church-data";
-import { unsplash } from "@/lib/unsplash";
 
 const { bibleStudy, sundayMorning, sundaySchool } = serviceTimes;
 ---
@@ -13,21 +13,17 @@ const { bibleStudy, sundayMorning, sundaySchool } = serviceTimes;
   <div
     class="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 lg:grid-cols-2"
   >
-    <div class="reveal relative overflow-hidden aspect-4/3">
+    <div class="visit-image reveal relative overflow-hidden aspect-4/3">
       <img
-        src={unsplash.service}
-        alt="Congregation gathered for Sunday worship"
+        src={churchFrontage.src}
+        alt="Victory Baptist Church building exterior"
         class="h-full w-full object-cover"
-        width="1400"
-        height="1050"
+        width={churchFrontage.width}
+        height={churchFrontage.height}
         loading="lazy"
         decoding="async"
       />
-      <div
-        class="pointer-events-none absolute inset-0 bg-linear-to-t from-primary/35 via-transparent to-transparent"
-        aria-hidden="true"
-      >
-      </div>
+      <div class="visit-image__overlay" aria-hidden="true"></div>
     </div>
 
     <div class="reveal reveal-delay-1 flex flex-col gap-6">
@@ -93,3 +89,30 @@ const { bibleStudy, sundayMorning, sundaySchool } = serviceTimes;
     </div>
   </div>
 </section>
+
+<style>
+  .visit-image__overlay {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(
+        ellipse at center,
+        transparent 40%,
+        rgba(5, 13, 28, 0.3) 100%
+      ),
+      linear-gradient(
+        to top,
+        rgba(5, 13, 28, 0.55) 0%,
+        rgba(5, 13, 28, 0.15) 45%,
+        transparent 72%
+      ),
+      linear-gradient(
+        125deg,
+        rgba(23, 46, 110, 0.42) 0%,
+        transparent 48%,
+        rgba(22, 163, 74, 0.22) 100%
+      ),
+      rgba(5, 13, 28, 0.2);
+  }
+</style>
