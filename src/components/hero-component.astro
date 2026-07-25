@@ -828,9 +828,19 @@ const gatherings = [
     }
   }
 
+  /* Mobile header is visible below 768px — skip content fade-ins so the
+     hero copy is immediate under the sticky chrome. */
   @media (max-width: 767px) {
     .hero__actions {
       flex-direction: column;
+    }
+
+    .hero__eyebrow,
+    .hero__headline,
+    .hero__support,
+    .hero__actions,
+    .hero__times {
+      animation: none;
     }
   }
 
