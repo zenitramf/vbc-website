@@ -10,52 +10,65 @@ const others = ministries.filter((m) => m.id !== featured.id);
   id="ministries"
   class="relative overflow-hidden bg-background px-8 py-24 md:px-16 lg:px-24"
 >
-  <div class="relative mx-auto max-w-6xl">
-    <div class="reveal mb-12 max-w-2xl">
+  <div class="relative mx-auto max-w-5xl">
+    <div class="reveal max-w-2xl">
       <p class="mb-4 text-sm font-bold uppercase tracking-[0.2em] text-primary">
         Ministries
       </p>
       <h2
         class="font-display text-4xl font-bold tracking-tight text-foreground md:text-5xl"
       >
-        Reaching people. Building disciples.
+        Outreach is our heartbeat.
       </h2>
       <p class="mt-5 text-lg leading-relaxed text-muted-foreground">
-        Victory Baptist Church offers ministries for every stage of life. Our
-        first priority is soul-winning — sharing the gospel in Fresno and around
-        the world.
+        Every ministry at Victory Baptist Church serves one mission: reaching
+        Fresno — and the world — with the gospel of Jesus Christ.
       </p>
     </div>
 
-    <article
+    <div
       id={featured.id}
-      class="reveal reveal-delay-1 mb-14 border-l-4 border-cta pl-6 md:pl-8"
+      class="reveal reveal-delay-1 mt-14 grid gap-6 border-y border-border py-12 md:grid-cols-[1fr_1.6fr] md:gap-16"
     >
-      <p class="mb-2 text-sm font-bold uppercase tracking-[0.18em] text-cta">
-        Featured
-      </p>
-      <h3 class="mb-4 font-display text-3xl font-bold text-foreground md:text-4xl">
-        {featured.name}
-      </h3>
-      <p class="max-w-3xl text-lg leading-relaxed text-muted-foreground">
-        {featured.summary}
-      </p>
-      <div class="mt-6">
-        <Button href="/salvation/" size="lg">Bible Way to Heaven</Button>
+      <div>
+        <h3 class="font-display text-3xl font-bold text-foreground">
+          {featured.name}
+        </h3>
+        <p class="mt-2 text-muted-foreground">
+          Every week, in our city and beyond.
+        </p>
       </div>
-    </article>
+      <div>
+        <p class="text-lg leading-relaxed text-muted-foreground">
+          {featured.summary}
+        </p>
+        <p class="mt-4 text-lg leading-relaxed text-muted-foreground">
+          You don't need experience to come along — just a willing heart. We'll
+          pair you with someone and show you how.
+        </p>
+        <div class="mt-7 flex flex-wrap items-center gap-6">
+          <Button href="/salvation/" size="lg">Bible Way to Heaven</Button>
+          <a
+            class="font-semibold text-primary underline-offset-4 hover:underline"
+            href="/events/"
+          >
+            See outreach times
+          </a>
+        </div>
+      </div>
+    </div>
 
     <ul
-      class="reveal reveal-delay-2 grid list-none grid-cols-1 gap-x-10 gap-y-8 p-0 md:grid-cols-2 lg:grid-cols-3"
+      class="reveal reveal-delay-2 mt-10 grid list-none grid-cols-1 gap-x-16 gap-y-8 p-0 md:grid-cols-2"
       role="list"
     >
       {
         others.map((ministry) => (
-          <li id={ministry.id} class="border-t border-border pt-5">
-            <h3 class="mb-2 font-display text-xl font-bold text-foreground">
+          <li id={ministry.id} class="border-border pt-6">
+            <h3 class="mb-2 font-display text-2xl font-bold text-foreground">
               {ministry.name}
             </h3>
-            <p class="text-sm leading-relaxed text-muted-foreground md:text-base">
+            <p class="leading-relaxed text-muted-foreground">
               {ministry.summary}
             </p>
           </li>

@@ -8,111 +8,79 @@ const { bibleStudy, sundayMorning, sundaySchool } = serviceTimes;
 
 <section
   id="visit"
-  class="relative overflow-hidden bg-background px-8 py-24 md:px-16 lg:px-24"
+  class="relative isolate overflow-hidden bg-[#050d1c] px-8 py-24 md:px-16 lg:px-24 lg:py-32"
 >
+  <img
+    src={churchFrontage.src}
+    alt=""
+    class="absolute inset-0 -z-20 h-full w-full object-cover object-center"
+    width={churchFrontage.width}
+    height={churchFrontage.height}
+    loading="lazy"
+    decoding="async"
+  />
   <div
-    class="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 lg:grid-cols-2"
+    class="absolute inset-0 -z-10 bg-[#050d1c]/85 bg-linear-to-r from-[#050d1c] via-[#050d1c]/85 to-[#050d1c]/30"
+    aria-hidden="true"
   >
-    <div class="visit-image reveal relative overflow-hidden aspect-4/3">
-      <img
-        src={churchFrontage.src}
-        alt="Victory Baptist Church building exterior"
-        class="h-full w-full object-cover"
-        width={churchFrontage.width}
-        height={churchFrontage.height}
-        loading="lazy"
-        decoding="async"
-      />
-      <div class="visit-image__overlay" aria-hidden="true"></div>
-    </div>
+  </div>
+  <div
+    class="absolute inset-0 -z-10 bg-linear-to-t from-[#050d1c]/70 via-transparent to-[#050d1c]/20"
+    aria-hidden="true"
+  >
+  </div>
 
-    <div class="reveal reveal-delay-1 flex flex-col gap-6">
-      <p
-        class="text-sm font-bold uppercase tracking-[0.2em] text-primary"
-      >
-        Plan Your Visit
-      </p>
+  <div class="relative mx-auto max-w-6xl">
+    <div class="reveal max-w-3xl">
+      <div class="mb-6 flex items-center gap-4">
+        <span class="h-px w-10 bg-cta" aria-hidden="true"></span>
+        <p class="text-sm font-bold uppercase tracking-[0.2em] text-white/75">
+          Plan Your Visit
+        </p>
+      </div>
       <h2
-        class="font-display text-4xl font-bold tracking-tight text-foreground md:text-5xl"
+        class="font-display text-4xl font-bold leading-[1.05] tracking-tight text-white md:text-6xl lg:text-7xl"
       >
         We'd love to meet you this week
       </h2>
-      <p class="text-lg leading-relaxed text-muted-foreground">
-        Come as you are. Find a seat, meet friendly faces, and hear the gospel
+      <p
+        class="mt-6 max-w-2xl text-lg leading-relaxed text-white/80 md:text-xl"
+      >
+        Come visit us, Find a seat, meet friendly faces, and hear the gospel
         preached clearly from Scripture.
       </p>
-      <ul class="flex flex-col gap-4 text-muted-foreground">
-        <li class="flex items-start gap-3">
-          <span
-            class="mt-2 h-2.5 w-2.5 shrink-0 rounded-sm bg-cta"
-            aria-hidden="true"></span>
-          <span>
-            <strong class="text-foreground">Thursday Bible Study</strong> — {
-              bibleStudy.time
-            }
-          </span>
-        </li>
-        <li class="flex items-start gap-3">
-          <span
-            class="mt-2 h-2.5 w-2.5 shrink-0 rounded-sm bg-primary"
-            aria-hidden="true"></span>
-          <span>
-            <strong class="text-foreground">Sunday</strong> — {
-              sundaySchool.time
-            } Bible Study · {sundayMorning.time} Main Service
-          </span>
-        </li>
-        <li class="flex items-start gap-3">
-          <span
-            class="mt-2 h-2.5 w-2.5 shrink-0 rounded-sm bg-primary"
-            aria-hidden="true"></span>
-          <span>
-            <strong class="text-foreground">Location</strong> — 1717 N Gateway
-            Blvd Ste. #105, Fresno, CA 93727
-          </span>
-        </li>
-      </ul>
-      <div>
-        <div class="flex flex-wrap gap-3">
-          <Button href="/visit/" size="lg" variant="cta">Plan Your Visit</Button>
-          <Button
-            href="https://maps.app.goo.gl/Ysiz9UYS1mijVrJH7"
-            target="_blank"
-            rel="noopener noreferrer"
-            size="lg"
-            variant="secondary"
-          >
-            Open in Google Maps
-          </Button>
-        </div>
-      </div>
+    </div>
+
+    <ul
+      class="reveal reveal-delay-1 mt-12 grid max-w-4xl divide-y divide-white/20 border-y border-white/25 text-white/75 md:grid-cols-3 md:divide-x md:divide-y-0"
+    >
+      <li class="flex flex-col gap-2 px-6 py-5 md:first:pl-0">
+        <strong class="text-white">Thursday Bible Study</strong>
+        <span>{bibleStudy.time}</span>
+      </li>
+      <li class="flex flex-col gap-2 px-6 py-5">
+        <strong class="text-white">Sunday</strong>
+        <span>
+          {sundaySchool.time} Bible Study · {sundayMorning.time} Main Service
+        </span>
+      </li>
+      <li class="flex flex-col gap-2 px-6 py-5 md:last:pr-0">
+        <strong class="text-white">Location</strong>
+        <span>1717 N Gateway Blvd Ste. #105, Fresno, CA 93727</span>
+      </li>
+    </ul>
+
+    <div class="reveal reveal-delay-2 mt-9 flex flex-wrap gap-3">
+      <Button href="/visit/" size="lg" variant="cta">Plan Your Visit</Button>
+      <Button
+        href="https://maps.app.goo.gl/Ysiz9UYS1mijVrJH7"
+        target="_blank"
+        rel="noopener noreferrer"
+        size="lg"
+        variant="outline"
+      >
+        Open in Google Maps
+      </Button>
     </div>
   </div>
 </section>
-
-<style>
-  .visit-image__overlay {
-    pointer-events: none;
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(
-        ellipse at center,
-        transparent 40%,
-        rgba(5, 13, 28, 0.3) 100%
-      ),
-      linear-gradient(
-        to top,
-        rgba(5, 13, 28, 0.55) 0%,
-        rgba(5, 13, 28, 0.15) 45%,
-        transparent 72%
-      ),
-      linear-gradient(
-        125deg,
-        rgba(23, 46, 110, 0.42) 0%,
-        transparent 48%,
-        rgba(22, 163, 74, 0.22) 100%
-      ),
-      rgba(5, 13, 28, 0.2);
-  }
-</style>
