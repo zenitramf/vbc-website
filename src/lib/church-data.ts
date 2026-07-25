@@ -59,7 +59,7 @@ export const ministries: Ministry[] = [
     id: "young-adults",
     name: "Young Adults",
     summary:
-      "Monthly gatherings for high school graduates and college-age adults who want to strengthen their faith and build godly friendships in a pivotal season of life.",
+      "Regular gatherings for high school graduates and college-age adults who want to strengthen their faith and build godly friendships in a pivotal season of life.",
   },
   {
     id: "men",
@@ -77,6 +77,6 @@ export const ministries: Ministry[] = [
     id: "seniors",
     name: "Seniors",
     summary:
-      "Monthly fellowship, Bible study, and prayer for senior adults — led with care by a retired pastor who has served in ministry for over 65 years.",
+      'Our "Prime Timers" group encourages one another with Bible study, and prayer for senior adults.',
   },
 ];
