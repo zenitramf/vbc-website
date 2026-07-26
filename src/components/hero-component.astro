@@ -27,7 +27,9 @@ const gatherings = [
 
 <section class="hero">
   <div class="hero__media" aria-hidden="true">
-    {/* Serve the built asset directly — Astro Image `/_image/` URLs 404 on Cloudflare. */}
+    {
+      /* Serve the built asset directly — Astro Image `/_image/` URLs 404 on Cloudflare. */
+    }
     <img
       src={heroBg.src}
       width={heroBg.width}
@@ -123,7 +125,9 @@ const gatherings = [
             <a
               href={link.href}
               class="hero__mobile-link"
-              target={"external" in link && link.external ? "_blank" : undefined}
+              target={
+                "external" in link && link.external ? "_blank" : undefined
+              }
               rel={
                 "external" in link && link.external
                   ? "noopener noreferrer"
@@ -143,17 +147,20 @@ const gatherings = [
 
   <div class="hero__content">
     <h1 class="hero__headline">
-      <span>Grow in faith.</span>
-      <span>Share the gospel.</span>
+      <span class="hero__headline-pair">
+        <span>Grow in faith.</span>
+        <span>Share the gospel.</span>
+      </span>
       <span class="hero__headline-accent">Reach the lost.</span>
     </h1>
     <p class="hero__support">
-       Rooted in Scripture, growing in Christ, and carrying the gospel throughout Fresno. Come grow with us.
+      Rooted in Scripture, growing in Christ, and carrying the gospel throughout
+      Fresno. Come grow with us.
     </p>
     <div class="hero__actions">
       <Button variant="cta" size="lg" href={visitHref}>Plan a Visit</Button>
       <Button variant="outline" size="lg" href="/#soul-winning">
-        Join the Mission
+        Latest Sermon
       </Button>
     </div>
   </div>
@@ -591,7 +598,7 @@ const gatherings = [
   .hero__content {
     position: relative;
     z-index: 10;
-    width: min(100%, 52rem);
+    width: min(100%, 90rem);
     padding: 7rem 1.5rem 4rem;
     display: flex;
     flex-direction: column;
@@ -641,17 +648,27 @@ const gatherings = [
   .hero__headline {
     margin: 0;
     font-family: var(--font-display);
-    font-size: clamp(2.5rem, 9.5vw, 6.25rem);
-    font-weight: 700;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 550;
     line-height: 1.04;
     letter-spacing: -0.035em;
     color: #fff;
-    text-wrap: balance;
     animation: fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
   }
 
   .hero__headline span {
     display: block;
+  }
+
+  .hero__headline .hero__headline-pair {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    column-gap: 0.2em;
+  }
+
+  .hero__headline-pair > span {
+    white-space: nowrap;
   }
 
   .hero__headline-accent {
@@ -761,6 +778,12 @@ const gatherings = [
     }
     100% {
       box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .hero__actions {
+      flex-direction: column;
     }
   }
 
