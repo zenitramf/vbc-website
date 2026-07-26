@@ -20,12 +20,13 @@ export default defineConfig({
   integrations: [react(), mdx()],
 
   redirects: {
-    "/about/": "/about-vbc/",
-    "/give/": "https://tithe.ly/give_new/www/#/tithely/give-one-time/1285261",
-    "/staff/": "/meet-the-staff/",
+    "/about": "/about-vbc/",
+    "/give": "https://tithe.ly/give_new/www/#/tithely/give-one-time/1285261",
+    "/salvation.html": "/salvation/",
+    "/staff": "/meet-the-staff/",
   },
 
-  trailingSlash: "always",
+  trailingSlash: "ignore",
 
   vite: {
     plugins: [tailwindcss()],
