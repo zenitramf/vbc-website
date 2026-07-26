@@ -1,7 +1,7 @@
 ---
 import { Button } from "@/components/starwind/button";
 import churchFrontage from "@/images/church_frontage.webp";
-import { serviceTimes } from "@/lib/church-data";
+import { churchInfo, serviceTimes } from "@/lib/church-data";
 
 const { bibleStudy, sundayMorning, sundaySchool } = serviceTimes;
 ---
@@ -72,13 +72,7 @@ const { bibleStudy, sundayMorning, sundaySchool } = serviceTimes;
 
     <div class="reveal reveal-delay-2 mt-9 flex flex-wrap gap-3">
       <Button href="/visit/" size="lg" variant="cta">Plan Your Visit</Button>
-      <Button
-        href="https://maps.app.goo.gl/Ysiz9UYS1mijVrJH7"
-        target="_blank"
-        rel="noopener noreferrer"
-        size="lg"
-        variant="outline"
-      >
+      <Button href={churchInfo.mapsUrl} size="lg" variant="outline">
         Open in Google Maps
       </Button>
     </div>

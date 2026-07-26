@@ -21,8 +21,9 @@ export const churchInfo = {
   addressLine1: "1717 N Gateway Blvd Ste. #105",
   addressLine2: "Fresno, CA 93727",
   email: "contact@fresnovictory.com",
-  mapsUrl: "https://maps.app.goo.gl/Ysiz9UYS1mijVrJH7",
-  mapsUrlAlt: "https://goo.gl/maps/Tf3fDh44gbomRUrT9",
+  // Cross-platform Maps URL (short goo.gl links break on many mobile browsers)
+  mapsUrl:
+    "https://www.google.com/maps/search/?api=1&query=Victory+Baptist+Church%2C+1717+N+Gateway+Blvd+Ste.+105%2C+Fresno%2C+CA+93727",
   name: "Victory Baptist Church",
   shortName: "VBC",
 };
