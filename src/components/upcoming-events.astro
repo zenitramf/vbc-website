@@ -1,0 +1,90 @@
+---
+import { env } from "cloudflare:workers";
+import { getUpcomingMinistryEvents } from '@/lib/google-calendar';
+import type { UpcomingEvent } from '@/lib/google-calendar';
+
+let upcomingEvents: UpcomingEvent[] = [];
+let eventsAreAvailable = true;
+
+try {
+  upcomingEvents = await getUpcomingMinistryEvents(env);
+} catch {
+  eventsAreAvailable = false;
+}
+
+const EVENT_TIME_ZONE = "America/Los_Angeles";
+
+const getEventDate = (date: string, allDay: boolean): Date =>
+  new Date(allDay ? `${date}T00:00:00Z` : date);
+
+const getEndDate = (event: UpcomingEvent): Date => {
+  const endDate = getEventDate(event.endsAt, event.allDay);
+
+  if (event.allDay) {
+    endDate.setUTCDate(endDate.getUTCDate() - 1);
+  }
+
+  return endDate;
+};
+
+const formatEventDate = (date: Date, allDay: boolean): string =>
+  new Intl.DateTimeFormat("en-US", {
+    dateStyle: "full",
+    ...(allDay
+      ? { timeZone: "UTC" }
+      : { timeStyle: "short", timeZone: EVENT_TIME_ZONE }),
+  }).format(date);
+
+const getDateKey = (date: Date, allDay: boolean): string =>
+  new Intl.DateTimeFormat("en-CA", {
+    timeZone: allDay ? "UTC" : EVENT_TIME_ZONE,
+  }).format(date);
+
+const formatEventSchedule = (event: UpcomingEvent): string => {
+  const startDate = getEventDate(event.startsAt, event.allDay);
+  const endDate = getEndDate(event);
+
+  if (getDateKey(startDate, event.allDay) === getDateKey(endDate, event.allDay)) {
+    return formatEventDate(startDate, event.allDay);
+  }
+
+  return `${formatEventDate(startDate, event.allDay)} - ${formatEventDate(endDate, event.allDay)}`;
+};
+---
+
+{
+  eventsAreAvailable ? (
+    upcomingEvents.length > 0 ? (
+      <ol class="space-y-4">
+        {
+          upcomingEvents.map((event) => (
+            <li class="rounded-lg border border-border bg-muted/40 p-5">
+              <h3 class="font-display text-xl font-bold text-foreground">
+                {event.title}
+              </h3>
+              <time
+                class="mt-2 block text-sm font-semibold text-primary"
+                datetime={event.startsAt}
+              >
+                {formatEventSchedule(event)}
+              </time>
+              {
+                event.location && (
+                  <p class="mt-2 text-muted-foreground">{event.location}</p>
+                )
+              }
+            </li>
+          ))
+        }
+      </ol>
+    ) : (
+      <p class="text-muted-foreground leading-relaxed">
+        Check back soon for upcoming events.
+      </p>
+    )
+  ) : (
+    <p class="text-muted-foreground leading-relaxed">
+      Upcoming events are temporarily unavailable. Please check back soon.
+    </p>
+  )
+}

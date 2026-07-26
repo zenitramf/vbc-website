@@ -1,6 +1,7 @@
 ---
 import PageLayout from "@/layouts/page-layout.astro";
 import PageHeader from "@/components/page-header.astro";
+import UpcomingEvents from "@/components/upcoming-events.astro";
 import { Button } from "@/components/starwind/button";
 ---
 
@@ -17,7 +18,7 @@ import { Button } from "@/components/starwind/button";
 
   <section class="bg-background px-8 py-16 md:px-16 lg:px-24">
     <div class="mx-auto max-w-3xl space-y-8">
-      <article class="border-t border-border pt-6">
+      <article class="border-border pt-6">
         <h2 class="mb-2 font-display text-2xl font-bold text-foreground">
           Weekly Services
         </h2>
@@ -26,6 +27,7 @@ import { Button } from "@/components/starwind/button";
           worship.
         </p>
       </article>
+
       <article class="border-t border-border pt-6">
         <h2 class="mb-2 font-display text-2xl font-bold text-foreground">
           Soul-Winning Outreach
@@ -34,20 +36,26 @@ import { Button } from "@/components/starwind/button";
           Weekly door-to-door evangelism and community outreach throughout the
           year. Ask a greeter how to get involved.
         </p>
-        <Button href="/#soul-winning" variant="cta">Learn About Outreach</Button>
+        <Button href="/#soul-winning" variant="cta">Learn About Outreach</Button
+        >
       </article>
-      <article class="border-t border-border pt-6">
-        <h2 class="mb-2 font-display text-2xl font-bold text-foreground">
-          Missions Conference
+
+      <section
+        class="border-t border-border pt-6"
+        aria-labelledby="upcoming-events"
+      >
+        <h2
+          id="upcoming-events"
+          class="mb-4 font-display text-2xl font-bold text-foreground"
+        >
+          Upcoming Events
         </h2>
-        <p class="mb-4 text-muted-foreground leading-relaxed">
-          Hear from missionaries and learn how you can participate in the Great
-          Commission.
-        </p>
-        <Button href="/missions-conference/" variant="secondary">
-          Missions Conference
-        </Button>
-      </article>
+        <UpcomingEvents server:defer>
+          <p slot="fallback" class="text-muted-foreground leading-relaxed">
+            Loading upcoming events...
+          </p>
+        </UpcomingEvents>
+      </section>
     </div>
   </section>
 </PageLayout>

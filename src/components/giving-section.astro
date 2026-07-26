@@ -1,0 +1,59 @@
+---
+import { Button } from "@/components/starwind/button";
+import givingPhoto from "@/images/GivingPhoto_Redesigned.webp";
+import { giveHref } from "@/lib/site-nav";
+---
+
+<section
+  id="giving"
+  class="relative overflow-hidden bg-background px-8 py-24 md:px-16 lg:px-24"
+>
+  <div
+    class="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 lg:grid-cols-2"
+  >
+    <div class="reveal flex flex-col gap-6 lg:order-1">
+      <p class="text-sm font-bold uppercase tracking-[0.2em] text-primary">
+        Giving
+      </p>
+      <h2
+        class="font-display text-4xl font-bold tracking-tight text-foreground md:text-5xl"
+      >
+        Give online, anytime
+      </h2>
+      <p class="text-lg leading-relaxed text-muted-foreground">
+        Your faithful giving supports the ministry of Victory Baptist Church as
+        we share the gospel, serve our community, and help take the good news of
+        Jesus Christ around the world.
+      </p>
+      <div>
+        <Button
+          size="lg"
+          href={giveHref}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Give Online
+        </Button>
+      </div>
+    </div>
+
+    <div
+      class="reveal reveal-delay-1 relative aspect-4/3 overflow-hidden lg:order-2"
+    >
+      <img
+        src={givingPhoto.src}
+        alt="Victory Baptist Church's online giving page shown on a laptop and phone"
+        class="h-full w-full object-cover"
+        width={givingPhoto.width}
+        height={givingPhoto.height}
+        loading="lazy"
+        decoding="async"
+      />
+      <div
+        class="pointer-events-none absolute inset-0 bg-linear-to-br from-primary/20 via-transparent to-cta/15"
+        aria-hidden="true"
+      >
+      </div>
+    </div>
+  </div>
+</section>
