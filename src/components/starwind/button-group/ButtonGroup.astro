@@ -16,6 +16,9 @@ export const buttonGroup = tv({
     "[&>*]:focus-visible:relative [&>*]:focus-visible:z-10",
     "has-[>[data-slot=button-group]]:gap-2 [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1",
   ],
+  defaultVariants: {
+    orientation: "horizontal",
+  },
   variants: {
     orientation: {
       horizontal: [
@@ -42,9 +45,6 @@ export const buttonGroup = tv({
         "[&>*:not(:last-child):not(:has(+_script:last-child))_>_[data-slot=select-trigger]]:rounded-b-none",
       ],
     },
-  },
-  defaultVariants: {
-    orientation: "horizontal",
   },
 });
 

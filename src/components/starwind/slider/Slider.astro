@@ -3,6 +3,9 @@ import type { HTMLAttributes } from "astro/types";
 import { tv } from "tailwind-variants";
 
 export const slider = tv({
+  defaultVariants: {
+    variant: "default",
+  },
   slots: {
     root: "starwind-slider relative flex w-full touch-none items-center select-none data-[disabled]:opacity-50 data-[orientation=vertical]:h-full data-[orientation=vertical]:w-auto",
     control:
@@ -45,9 +48,6 @@ export const slider = tv({
         thumb: "border-error ring-error/50",
       },
     },
-  },
-  defaultVariants: {
-    variant: "default",
   },
 });
 
@@ -184,15 +184,15 @@ const rangeEnd = isRange ? getPercentage(Math.max(...values)) : getPercentage(va
       this.root = root;
       this.track = root.querySelector('[data-slot="slider-track"]')!;
       this.range = root.querySelector('[data-slot="slider-range"]')!;
-      this.thumbs = Array.from(root.querySelectorAll('[data-slot="slider-thumb"]'));
-      this.inputs = Array.from(root.querySelectorAll('input[type="range"]'));
+      this.thumbs = [...root.querySelectorAll('[data-slot="slider-thumb"]')];
+      this.inputs = [...root.querySelectorAll('input[type="range"]')];
 
       this.min = Number(root.dataset.min) || 0;
       this.max = Number(root.dataset.max) || 100;
       this.step = Number(root.dataset.step) || 1;
       this.largeStep = Number(root.dataset.largeStep) || 10;
       this.orientation = (root.dataset.orientation as "horizontal" | "vertical") || "horizontal";
-      this.disabled = root.hasAttribute("data-disabled");
+      this.disabled = Object.hasOwn(root.dataset, "disabled");
 
       this.values = this.inputs.map((input) => Number(input.value));
 
@@ -200,7 +200,7 @@ const rangeEnd = isRange ? getPercentage(Math.max(...values)) : getPercentage(va
     }
 
     private init(): void {
-      if (this.disabled) return;
+      if (this.disabled) {return;}
 
       this.thumbs.forEach((thumb, index) => {
         thumb.addEventListener("pointerdown", (e) => this.handleThumbPointerDown(e, index));
@@ -287,40 +287,40 @@ const rangeEnd = isRange ? getPercentage(Math.max(...values)) : getPercentage(va
       const value = this.values.length === 1 ? this.values[0] : [...this.values];
       this.root.dispatchEvent(
         new CustomEvent("slider-change", {
-          detail: { value },
           bubbles: true,
+          detail: { value },
         }),
       );
     }
 
     private handleThumbPointerDown(e: PointerEvent, index: number): void {
-      if (this.disabled) return;
+      if (this.disabled) {return;}
       e.preventDefault();
       this.activeThumbIndex = index;
       this.dragging = true;
-      this.root.setAttribute("data-dragging", "");
-      this.thumbs[index].setAttribute("data-dragging", "");
+      this.root.dataset.dragging = "";
+      this.thumbs[index].dataset.dragging = "";
       this.thumbs[index].focus();
       (e.target as HTMLElement).setPointerCapture(e.pointerId);
     }
 
     private handlePointerMove(e: PointerEvent): void {
-      if (!this.dragging || this.activeThumbIndex === -1) return;
+      if (!this.dragging || this.activeThumbIndex === -1) {return;}
       const newValue = this.getValueFromPosition(e.clientX, e.clientY);
       this.updateValue(this.activeThumbIndex, newValue);
     }
 
     private handlePointerUp(): void {
-      if (!this.dragging) return;
+      if (!this.dragging) {return;}
       this.dragging = false;
-      this.root.removeAttribute("data-dragging");
-      this.thumbs.forEach((thumb) => thumb.removeAttribute("data-dragging"));
+      delete this.root.dataset.dragging;
+      this.thumbs.forEach((thumb) => delete thumb.dataset.dragging);
 
       const value = this.values.length === 1 ? this.values[0] : [...this.values];
       this.root.dispatchEvent(
         new CustomEvent("slider-commit", {
-          detail: { value },
           bubbles: true,
+          detail: { value },
         }),
       );
 
@@ -328,7 +328,7 @@ const rangeEnd = isRange ? getPercentage(Math.max(...values)) : getPercentage(va
     }
 
     private handleTrackClick(e: PointerEvent): void {
-      if (this.disabled) return;
+      if (this.disabled) {return;}
       const newValue = this.getValueFromPosition(e.clientX, e.clientY);
 
       let closestIndex = 0;
@@ -342,42 +342,49 @@ const rangeEnd = isRange ? getPercentage(Math.max(...values)) : getPercentage(va
     }
 
     private handleKeyDown(e: KeyboardEvent, index: number): void {
-      if (this.disabled) return;
+      if (this.disabled) {return;}
 
       let newValue = this.values[index];
       const isHorizontal = this.orientation === "horizontal";
 
       switch (e.key) {
         case "ArrowRight":
-        case "ArrowUp":
+        case "ArrowUp": {
           e.preventDefault();
           newValue += isHorizontal === (e.key === "ArrowRight") ? this.step : -this.step;
           if (e.shiftKey) newValue = this.values[index] + this.largeStep;
           break;
+        }
         case "ArrowLeft":
-        case "ArrowDown":
+        case "ArrowDown": {
           e.preventDefault();
           newValue -= isHorizontal === (e.key === "ArrowLeft") ? this.step : -this.step;
           if (e.shiftKey) newValue = this.values[index] - this.largeStep;
           break;
-        case "PageUp":
+        }
+        case "PageUp": {
           e.preventDefault();
           newValue += this.largeStep;
           break;
-        case "PageDown":
+        }
+        case "PageDown": {
           e.preventDefault();
           newValue -= this.largeStep;
           break;
-        case "Home":
+        }
+        case "Home": {
           e.preventDefault();
           newValue = this.min;
           break;
-        case "End":
+        }
+        case "End": {
           e.preventDefault();
           newValue = this.max;
           break;
-        default:
+        }
+        default: {
           return;
+        }
       }
 
       newValue = this.snapToStep(newValue);
@@ -385,13 +392,13 @@ const rangeEnd = isRange ? getPercentage(Math.max(...values)) : getPercentage(va
     }
 
     private handleFocus(index: number): void {
-      this.root.setAttribute("data-focused", "");
-      this.thumbs[index].setAttribute("data-focused", "");
+      this.root.dataset.focused = "";
+      this.thumbs[index].dataset.focused = "";
     }
 
     private handleBlur(): void {
-      this.root.removeAttribute("data-focused");
-      this.thumbs.forEach((thumb) => thumb.removeAttribute("data-focused"));
+      delete this.root.dataset.focused;
+      this.thumbs.forEach((thumb) => delete thumb.dataset.focused);
     }
   }
 

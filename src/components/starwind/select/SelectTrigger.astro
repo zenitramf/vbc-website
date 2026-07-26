@@ -1,7 +1,8 @@
 ---
 import ChevronDown from "@tabler/icons/outline/chevron-down.svg";
 import type { HTMLAttributes } from "astro/types";
-import { tv, type VariantProps } from "tailwind-variants";
+import { tv } from 'tailwind-variants';
+import type { VariantProps } from 'tailwind-variants';
 
 type Props = Omit<HTMLAttributes<"button">, "role" | "type"> &
   VariantProps<typeof selectTrigger> & {
@@ -19,15 +20,15 @@ export const selectTrigger = tv({
     "disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
     "aria-invalid:border-error aria-invalid:focus:ring-error/40 aria-invalid:focus:ring-3",
   ],
+  defaultVariants: {
+    size: "md",
+  },
   variants: {
     size: {
       sm: "h-9 px-2 text-sm",
       md: "h-11 px-3 text-base",
       lg: "h-12 px-4 text-lg",
     },
-  },
-  defaultVariants: {
-    size: "md",
   },
 });
 

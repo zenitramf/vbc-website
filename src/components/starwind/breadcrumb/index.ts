@@ -1,10 +1,14 @@
 import Breadcrumb from "./Breadcrumb.astro";
-import BreadcrumbEllipsis, { breadcrumbEllipsis } from "./BreadcrumbEllipsis.astro";
+import BreadcrumbEllipsis, {
+  breadcrumbEllipsis,
+} from "./BreadcrumbEllipsis.astro";
 import BreadcrumbItem, { breadcrumbItem } from "./BreadcrumbItem.astro";
 import BreadcrumbLink, { breadcrumbLink } from "./BreadcrumbLink.astro";
 import BreadcrumbList, { breadcrumbList } from "./BreadcrumbList.astro";
 import BreadcrumbPage, { breadcrumbPage } from "./BreadcrumbPage.astro";
-import BreadcrumbSeparator, { breadcrumbSeparator } from "./BreadcrumbSeparator.astro";
+import BreadcrumbSeparator, {
+  breadcrumbSeparator,
+} from "./BreadcrumbSeparator.astro";
 
 const BreadcrumbVariants = {
   breadcrumbEllipsis,
@@ -27,11 +31,11 @@ export {
 };
 
 export default {
-  Root: Breadcrumb,
-  List: BreadcrumbList,
   Ellipsis: BreadcrumbEllipsis,
   Item: BreadcrumbItem,
   Link: BreadcrumbLink,
-  Separator: BreadcrumbSeparator,
+  List: BreadcrumbList,
   Page: BreadcrumbPage,
+  Root: Breadcrumb,
+  Separator: BreadcrumbSeparator,
 };

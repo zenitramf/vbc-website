@@ -44,10 +44,10 @@ const {
 // if no specific padding is set, base it off of size
 let newPadding = padding;
 if (!padding) {
-  newPadding = size === "sm" ? 2.5 : size === "lg" ? 4 : 3;
+  newPadding = size === "sm" ? 2.5 : (size === "lg" ? 4 : 3);
 }
 
-const sizeMultiplier = size === "sm" ? 4 : size === "lg" ? 6 : 5;
+const sizeMultiplier = size === "sm" ? 4 : (size === "lg" ? 6 : 5);
 
 let ariaLabel;
 if (rest["aria-label"]) {
@@ -65,6 +65,7 @@ export const switchButton = tv({
     "group peer ring-offset-background transition outline-none focus-visible:ring-3",
     "not-disabled:cursor-pointer disabled:cursor-not-allowed disabled:opacity-50",
   ],
+  defaultVariants: { variant: "default" },
   variants: {
     variant: {
       primary: "aria-checked:border-primary focus-visible:border-primary/70 focus:ring-primary/50",
@@ -77,7 +78,6 @@ export const switchButton = tv({
       error: "aria-checked:border-error focus-visible:border-error/70 focus:ring-error/50",
     },
   },
-  defaultVariants: { variant: "default" },
 });
 
 export const switchToggle = tv({
@@ -85,14 +85,14 @@ export const switchToggle = tv({
     "bg-foreground inline-block transform rounded-full transition-transform",
     "group-aria-checked:translate-x-(--translation) group-aria-[checked=false]:translate-x-[calc(var(--padding)-var(--border-offset))]",
   ],
-  variants: { size: { sm: "size-4", md: "size-5", lg: "size-6" } },
   defaultVariants: { size: "md" },
+  variants: { size: { sm: "size-4", md: "size-5", lg: "size-6" } },
 });
 
 export const switchLabel = tv({
   base: "text-foreground ml-2 font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
-  variants: { size: { sm: "text-sm", md: "text-base", lg: "text-lg" } },
   defaultVariants: { size: "md" },
+  variants: { size: { sm: "text-sm", md: "text-base", lg: "text-lg" } },
 });
 ---
 
@@ -146,7 +146,7 @@ export const switchLabel = tv({
     }
 
     private handleStateChange(): void {
-      if (this.switchButton.disabled) return;
+      if (this.switchButton.disabled) {return;}
 
       const isChecked = this.switchButton.getAttribute("aria-checked") === "true";
       const newState = !isChecked;
@@ -155,16 +155,16 @@ export const switchLabel = tv({
 
       // Dispatch custom event with the new state
       const event = new CustomEvent<SwitchChangeEvent["detail"]>("starwind-switch:change", {
-        detail: { checked: newState, switchId: this.switchButton.id },
         bubbles: true,
         cancelable: true,
+        detail: { checked: newState, switchId: this.switchButton.id },
       });
 
       this.switchButton.dispatchEvent(event);
     }
 
     private handleKeyDown(event: KeyboardEvent): void {
-      if (this.switchButton.disabled) return;
+      if (this.switchButton.disabled) {return;}
 
       if (event.key === " " || event.key === "Enter") {
         event.preventDefault();

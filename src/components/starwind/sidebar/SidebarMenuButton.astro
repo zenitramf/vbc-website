@@ -1,6 +1,7 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import { tv, type VariantProps } from "tailwind-variants";
+import { tv } from 'tailwind-variants';
+import type { VariantProps } from 'tailwind-variants';
 
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/starwind/tooltip";
 
@@ -36,6 +37,10 @@ export const sidebarMenuButton = tv({
     "group-data-[collapsible=icon]:size-10! group-data-[collapsible=icon]:p-2.5!",
     "[&>span:last-child]:truncate [&>svg]:size-4.5 [&>svg]:shrink-0",
   ],
+  defaultVariants: {
+    variant: "default",
+    size: "default",
+  },
   variants: {
     variant: {
       default: "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
@@ -49,10 +54,6 @@ export const sidebarMenuButton = tv({
       sm: "h-8 text-sm",
       lg: "h-14 text-lg group-data-[collapsible=icon]:p-0!",
     },
-  },
-  defaultVariants: {
-    variant: "default",
-    size: "default",
   },
 });
 
@@ -68,12 +69,12 @@ const {
 
 const Tag = Astro.props.href ? "a" : "button";
 
-const buttonClasses = sidebarMenuButton({ variant, size, class: className });
+const buttonClasses = sidebarMenuButton({ class: className, size, variant });
 const buttonDataAttrs = {
-  "data-slot": "sidebar-menu-button",
+  "data-active": isActive,
   "data-sidebar": "menu-button",
   "data-size": size || "default",
-  "data-active": isActive,
+  "data-slot": "sidebar-menu-button",
 };
 ---
 

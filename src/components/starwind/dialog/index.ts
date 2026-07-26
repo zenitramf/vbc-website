@@ -5,7 +5,9 @@ import DialogContent, {
   dialogCloseButton,
   dialogContent,
 } from "./DialogContent.astro";
-import DialogDescription, { dialogDescription } from "./DialogDescription.astro";
+import DialogDescription, {
+  dialogDescription,
+} from "./DialogDescription.astro";
 import DialogFooter, { dialogFooter } from "./DialogFooter.astro";
 import DialogHeader, { dialogHeader } from "./DialogHeader.astro";
 import DialogTitle, { dialogTitle } from "./DialogTitle.astro";
@@ -13,8 +15,8 @@ import DialogTrigger from "./DialogTrigger.astro";
 
 const DialogVariants = {
   dialogBackdrop,
-  dialogContent,
   dialogCloseButton,
+  dialogContent,
   dialogDescription,
   dialogFooter,
   dialogHeader,
@@ -34,12 +36,12 @@ export {
 };
 
 export default {
-  Root: Dialog,
-  Trigger: DialogTrigger,
-  Content: DialogContent,
-  Header: DialogHeader,
-  Footer: DialogFooter,
-  Title: DialogTitle,
-  Description: DialogDescription,
   Close: DialogClose,
+  Content: DialogContent,
+  Description: DialogDescription,
+  Footer: DialogFooter,
+  Header: DialogHeader,
+  Root: Dialog,
+  Title: DialogTitle,
+  Trigger: DialogTrigger,
 };

@@ -100,8 +100,8 @@ export const dropzone = tv({
       });
 
       this.observer.observe(this.label, {
-        attributes: true,
         attributeFilter: ["data-is-uploading"],
+        attributes: true,
       });
     }
 
@@ -127,7 +127,7 @@ export const dropzone = tv({
     }
 
     private updateFilesList() {
-      if (!this.filesList) return;
+      if (!this.filesList) {return;}
 
       const hasFiles = this.files.length > 0;
       this.label.dataset.hasFiles = String(hasFiles);
@@ -149,10 +149,10 @@ export const dropzone = tv({
           fileText.textContent = file.name;
 
           // Append text after the SVG
-          fileItem.appendChild(fileText);
+          fileItem.append(fileText);
 
           // Use non-null assertion since we already checked at the beginning of the method
-          this.filesList!.appendChild(fileItem);
+          this.filesList!.append(fileItem);
         });
       } else {
         this.filesList.classList.add("invisible");
@@ -160,9 +160,9 @@ export const dropzone = tv({
     }
 
     private handleFiles(files: FileList | null) {
-      if (!files || files.length === 0) return;
+      if (!files || files.length === 0) {return;}
 
-      this.files = Array.from(files);
+      this.files = [...files];
       this.updateFilesList();
     }
 
@@ -183,7 +183,7 @@ export const dropzone = tv({
         const { files } = e.dataTransfer || {};
         if (files && files.length) {
           const dt = new DataTransfer();
-          Array.from(files).forEach((file) => dt.items.add(file));
+          [...files].forEach((file) => dt.items.add(file));
           this.input.files = dt.files;
           this.input.dispatchEvent(new Event("change", { bubbles: true }));
 

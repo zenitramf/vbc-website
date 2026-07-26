@@ -1,11 +1,13 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import { tv, type VariantProps } from "tailwind-variants";
+import { tv } from 'tailwind-variants';
+import type { VariantProps } from 'tailwind-variants';
 
 type Props = HTMLAttributes<"div"> & VariantProps<typeof alert>;
 
 export const alert = tv({
   base: "text-foreground relative w-full rounded-lg border p-4",
+  defaultVariants: { variant: "default" },
   variants: {
     variant: {
       default: "bg-background dark:bg-input/30 [&>h5>svg]:text-foreground",
@@ -17,7 +19,6 @@ export const alert = tv({
       error: "border-error bg-error/7 [&>h5>svg]:text-error",
     },
   },
-  defaultVariants: { variant: "default" },
 });
 
 const { variant, class: className, ...rest } = Astro.props;

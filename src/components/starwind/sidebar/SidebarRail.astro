@@ -60,7 +60,7 @@ const { class: className, ...rest } = Astro.props;
 
   const setupSidebarRails = () => {
     document.querySelectorAll<HTMLElement>(".starwind-sidebar-rail").forEach((rail) => {
-      if (railInstances.has(rail)) return;
+      if (railInstances.has(rail)) {return;}
       railInstances.set(rail, new SidebarRailHandler(rail));
     });
   };

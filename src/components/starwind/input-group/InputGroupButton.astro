@@ -1,21 +1,22 @@
 ---
 import type { ComponentProps } from "astro/types";
-import { tv, type VariantProps } from "tailwind-variants";
+import { tv } from 'tailwind-variants';
+import type { VariantProps } from 'tailwind-variants';
 
-import { Button } from "@/components/starwind/button";
+import type { Button } from "@/components/starwind/button";
 
 type Props = Omit<ComponentProps<typeof Button>, "size"> & VariantProps<typeof inputGroupButton>;
 
 export const inputGroupButton = tv({
   base: "gap-2 rounded-sm shadow-none",
+  defaultVariants: {
+    size: "sm",
+  },
   variants: {
     size: {
       sm: "h-8 px-2",
       "icon-sm": "size-8 p-0 has-[>svg]:p-0",
     },
-  },
-  defaultVariants: {
-    size: "sm",
   },
 });
 

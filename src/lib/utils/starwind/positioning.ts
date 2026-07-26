@@ -40,35 +40,47 @@ export interface ResolvePlacementResult {
 
 function getOppositeSide(side: FloatingSide): FloatingSide {
   switch (side) {
-    case "top":
+    case "top": {
       return "bottom";
-    case "bottom":
+    }
+    case "bottom": {
       return "top";
-    case "left":
+    }
+    case "left": {
       return "right";
-    case "right":
+    }
+    case "right": {
       return "left";
+    }
   }
 }
 
 function getOppositeAlign(align: FloatingAlign): FloatingAlign {
   switch (align) {
-    case "start":
+    case "start": {
       return "end";
-    case "end":
+    }
+    case "end": {
       return "start";
-    case "center":
+    }
+    case "center": {
       return "center";
+    }
   }
 }
 
-function getPlacementCandidates(side: FloatingSide, align: FloatingAlign): Placement[] {
+function getPlacementCandidates(
+  side: FloatingSide,
+  align: FloatingAlign
+): Placement[] {
   const placements: Placement[] = [];
 
   const pushUnique = (candidate: Placement) => {
     if (
       !placements.some(
-        (placement) => placement.side === candidate.side && placement.align === candidate.align,
+        (placement) =>
+          placement.side === candidate.side &&
+          placement.align === candidate.align
       )
     ) {
       placements.push(candidate);
@@ -78,22 +90,22 @@ function getPlacementCandidates(side: FloatingSide, align: FloatingAlign): Place
   const oppositeSide = getOppositeSide(side);
   const oppositeAlign = getOppositeAlign(align);
 
-  pushUnique({ side, align });
-  pushUnique({ side: oppositeSide, align });
-  pushUnique({ side, align: "center" });
-  pushUnique({ side: oppositeSide, align: "center" });
-  pushUnique({ side, align: oppositeAlign });
-  pushUnique({ side: oppositeSide, align: oppositeAlign });
+  pushUnique({ align, side });
+  pushUnique({ align, side: oppositeSide });
+  pushUnique({ align: "center", side });
+  pushUnique({ align: "center", side: oppositeSide });
+  pushUnique({ align: oppositeAlign, side });
+  pushUnique({ align: oppositeAlign, side: oppositeSide });
 
   if (side === "top" || side === "bottom") {
     for (const fallbackAlign of ["start", "center", "end"] as const) {
-      pushUnique({ side: "right", align: fallbackAlign });
-      pushUnique({ side: "left", align: fallbackAlign });
+      pushUnique({ align: fallbackAlign, side: "right" });
+      pushUnique({ align: fallbackAlign, side: "left" });
     }
   } else {
     for (const fallbackAlign of ["start", "center", "end"] as const) {
-      pushUnique({ side: "bottom", align: fallbackAlign });
-      pushUnique({ side: "top", align: fallbackAlign });
+      pushUnique({ align: fallbackAlign, side: "bottom" });
+      pushUnique({ align: fallbackAlign, side: "top" });
     }
   }
 
@@ -105,7 +117,7 @@ function getPlacementPosition(
   triggerRect: DOMRect,
   contentWidth: number,
   contentHeight: number,
-  sideOffset: number,
+  sideOffset: number
 ): Position {
   let top = 0;
   let left = 0;
@@ -117,7 +129,7 @@ function getPlacementPosition(
         : triggerRect.top - contentHeight - sideOffset;
 
     if (placement.align === "start") {
-      left = triggerRect.left;
+      ({ left } = triggerRect);
     } else if (placement.align === "end") {
       left = triggerRect.right - contentWidth;
     } else {
@@ -130,7 +142,7 @@ function getPlacementPosition(
         : triggerRect.left - contentWidth - sideOffset;
 
     if (placement.align === "start") {
-      top = triggerRect.top;
+      ({ top } = triggerRect);
     } else if (placement.align === "end") {
       top = triggerRect.bottom - contentHeight;
     } else {
@@ -138,7 +150,7 @@ function getPlacementPosition(
     }
   }
 
-  return { top, left };
+  return { left, top };
 }
 
 function clampPositionToViewport(
@@ -147,10 +159,16 @@ function clampPositionToViewport(
   contentHeight: number,
   viewportWidth: number,
   viewportHeight: number,
-  viewportPadding: number,
+  viewportPadding: number
 ): Position {
-  const maxLeft = Math.max(viewportPadding, viewportWidth - contentWidth - viewportPadding);
-  const maxTop = Math.max(viewportPadding, viewportHeight - contentHeight - viewportPadding);
+  const maxLeft = Math.max(
+    viewportPadding,
+    viewportWidth - contentWidth - viewportPadding
+  );
+  const maxTop = Math.max(
+    viewportPadding,
+    viewportHeight - contentHeight - viewportPadding
+  );
 
   return {
     left: Math.min(Math.max(viewportPadding, position.left), maxLeft),
@@ -164,23 +182,23 @@ function getOverflowAmount(
   contentHeight: number,
   viewportWidth: number,
   viewportHeight: number,
-  viewportPadding: number,
+  viewportPadding: number
 ): OverflowAmount {
   const right = position.left + contentWidth;
   const bottom = position.top + contentHeight;
 
   return {
-    left: Math.max(0, viewportPadding - position.left),
-    top: Math.max(0, viewportPadding - position.top),
-    right: Math.max(0, right - (viewportWidth - viewportPadding)),
     bottom: Math.max(0, bottom - (viewportHeight - viewportPadding)),
+    left: Math.max(0, viewportPadding - position.left),
+    right: Math.max(0, right - (viewportWidth - viewportPadding)),
+    top: Math.max(0, viewportPadding - position.top),
   };
 }
 
 function getMainAxisShift(
   side: FloatingSide,
   preferredPosition: Position,
-  clampedPosition: Position,
+  clampedPosition: Position
 ): number {
   if (side === "top" || side === "bottom") {
     return Math.abs(clampedPosition.top - preferredPosition.top);
@@ -192,7 +210,7 @@ function getMainAxisShift(
 function getCrossAxisShift(
   side: FloatingSide,
   preferredPosition: Position,
-  clampedPosition: Position,
+  clampedPosition: Position
 ): number {
   if (side === "top" || side === "bottom") {
     return Math.abs(clampedPosition.left - preferredPosition.left);
@@ -204,7 +222,9 @@ function getCrossAxisShift(
 /**
  * Resolves the best side/alignment placement for floating content.
  */
-export function resolvePlacement(options: ResolvePlacementOptions): ResolvePlacementResult {
+export function resolvePlacement(
+  options: ResolvePlacementOptions
+): ResolvePlacementResult {
   const {
     side,
     align,
@@ -218,7 +238,7 @@ export function resolvePlacement(options: ResolvePlacementOptions): ResolvePlace
     avoidCollisions = true,
   } = options;
 
-  const preferredPlacement: Placement = { side, align };
+  const preferredPlacement: Placement = { align, side };
 
   if (!avoidCollisions) {
     const preferredPosition = getPlacementPosition(
@@ -226,14 +246,14 @@ export function resolvePlacement(options: ResolvePlacementOptions): ResolvePlace
       triggerRect,
       contentWidth,
       contentHeight,
-      sideOffset,
+      sideOffset
     );
 
     return {
-      side,
       align,
-      top: preferredPosition.top,
       left: preferredPosition.left,
+      side,
+      top: preferredPosition.top,
     };
   }
 
@@ -241,12 +261,18 @@ export function resolvePlacement(options: ResolvePlacementOptions): ResolvePlace
 
   let bestPlacement = candidates[0] ?? preferredPlacement;
   let bestPosition = clampPositionToViewport(
-    getPlacementPosition(bestPlacement, triggerRect, contentWidth, contentHeight, sideOffset),
+    getPlacementPosition(
+      bestPlacement,
+      triggerRect,
+      contentWidth,
+      contentHeight,
+      sideOffset
+    ),
     contentWidth,
     contentHeight,
     viewportWidth,
     viewportHeight,
-    viewportPadding,
+    viewportPadding
   );
   let bestScore = Number.POSITIVE_INFINITY;
 
@@ -256,7 +282,7 @@ export function resolvePlacement(options: ResolvePlacementOptions): ResolvePlace
       triggerRect,
       contentWidth,
       contentHeight,
-      sideOffset,
+      sideOffset
     );
     const clampedPosition = clampPositionToViewport(
       preferredPosition,
@@ -264,7 +290,7 @@ export function resolvePlacement(options: ResolvePlacementOptions): ResolvePlace
       contentHeight,
       viewportWidth,
       viewportHeight,
-      viewportPadding,
+      viewportPadding
     );
 
     const overflow = getOverflowAmount(
@@ -273,17 +299,30 @@ export function resolvePlacement(options: ResolvePlacementOptions): ResolvePlace
       contentHeight,
       viewportWidth,
       viewportHeight,
-      viewportPadding,
+      viewportPadding
     );
 
-    const overflowTotal = overflow.left + overflow.right + overflow.top + overflow.bottom;
-    const mainAxisShift = getMainAxisShift(placement.side, preferredPosition, clampedPosition);
-    const crossAxisShift = getCrossAxisShift(placement.side, preferredPosition, clampedPosition);
+    const overflowTotal =
+      overflow.left + overflow.right + overflow.top + overflow.bottom;
+    const mainAxisShift = getMainAxisShift(
+      placement.side,
+      preferredPosition,
+      clampedPosition
+    );
+    const crossAxisShift = getCrossAxisShift(
+      placement.side,
+      preferredPosition,
+      clampedPosition
+    );
 
     const sidePenalty = placement.side === side ? 0 : 32;
     const alignPenalty = placement.align === align ? 0 : 8;
     const score =
-      overflowTotal * 24 + mainAxisShift * 8 + crossAxisShift * 3 + sidePenalty + alignPenalty;
+      overflowTotal * 24 +
+      mainAxisShift * 8 +
+      crossAxisShift * 3 +
+      sidePenalty +
+      alignPenalty;
 
     if (score < bestScore) {
       bestScore = score;
@@ -293,26 +332,31 @@ export function resolvePlacement(options: ResolvePlacementOptions): ResolvePlace
   }
 
   return {
-    side: bestPlacement.side,
     align: bestPlacement.align,
-    top: bestPosition.top,
     left: bestPosition.left,
+    side: bestPlacement.side,
+    top: bestPosition.top,
   };
 }
 
 /**
  * Returns a transform-origin value that matches the resolved placement.
  */
-export function getTransformOrigin(side: FloatingSide, align: FloatingAlign): string {
+export function getTransformOrigin(
+  side: FloatingSide,
+  align: FloatingAlign
+): string {
   if (side === "top" || side === "bottom") {
     const vertical = side === "bottom" ? "top" : "bottom";
-    const horizontal = align === "start" ? "left" : align === "end" ? "right" : "center";
+    const horizontal =
+      align === "start" ? "left" : (align === "end" ? "right" : "center");
 
     return `${horizontal} ${vertical}`;
   }
 
   const horizontal = side === "right" ? "left" : "right";
-  const vertical = align === "start" ? "top" : align === "end" ? "bottom" : "center";
+  const vertical =
+    align === "start" ? "top" : (align === "end" ? "bottom" : "center");
 
   return `${horizontal} ${vertical}`;
 }

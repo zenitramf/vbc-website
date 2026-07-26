@@ -72,14 +72,14 @@ const finalId = (rest as Record<string, unknown>)["id"] as string | undefined;
     }
 
     private setupAccessibility(): void {
-      if (!this.trigger || !this.content) return;
+      if (!this.trigger || !this.content) {return;}
 
       const triggerId = `${this.collapsibleId}-trigger`;
       const contentId = `${this.collapsibleId}-content`;
 
       // Use "set if missing" semantics for IDs
-      if (!this.trigger.id) this.trigger.id = triggerId;
-      if (!this.content.id) this.content.id = contentId;
+      if (!this.trigger.id) {this.trigger.id = triggerId;}
+      if (!this.content.id) {this.content.id = contentId;}
 
       // Use actual IDs (consumer-provided or generated) for ARIA
       this.trigger.setAttribute("aria-controls", this.content.id);
@@ -95,10 +95,10 @@ const finalId = (rest as Record<string, unknown>)["id"] as string | undefined;
     }
 
     private setupEventListeners(): void {
-      if (!this.trigger) return;
+      if (!this.trigger) {return;}
 
       this.trigger.addEventListener("click", () => {
-        if (this.root.dataset.disabled !== undefined) return;
+        if (this.root.dataset.disabled !== undefined) {return;}
         this.toggle();
       });
     }
@@ -135,7 +135,7 @@ const finalId = (rest as Record<string, unknown>)["id"] as string | undefined;
     }
 
     private updateAriaExpanded(): void {
-      if (!this.trigger) return;
+      if (!this.trigger) {return;}
       const isOpen = this.root.dataset.state === "open";
       this.trigger.setAttribute("aria-expanded", isOpen.toString());
     }

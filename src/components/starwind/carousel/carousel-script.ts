@@ -1,9 +1,5 @@
-import EmblaCarousel, {
-  type EmblaCarouselType,
-  type EmblaEventType,
-  type EmblaOptionsType,
-  type EmblaPluginType,
-} from "embla-carousel";
+import EmblaCarousel from 'embla-carousel';
+import type { EmblaCarouselType, EmblaEventType, EmblaOptionsType, EmblaPluginType } from 'embla-carousel';
 
 export type CarouselApi = EmblaCarouselType;
 
@@ -24,10 +20,10 @@ export interface CarouselManager {
 
 export function initCarousel(
   carouselElement: HTMLElement,
-  options: CarouselOptions = {},
+  options: CarouselOptions = {}
 ): CarouselManager | null {
   // don't re-initialize if already initialized
-  if (carouselElement.dataset.initialized === "true") return null;
+  if (carouselElement.dataset.initialized === "true") {return null;}
   carouselElement.dataset.initialized = "true";
 
   if (!carouselElement) {
@@ -37,7 +33,7 @@ export function initCarousel(
 
   // Find content element - Embla expects the viewport element, not the container
   const viewportElement = carouselElement.querySelector(
-    '[data-slot="carousel-content"]',
+    '[data-slot="carousel-content"]'
   ) as HTMLElement;
   if (!viewportElement) {
     console.warn("Carousel content element not found");
@@ -55,8 +51,8 @@ export function initCarousel(
     if (optsString && optsString !== "undefined" && optsString !== "null") {
       dataOpts = JSON.parse(optsString);
     }
-  } catch (e) {
-    console.warn("Failed to parse carousel opts:", e);
+  } catch (error) {
+    console.warn("Failed to parse carousel opts:", error);
     dataOpts = {};
   }
 
@@ -69,11 +65,12 @@ export function initCarousel(
   const emblaOptions: EmblaOptionsType = {
     axis,
     ...dataOpts,
-    ...(options.opts || {}),
+    ...options.opts,
   };
 
   // Handle plugins - EmblaCarousel expects undefined when no plugins, not empty array
-  const plugins = options.plugins && options.plugins.length > 0 ? options.plugins : undefined;
+  const plugins =
+    options.plugins && options.plugins.length > 0 ? options.plugins : undefined;
 
   // console.log("ID:", carouselElement.id);
   // console.log("Plugins:", plugins);
@@ -81,9 +78,11 @@ export function initCarousel(
 
   // Find navigation buttons
   const prevButton = carouselElement.querySelector(
-    ".starwind-carousel-previous",
+    ".starwind-carousel-previous"
   ) as HTMLButtonElement;
-  const nextButton = carouselElement.querySelector(".starwind-carousel-next") as HTMLButtonElement;
+  const nextButton = carouselElement.querySelector(
+    ".starwind-carousel-next"
+  ) as HTMLButtonElement;
 
   // Initialize Embla
   let emblaApi: EmblaCarouselType;
@@ -168,10 +167,8 @@ export function initCarousel(
   // Return manager interface
   return {
     api: emblaApi,
-    scrollPrev: () => emblaApi.scrollPrev(),
-    scrollNext: () => emblaApi.scrollNext(),
-    canScrollPrev: () => emblaApi.canScrollPrev(),
     canScrollNext: () => emblaApi.canScrollNext(),
+    canScrollPrev: () => emblaApi.canScrollPrev(),
     destroy: () => {
       // Remove event listeners to prevent memory leaks
       if (prevButton) {
@@ -185,5 +182,7 @@ export function initCarousel(
       // Destroy the Embla instance
       emblaApi.destroy();
     },
+    scrollNext: () => emblaApi.scrollNext(),
+    scrollPrev: () => emblaApi.scrollPrev(),
   };
 }

@@ -5,9 +5,15 @@ import AlertDialogContent, {
   alertDialogBackdrop,
   alertDialogContent,
 } from "./AlertDialogContent.astro";
-import AlertDialogDescription, { alertDialogDescription } from "./AlertDialogDescription.astro";
-import AlertDialogFooter, { alertDialogFooter } from "./AlertDialogFooter.astro";
-import AlertDialogHeader, { alertDialogHeader } from "./AlertDialogHeader.astro";
+import AlertDialogDescription, {
+  alertDialogDescription,
+} from "./AlertDialogDescription.astro";
+import AlertDialogFooter, {
+  alertDialogFooter,
+} from "./AlertDialogFooter.astro";
+import AlertDialogHeader, {
+  alertDialogHeader,
+} from "./AlertDialogHeader.astro";
 import AlertDialogTitle, { alertDialogTitle } from "./AlertDialogTitle.astro";
 import AlertDialogTrigger from "./AlertDialogTrigger.astro";
 
@@ -34,13 +40,13 @@ export {
 };
 
 export default {
-  Root: AlertDialog,
-  Trigger: AlertDialogTrigger,
-  Content: AlertDialogContent,
-  Header: AlertDialogHeader,
-  Footer: AlertDialogFooter,
-  Title: AlertDialogTitle,
-  Description: AlertDialogDescription,
   Action: AlertDialogAction,
   Cancel: AlertDialogCancel,
+  Content: AlertDialogContent,
+  Description: AlertDialogDescription,
+  Footer: AlertDialogFooter,
+  Header: AlertDialogHeader,
+  Root: AlertDialog,
+  Title: AlertDialogTitle,
+  Trigger: AlertDialogTrigger,
 };

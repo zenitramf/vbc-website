@@ -39,9 +39,11 @@
 
 import Moon from "@tabler/icons/outline/moon.svg";
 import Sun from "@tabler/icons/outline/sun.svg";
-import { tv, type VariantProps } from "tailwind-variants";
+import { tv } from 'tailwind-variants';
+import type { VariantProps } from 'tailwind-variants';
 
-import { Toggle, ToggleVariants } from "@/components/starwind/toggle";
+import type { ToggleVariants } from "@/components/starwind/toggle";
+import { Toggle } from "@/components/starwind/toggle";
 
 export const themeToggle = tv({
   base: [
@@ -114,12 +116,12 @@ const {
       // This handles "system" correctly since initTheme already applied the right class
       const isDark = document.documentElement.classList.contains("dark");
 
-      this.toggle.setAttribute("data-state", isDark ? "on" : "off");
+      this.toggle.dataset.state = isDark ? "on" : "off";
       this.toggle.setAttribute("aria-pressed", isDark.toString());
 
       // Mark icons as ready to show (prevents flash of wrong icon)
       this.toggle.querySelectorAll("[data-theme-icon]").forEach((icon) => {
-        icon.setAttribute("data-ready", "");
+        icon.dataset.ready = "";
       });
     }
 
@@ -162,8 +164,8 @@ const {
       const newState = shouldBeOn ? "on" : "off";
 
       // Only update if state actually changed to prevent loops
-      if (this.toggle.getAttribute("data-state") !== newState) {
-        this.toggle.setAttribute("data-state", newState);
+      if (this.toggle.dataset.state !== newState) {
+        this.toggle.dataset.state = newState;
         this.toggle.setAttribute("aria-pressed", shouldBeOn.toString());
       }
     }

@@ -28,6 +28,9 @@ export const sheetContent = tv({
     "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fill-mode-forwards",
     "data-[state=closed]:duration-300 data-[state=open]:duration-500",
   ],
+  defaultVariants: {
+    side: "right",
+  },
   variants: {
     side: {
       right: [
@@ -47,9 +50,6 @@ export const sheetContent = tv({
         "inset-x-0 top-auto bottom-0 h-auto w-full max-w-screen border-t",
       ],
     },
-  },
-  defaultVariants: {
-    side: "right",
   },
 });
 

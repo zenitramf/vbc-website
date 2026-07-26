@@ -1,6 +1,8 @@
 import InputOtp, { inputOtp } from "./InputOtp.astro";
 import InputOtpGroup, { inputOtpGroup } from "./InputOtpGroup.astro";
-import InputOtpSeparator, { inputOtpSeparator } from "./InputOtpSeparator.astro";
+import InputOtpSeparator, {
+  inputOtpSeparator,
+} from "./InputOtpSeparator.astro";
 import InputOtpSlot, { inputOtpSlot } from "./InputOtpSlot.astro";
 import type { InputOtpChangeEvent } from "./InputOtpTypes";
 
@@ -26,8 +28,8 @@ export {
 };
 
 export default {
-  Root: InputOtp,
   Group: InputOtpGroup,
+  Root: InputOtp,
   Separator: InputOtpSeparator,
   Slot: InputOtpSlot,
 };

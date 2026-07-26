@@ -1,6 +1,7 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import { tv, type VariantProps } from "tailwind-variants";
+import { tv } from 'tailwind-variants';
+import type { VariantProps } from 'tailwind-variants';
 
 type Props = HTMLAttributes<"textarea"> & VariantProps<typeof textarea>;
 
@@ -13,6 +14,7 @@ export const textarea = tv({
     "aria-invalid:border-error aria-invalid:focus-visible:ring-error/40",
     "peer placeholder:text-muted-foreground",
   ],
+  defaultVariants: { size: "md" },
   variants: {
     size: {
       sm: "min-h-9 px-2 py-1 text-sm",
@@ -20,7 +22,6 @@ export const textarea = tv({
       lg: "min-h-12 px-4 py-3 text-lg",
     },
   },
-  defaultVariants: { size: "md" },
 });
 
 const { size, class: className, ...rest } = Astro.props;

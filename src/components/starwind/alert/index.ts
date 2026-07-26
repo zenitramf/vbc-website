@@ -7,7 +7,7 @@ const AlertVariants = { alert, alertDescription, alertTitle };
 export { Alert, AlertDescription, AlertTitle, AlertVariants };
 
 export default {
-  Root: Alert,
   Description: AlertDescription,
+  Root: Alert,
   Title: AlertTitle,
 };

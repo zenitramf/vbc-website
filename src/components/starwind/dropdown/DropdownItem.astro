@@ -19,6 +19,10 @@ export const dropdownItem = tv({
     "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
     "group/dropdown-item [&>svg]:size-4 [&>svg]:shrink-0",
   ],
+  defaultVariants: {
+    inset: false,
+    disabled: false,
+  },
   variants: {
     inset: {
       true: "pl-8",
@@ -26,10 +30,6 @@ export const dropdownItem = tv({
     disabled: {
       true: "pointer-events-none opacity-50",
     },
-  },
-  defaultVariants: {
-    inset: false,
-    disabled: false,
   },
 });
 

@@ -91,17 +91,17 @@ const inputMode = isNumericOnly ? "numeric" : "text";
       if (!container.id) {
         container.id = this.containerId;
       }
-      this.maxLength = parseInt(container.dataset.maxLength || "6", 10);
+      this.maxLength = Number.parseInt(container.dataset.maxLength || "6", 10);
       const patternStr = container.dataset.pattern || "\\d";
       this.pattern = new RegExp(`^${patternStr}$`);
-      this.slots = Array.from(container.querySelectorAll<HTMLElement>("[data-otp-slot]"));
+      this.slots = [...container.querySelectorAll<HTMLElement>('[data-otp-slot]')];
       this.hiddenInput = container.querySelector<HTMLInputElement>("input[data-otp-hidden-input]");
       this.values = new Array(this.slots.length).fill("");
       this.init();
     }
 
     private init() {
-      if (this.slots.length === 0) return;
+      if (this.slots.length === 0) {return;}
 
       const isDisabled = this.container.dataset.disabled === "true";
       if (isDisabled) {
@@ -129,8 +129,8 @@ const inputMode = isNumericOnly ? "numeric" : "text";
       });
 
       this.observer.observe(this.container, {
-        attributes: true,
         attributeFilter: ["data-value"],
+        attributes: true,
       });
     }
 
@@ -150,7 +150,7 @@ const inputMode = isNumericOnly ? "numeric" : "text";
 
     private handleKeyDown(e: KeyboardEvent) {
       const isDisabled = this.container.dataset.disabled === "true";
-      if (isDisabled) return;
+      if (isDisabled) {return;}
 
       if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
         e.preventDefault();
@@ -195,13 +195,13 @@ const inputMode = isNumericOnly ? "numeric" : "text";
 
     private handlePaste(e: ClipboardEvent) {
       const isDisabled = this.container.dataset.disabled === "true";
-      if (isDisabled) return;
+      if (isDisabled) {return;}
 
       e.preventDefault();
       const pastedData = e.clipboardData?.getData("text") || "";
       const matchedChars = this.filterByPattern(pastedData).slice(0, this.maxLength);
 
-      if (matchedChars.length === 0) return;
+      if (matchedChars.length === 0) {return;}
 
       for (let i = 0; i < matchedChars.length && this.currentIndex + i < this.slots.length; i++) {
         this.setSlotValue(this.currentIndex + i, matchedChars[i]);
@@ -214,7 +214,7 @@ const inputMode = isNumericOnly ? "numeric" : "text";
 
     private handleClick(e: MouseEvent) {
       const isDisabled = this.container.dataset.disabled === "true";
-      if (isDisabled) return;
+      if (isDisabled) {return;}
 
       this.currentIndex = this.getNextEmptyIndex();
       this.updateSlots();
@@ -281,7 +281,7 @@ const inputMode = isNumericOnly ? "numeric" : "text";
         }
 
         const isActive = isFocused && index === this.currentIndex;
-        slot.setAttribute("data-active", isActive ? "true" : "false");
+        slot.dataset.active = isActive ? "true" : "false";
 
         if (caretElement) {
           if (isActive && !char) {
@@ -296,7 +296,7 @@ const inputMode = isNumericOnly ? "numeric" : "text";
     }
 
     private filterByPattern(value: string): string[] {
-      return value.split("").filter((char) => this.pattern.test(char));
+      return [...value].filter((char) => this.pattern.test(char));
     }
 
     private setValue(value: string) {
@@ -327,8 +327,8 @@ const inputMode = isNumericOnly ? "numeric" : "text";
       const event = new CustomEvent<InputOtpChangeEvent["detail"]>("starwind-input-otp:change", {
         bubbles: true,
         detail: {
-          value,
           inputOtpId: this.containerId,
+          value,
         },
       });
       this.container.dispatchEvent(event);

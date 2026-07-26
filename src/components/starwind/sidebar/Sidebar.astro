@@ -38,6 +38,9 @@ export const sidebarGap = tv({
     "group-data-[collapsible=offcanvas]:w-0",
     "group-data-[side=right]:rotate-180",
   ],
+  defaultVariants: {
+    variant: "sidebar",
+  },
   variants: {
     variant: {
       sidebar: "group-data-[collapsible=icon]:w-(--sidebar-width-icon)",
@@ -45,15 +48,16 @@ export const sidebarGap = tv({
       inset: "group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+1rem)]",
     },
   },
-  defaultVariants: {
-    variant: "sidebar",
-  },
 });
 
 export const sidebarContainer = tv({
   base: [
     "fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-200 ease-linear md:flex",
   ],
+  defaultVariants: {
+    side: "left",
+    variant: "sidebar",
+  },
   variants: {
     side: {
       left: "left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]",
@@ -68,23 +72,19 @@ export const sidebarContainer = tv({
       inset: "p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+1rem+2px)]",
     },
   },
-  defaultVariants: {
-    side: "left",
-    variant: "sidebar",
-  },
 });
 
 export const sidebarInner = tv({
   base: "bg-sidebar flex h-full w-full flex-col",
+  defaultVariants: {
+    variant: "sidebar",
+  },
   variants: {
     variant: {
       sidebar: "",
       floating: "border-sidebar-border rounded-lg border shadow-sm",
       inset: "border-sidebar-border rounded-lg border shadow-sm",
     },
-  },
-  defaultVariants: {
-    variant: "sidebar",
   },
 });
 
@@ -186,29 +186,25 @@ const SIDEBAR_WIDTH_MOBILE = "18rem";
     }
 
     private updateState() {
-      const state = this.provider.getAttribute("data-state") || "expanded";
-      this.sidebar.setAttribute("data-state", state);
+      const state = this.provider.dataset.state || "expanded";
+      this.sidebar.dataset.state = state;
 
       if (state === "collapsed") {
-        this.sidebar.setAttribute("data-collapsible", this.collapsibleMode);
+        this.sidebar.dataset.collapsible = this.collapsibleMode;
       } else {
-        this.sidebar.setAttribute("data-collapsible", "");
+        this.sidebar.dataset.collapsible = "";
       }
 
       this.syncSidebarMenuTooltips();
     }
 
     private syncSidebarMenuTooltips() {
-      const hasEnabledSidebar = Array.from(
-        document.querySelectorAll<HTMLElement>(
-          '[data-slot="sidebar"][data-collapsible-mode="icon"][data-state="collapsed"]',
-        ),
-      ).some((sidebar) => getComputedStyle(sidebar).display !== "none");
+      const hasEnabledSidebar = [...document.querySelectorAll<HTMLElement>('[data-slot="sidebar"][data-collapsible-mode="icon"][data-state="collapsed"]')].some((sidebar) => getComputedStyle(sidebar).display !== "none");
 
       if (hasEnabledSidebar) {
-        document.documentElement.setAttribute("data-starwind-sidebar-tooltips", "enabled");
+        document.documentElement.dataset.starwindSidebarTooltips = "enabled";
       } else {
-        document.documentElement.removeAttribute("data-starwind-sidebar-tooltips");
+        delete document.documentElement.dataset.starwindSidebarTooltips;
       }
     }
   }
@@ -217,9 +213,9 @@ const SIDEBAR_WIDTH_MOBILE = "18rem";
 
   const setupSidebars = () => {
     document.querySelectorAll<HTMLElement>('[data-slot="sidebar"]').forEach((sidebar) => {
-      if (sidebarInstances.has(sidebar)) return;
+      if (sidebarInstances.has(sidebar)) {return;}
       const provider = sidebar.closest<HTMLElement>('[data-slot="sidebar-provider"]');
-      if (!provider) return;
+      if (!provider) {return;}
       sidebarInstances.set(sidebar, new SidebarHandler(sidebar));
     });
   };

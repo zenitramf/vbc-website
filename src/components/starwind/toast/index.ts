@@ -1,4 +1,9 @@
-import type { PromiseOptions, PromiseStateOption, ToastOptions, Variant } from "./toast-manager";
+import type {
+  PromiseOptions,
+  PromiseStateOption,
+  ToastOptions,
+  Variant,
+} from "./toast-manager";
 import { toast } from "./toast-manager";
 import ToastDescription from "./ToastDescription.astro";
 import Toaster from "./Toaster.astro";
@@ -20,10 +25,10 @@ export {
 };
 
 export default {
-  Manager: toast,
-  Viewport: Toaster,
-  Item: ToastItem,
-  Title: ToastTitle,
   Description: ToastDescription,
+  Item: ToastItem,
+  Manager: toast,
   Template: ToastTemplate,
+  Title: ToastTitle,
+  Viewport: Toaster,
 };

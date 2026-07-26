@@ -1,11 +1,13 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import { tv, type VariantProps } from "tailwind-variants";
+import { tv } from 'tailwind-variants';
+import type { VariantProps } from 'tailwind-variants';
 
 interface Props extends HTMLAttributes<"div">, VariantProps<typeof avatar> {}
 
 export const avatar = tv({
   base: "text-foreground bg-muted relative overflow-hidden rounded-full border-2",
+  defaultVariants: { variant: "default", size: "md" },
   variants: {
     variant: {
       default: "border-border",
@@ -18,7 +20,6 @@ export const avatar = tv({
     },
     size: { sm: "h-8 w-8 text-xs", md: "h-10 w-10 text-sm", lg: "h-12 w-12 text-base" },
   },
-  defaultVariants: { variant: "default", size: "md" },
 });
 
 const { variant, size, class: className, ...rest } = Astro.props;

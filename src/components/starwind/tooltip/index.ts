@@ -10,7 +10,7 @@ const TooltipVariants = {
 export { Tooltip, TooltipContent, TooltipTrigger, TooltipVariants };
 
 export default {
+  Content: TooltipContent,
   Root: Tooltip,
   Trigger: TooltipTrigger,
-  Content: TooltipContent,
 };

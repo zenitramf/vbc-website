@@ -33,7 +33,13 @@
  * ```
  */
 
-export type Variant = "default" | "success" | "error" | "warning" | "info" | "loading";
+export type Variant =
+  | "default"
+  | "success"
+  | "error"
+  | "warning"
+  | "info"
+  | "loading";
 
 export interface ToastOptions {
   id?: string;
@@ -80,7 +86,7 @@ interface ToastManager {
  * Get the toast manager instance from the window
  */
 function getManager(): ToastManager | null {
-  if (typeof window === "undefined") return null;
+  if (typeof window === "undefined") {return null;}
   return (window as any).__starwind__.toast as ToastManager | null;
 }
 
@@ -88,8 +94,11 @@ function getManager(): ToastManager | null {
  * Normalize a string or options object to ToastOptions
  */
 function normalizeOption<T>(
-  value: string | PromiseStateOption | ((data: T) => string | PromiseStateOption),
-  data?: T,
+  value:
+    | string
+    | PromiseStateOption
+    | ((data: T) => string | PromiseStateOption),
+  data?: T
 ): Omit<ToastOptions, "variant"> {
   const resolved = typeof value === "function" ? value(data as T) : value;
   if (typeof resolved === "string") {
@@ -103,7 +112,7 @@ function normalizeOption<T>(
  */
 function createToast(
   messageOrOptions: string | ToastOptions,
-  extraOptions?: Omit<ToastOptions, "title">,
+  extraOptions?: Omit<ToastOptions, "title">
 ): string {
   let options: ToastOptions;
   if (typeof messageOrOptions === "string") {
@@ -127,7 +136,7 @@ function createToast(
 function createVariantToast(
   variant: Variant,
   message: string,
-  options?: Omit<ToastOptions, "variant">,
+  options?: Omit<ToastOptions, "variant">
 ): string {
   return createToast({ ...options, title: message, variant });
 }
@@ -143,7 +152,10 @@ interface ToastAPI {
   warning(message: string, options?: Omit<ToastOptions, "variant">): string;
   info(message: string, options?: Omit<ToastOptions, "variant">): string;
   loading(message: string, options?: Omit<ToastOptions, "variant">): string;
-  promise<T, E = Error>(promise: Promise<T>, options: PromiseOptions<T, E>): Promise<T>;
+  promise<T, E = Error>(
+    promise: Promise<T>,
+    options: PromiseOptions<T, E>
+  ): Promise<T>;
   update(id: string, options: Partial<ToastOptions>): void;
   dismiss(id?: string): void;
 }
@@ -170,13 +182,13 @@ toast.loading = (message: string, options?: Omit<ToastOptions, "variant">) =>
 
 toast.promise = async <T, E = Error>(
   promise: Promise<T>,
-  options: PromiseOptions<T, E>,
+  options: PromiseOptions<T, E>
 ): Promise<T> => {
   const loadingOpts = normalizeOption(options.loading);
   const id = createToast({
     ...loadingOpts,
-    variant: "loading",
-    duration: 0, // Don't auto-dismiss while loading
+    duration: 0,
+    variant: "loading", // Don't auto-dismiss while loading
   });
 
   try {

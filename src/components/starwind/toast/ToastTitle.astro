@@ -9,6 +9,9 @@ import { tv } from "tailwind-variants";
 
 export const toastTitle = tv({
   base: "starwind-toast-title flex items-center gap-1 text-sm font-semibold [&_svg]:size-4",
+  defaultVariants: {
+    variant: "default",
+  },
   variants: {
     variant: {
       default: "",
@@ -18,9 +21,6 @@ export const toastTitle = tv({
       info: "[&_svg]:text-info",
       loading: "[&_svg]:text-muted-foreground",
     },
-  },
-  defaultVariants: {
-    variant: "default",
   },
 });
 
@@ -34,11 +34,11 @@ const { class: className, variant = "default", ...rest } = Astro.props;
 
 const icons = {
   default: null,
-  success: SuccessIcon,
   error: ErrorIcon,
-  warning: WarningIcon,
   info: InfoIcon,
   loading: LoaderIcon,
+  success: SuccessIcon,
+  warning: WarningIcon,
 };
 
 const Icon = icons[variant];

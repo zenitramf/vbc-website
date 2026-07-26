@@ -3,7 +3,9 @@ import InputGroupAddon, { inputGroupAddon } from "./InputGroupAddon.astro";
 import InputGroupButton, { inputGroupButton } from "./InputGroupButton.astro";
 import InputGroupInput, { inputGroupInput } from "./InputGroupInput.astro";
 import InputGroupText from "./InputGroupText.astro";
-import InputGroupTextarea, { inputGroupTextarea } from "./InputGroupTextarea.astro";
+import InputGroupTextarea, {
+  inputGroupTextarea,
+} from "./InputGroupTextarea.astro";
 
 const InputGroupVariants = {
   inputGroup,
@@ -24,10 +26,10 @@ export {
 };
 
 export default {
-  Root: InputGroup,
   Addon: InputGroupAddon,
   Button: InputGroupButton,
   Input: InputGroupInput,
+  Root: InputGroup,
   Text: InputGroupText,
   Textarea: InputGroupTextarea,
 };

@@ -1,12 +1,14 @@
 ---
 import Dots from "@tabler/icons/outline/dots.svg";
 import type { HTMLAttributes } from "astro/types";
-import { tv, type VariantProps } from "tailwind-variants";
+import { tv } from 'tailwind-variants';
+import type { VariantProps } from 'tailwind-variants';
 
 type Props = HTMLAttributes<"span"> & VariantProps<typeof paginationEllipsis>;
 
 export const paginationEllipsis = tv({
   base: "flex items-center justify-center",
+  defaultVariants: { size: "icon" },
   variants: {
     size: {
       "icon-sm": "size-9",
@@ -14,7 +16,6 @@ export const paginationEllipsis = tv({
       "icon-lg": "size-12",
     },
   },
-  defaultVariants: { size: "icon" },
 });
 
 const { class: className, size, ...rest } = Astro.props;

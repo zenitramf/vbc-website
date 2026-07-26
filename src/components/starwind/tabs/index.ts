@@ -13,8 +13,8 @@ const TabsVariants = {
 export { Tabs, TabsContent, TabsList, TabsTrigger, TabsVariants };
 
 export default {
-  Root: Tabs,
   Content: TabsContent,
   List: TabsList,
+  Root: Tabs,
   Trigger: TabsTrigger,
 };

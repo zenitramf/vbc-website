@@ -1,7 +1,8 @@
 ---
 import ChevronDown from "@tabler/icons/outline/chevron-down.svg";
 import type { HTMLAttributes } from "astro/types";
-import { tv, type VariantProps } from "tailwind-variants";
+import { tv } from 'tailwind-variants';
+import type { VariantProps } from 'tailwind-variants';
 
 type Props = Omit<HTMLAttributes<"select">, "size"> & VariantProps<typeof nativeSelect>;
 
@@ -21,6 +22,9 @@ export const nativeSelect = tv({
     "disabled:pointer-events-none disabled:cursor-not-allowed",
     "aria-invalid:border-error aria-invalid:focus-visible:ring-error/40 aria-invalid:focus-visible:ring-3",
   ],
+  defaultVariants: {
+    size: "md",
+  },
   variants: {
     size: {
       sm: "h-9 pr-8 pl-2 text-sm",
@@ -28,22 +32,19 @@ export const nativeSelect = tv({
       lg: "h-12 pr-10 pl-4 text-lg",
     },
   },
-  defaultVariants: {
-    size: "md",
-  },
 });
 
 export const nativeSelectIcon = tv({
   base: ["text-foreground pointer-events-none absolute top-1/2 -translate-y-1/2 opacity-50"],
+  defaultVariants: {
+    size: "md",
+  },
   variants: {
     size: {
       sm: "right-2 size-3.5",
       md: "right-3 size-4",
       lg: "right-4 size-5",
     },
-  },
-  defaultVariants: {
-    size: "md",
   },
 });
 

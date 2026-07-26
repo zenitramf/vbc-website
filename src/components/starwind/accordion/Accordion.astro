@@ -77,15 +77,15 @@ const { type = "single", defaultValue, class: className, ...rest } = Astro.props
      * @returns Array of AccordionItem objects
      */
     private initializeItems(): AccordionItem[] {
-      return Array.from(this.accordion.querySelectorAll<HTMLElement>(".starwind-accordion-item"))
+      return [...this.accordion.querySelectorAll<HTMLElement>('.starwind-accordion-item')]
         .map((element, idx) => {
           const trigger = element.querySelector<HTMLElement>(".starwind-accordion-trigger");
           const content = element.querySelector<HTMLElement>(".starwind-accordion-content");
-          const value = element.getAttribute("data-value") || String(idx);
+          const value = element.dataset.value || String(idx);
 
-          if (!trigger || !content) return null;
+          if (!trigger || !content) {return null;}
 
-          return { element, trigger, content, value };
+          return { content, element, trigger, value };
         })
         .filter((item): item is AccordionItem => item !== null);
     }
@@ -126,7 +126,7 @@ const { type = "single", defaultValue, class: className, ...rest } = Astro.props
     private setContentHeight(content: HTMLElement): void {
       const contentInner = content.firstElementChild as HTMLElement;
       if (contentInner) {
-        const height = contentInner.getBoundingClientRect().height;
+        const {height} = contentInner.getBoundingClientRect();
         content.style.setProperty("--starwind-accordion-content-height", `${height}px`);
       }
     }
@@ -158,7 +158,7 @@ const { type = "single", defaultValue, class: className, ...rest } = Astro.props
      * @param item - The clicked accordion item
      */
     private handleClick(item: AccordionItem): void {
-      const isOpen = item.element.getAttribute("data-state") === "open";
+      const isOpen = item.element.dataset.state === "open";
       this.toggleItem(item, !isOpen);
     }
 
@@ -173,8 +173,8 @@ const { type = "single", defaultValue, class: className, ...rest } = Astro.props
       const keyActions: Record<string, () => void> = {
         ArrowDown: () => this.focusItem(index + 1),
         ArrowUp: () => this.focusItem(index - 1),
-        Home: () => this.focusItem(0),
         End: () => this.focusItem(this.items.length - 1),
+        Home: () => this.focusItem(0),
       };
 
       const action = keyActions[event.key];
@@ -202,7 +202,7 @@ const { type = "single", defaultValue, class: className, ...rest } = Astro.props
       if (this.type === "single" && shouldOpen) {
         // Close other items if in single mode
         this.items.forEach((otherItem) => {
-          if (otherItem !== item && otherItem.element.getAttribute("data-state") === "open") {
+          if (otherItem !== item && otherItem.element.dataset.state === "open") {
             this.setItemState(otherItem, false);
           }
         });
@@ -229,9 +229,9 @@ const { type = "single", defaultValue, class: className, ...rest } = Astro.props
       // Set content height variable for animations
       this.setContentHeight(item.content);
 
-      item.element.setAttribute("data-state", state);
-      item.content.setAttribute("data-state", state);
-      item.trigger.setAttribute("data-state", state);
+      item.element.dataset.state = state;
+      item.content.dataset.state = state;
+      item.trigger.dataset.state = state;
       item.trigger.setAttribute("aria-expanded", isOpen.toString());
     }
   }

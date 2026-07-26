@@ -1,6 +1,7 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import { tv, type VariantProps } from "tailwind-variants";
+import { tv } from 'tailwind-variants';
+import type { VariantProps } from 'tailwind-variants';
 
 type Props = HTMLAttributes<"a"> &
   VariantProps<typeof sidebarMenuSubButton> & {
@@ -23,14 +24,14 @@ export const sidebarMenuSubButton = tv({
     "[&>svg]:text-sidebar-accent-foreground [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0",
     "data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground",
   ],
+  defaultVariants: {
+    size: "md",
+  },
   variants: {
     size: {
       sm: "text-sm",
       md: "text-base",
     },
-  },
-  defaultVariants: {
-    size: "md",
   },
 });
 

@@ -260,12 +260,12 @@ const {
 
       // Initialize bound handlers
       this.boundHandlers = {
-        mouseenter: this.handleMouseenter.bind(this),
-        mouseleave: this.handleMouseleave.bind(this),
-        focusin: this.handleFocusin.bind(this),
-        focusout: this.handleFocusout.bind(this),
         documentMousemove: this.handleDocumentMousemove.bind(this),
         documentPointerdown: this.handleDocumentPointerdown.bind(this),
+        focusin: this.handleFocusin.bind(this),
+        focusout: this.handleFocusout.bind(this),
+        mouseenter: this.handleMouseenter.bind(this),
+        mouseleave: this.handleMouseleave.bind(this),
       };
 
       this.setupEvents();
@@ -279,7 +279,7 @@ const {
 
     private handleMouseleave(e: MouseEvent): void {
       // Don't collapse if expanded by touch - let the document pointerdown handle it
-      if (this.expandedByTouch) return;
+      if (this.expandedByTouch) {return;}
 
       // Check if mouse is still within viewport bounds (handles case where toast is removed)
       const rect = this.viewport.getBoundingClientRect();
@@ -304,7 +304,7 @@ const {
 
     private handleFocusout(e: FocusEvent): void {
       // Don't collapse if expanded by touch - let the document pointerdown handle it
-      if (this.expandedByTouch) return;
+      if (this.expandedByTouch) {return;}
 
       // Check if mouse is still over viewport before collapsing
       // This handles the case where focus leaves because a toast was closed
@@ -329,7 +329,7 @@ const {
     }
 
     private handleDocumentPointerdown(e: PointerEvent): void {
-      if (!this.expandedByTouch || !this.expanded) return;
+      if (!this.expandedByTouch || !this.expanded) {return;}
 
       const target = e.target as HTMLElement;
       if (!this.viewport.contains(target)) {
@@ -362,7 +362,7 @@ const {
      * Destroy the manager and clean up all resources
      */
     public destroy(): void {
-      if (this.destroyed) return;
+      if (this.destroyed) {return;}
       this.destroyed = true;
 
       // Clear all toasts and their timers
@@ -390,11 +390,11 @@ const {
     private updateExpanded(): void {
       // Set expanded state on viewport
       if (this.expanded) {
-        this.viewport.setAttribute("data-expanded", "");
+        this.viewport.dataset.expanded = "";
         // Calculate total height needed for expanded state
         this.updateViewportHeight();
       } else {
-        this.viewport.removeAttribute("data-expanded");
+        delete this.viewport.dataset.expanded;
         this.viewport.style.removeProperty("height");
       }
 
@@ -402,11 +402,11 @@ const {
         if (toast.element) {
           const contentEl = toast.element.querySelector('[data-slot="toast-content"]');
           if (this.expanded) {
-            toast.element.setAttribute("data-expanded", "");
+            toast.element.dataset.expanded = "";
             contentEl?.setAttribute("data-expanded", "");
           } else {
-            toast.element.removeAttribute("data-expanded");
-            contentEl?.removeAttribute("data-expanded");
+            delete toast.element.dataset.expanded;
+            delete contentEl.dataset.expanded;
           }
         }
       });
@@ -414,7 +414,7 @@ const {
     }
 
     private updateViewportHeight(): void {
-      if (!this.expanded || this.toasts.length === 0) return;
+      if (!this.expanded || this.toasts.length === 0) {return;}
 
       const gapValue = this.getCssPixelValue("--gap");
       const visibleToasts = this.toasts.slice(0, this.limit);
@@ -426,14 +426,14 @@ const {
 
     private getCssPixelValue(property: string): number {
       const value = getComputedStyle(this.viewport).getPropertyValue(property).trim();
-      if (!value) return 16;
+      if (!value) {return 16;}
 
       // Create a temporary element to convert CSS value to pixels
       const temp = document.createElement("div");
       temp.style.position = "absolute";
       temp.style.visibility = "hidden";
       temp.style.width = value;
-      document.body.appendChild(temp);
+      document.body.append(temp);
       const pixels = temp.offsetWidth;
       document.body.removeChild(temp);
       return pixels || 16;
@@ -468,8 +468,8 @@ const {
 
       const toastState: ToastState = {
         ...options,
-        id,
         duration,
+        id,
       };
 
       // Always add the new toast at the front (newest first)
@@ -487,7 +487,7 @@ const {
      */
     public update(id: string, options: Partial<ToastOptions>): void {
       const toastIndex = this.toasts.findIndex((t) => t.id === id);
-      if (toastIndex === -1) return;
+      if (toastIndex === -1) {return;}
 
       const toast = this.toasts[toastIndex];
       const oldVariant = toast.variant;
@@ -520,10 +520,10 @@ const {
      */
     public close(id: string): void {
       const toast = this.toasts.find((t) => t.id === id);
-      if (!toast) return;
+      if (!toast) {return;}
 
       // Guard against closing a toast that's already closing
-      if (toast.closing) return;
+      if (toast.closing) {return;}
       toast.closing = true;
 
       if (toast.timeoutId) {
@@ -534,7 +534,7 @@ const {
       toast.onClose?.();
 
       if (toast.element) {
-        toast.element.setAttribute("data-state", "closed");
+        toast.element.dataset.state = "closed";
 
         setTimeout(() => {
           toast.element?.remove();
@@ -578,17 +578,17 @@ const {
       const clone = template.content.cloneNode(true) as DocumentFragment;
       const element = clone.firstElementChild as HTMLElement;
 
-      if (!element) return;
+      if (!element) {return;}
 
-      element.setAttribute("data-toast-id", toast.id);
-      element.setAttribute("data-starting-style", "");
+      element.dataset.toastId = toast.id;
+      element.dataset.startingStyle = "";
 
       // Update title
       const titleEl = element.querySelector("[data-toast-title]");
       const titleTextEl = element.querySelector("[data-toast-title-text]");
       if (titleEl) {
         if (toast.title) {
-          if (titleTextEl) titleTextEl.textContent = toast.title;
+          if (titleTextEl) {titleTextEl.textContent = toast.title;}
         } else {
           titleEl.remove();
         }
@@ -626,7 +626,7 @@ const {
 
         // Remove starting style after a frame to trigger animation
         requestAnimationFrame(() => {
-          element.removeAttribute("data-starting-style");
+          delete element.dataset.startingStyle;
         });
       });
 
@@ -640,14 +640,14 @@ const {
     }
 
     private updateToastContent(toast: ToastState): void {
-      if (!toast.element) return;
+      if (!toast.element) {return;}
 
       const titleEl = toast.element.querySelector("[data-toast-title]");
       const descEl = toast.element.querySelector("[data-toast-description]");
 
       if (titleEl && toast.title) {
         const titleTextEl = titleEl.querySelector("[data-toast-title-text]");
-        if (titleTextEl) titleTextEl.textContent = toast.title;
+        if (titleTextEl) {titleTextEl.textContent = toast.title;}
       }
       if (descEl && toast.description) {
         descEl.textContent = toast.description;
@@ -658,7 +658,7 @@ const {
      * Re-render a toast with a new template (for variant changes)
      */
     private rerenderToast(toast: ToastState): void {
-      if (!toast.element) return;
+      if (!toast.element) {return;}
 
       const variant = toast.variant || "default";
       const template = this.viewport.querySelector(
@@ -673,13 +673,13 @@ const {
       const clone = template.content.cloneNode(true) as DocumentFragment;
       const newElement = clone.firstElementChild as HTMLElement;
 
-      if (!newElement) return;
+      if (!newElement) {return;}
 
       // Copy over attributes and state from old element
-      newElement.setAttribute("data-toast-id", toast.id);
-      newElement.setAttribute("data-state", "open");
+      newElement.dataset.toastId = toast.id;
+      newElement.dataset.state = "open";
       if (this.expanded) {
-        newElement.setAttribute("data-expanded", "");
+        newElement.dataset.expanded = "";
       }
 
       // Copy CSS variables
@@ -724,7 +724,7 @@ const {
 
       // Iterate through toasts - index 0 is newest (front)
       this.toasts.forEach((toast, index) => {
-        if (!toast.element) return;
+        if (!toast.element) {return;}
 
         const contentEl = toast.element.querySelector('[data-slot="toast-content"]');
 
@@ -736,14 +736,14 @@ const {
         if (index > 0) {
           contentEl?.setAttribute("data-behind", "");
         } else {
-          contentEl?.removeAttribute("data-behind");
+          delete contentEl.dataset.behind;
         }
 
         // Mark as limited if beyond limit
         if (index >= this.limit) {
-          toast.element.setAttribute("data-limited", "");
+          toast.element.dataset.limited = "";
         } else {
-          toast.element.removeAttribute("data-limited");
+          delete toast.element.dataset.limited;
         }
 
         // Accumulate offset for expanded state (height + gap)
@@ -754,13 +754,13 @@ const {
 
     // Swipe handlers
     private handlePointerDown(e: PointerEvent, toast: ToastState): void {
-      if (e.button !== 0) return;
+      if (e.button !== 0) {return;}
 
       const target = e.target as HTMLElement;
       const isInteractive = target.closest(
         'button, a, input, textarea, [role="button"], [data-swipe-ignore]',
       );
-      if (isInteractive) return;
+      if (isInteractive) {return;}
 
       // Treat touch/pointer down as hover to expand stacked toasts
       // Always mark as touch-expanded for long press detection
@@ -772,12 +772,12 @@ const {
       }
 
       this.activeSwipe = {
-        toast,
-        startX: e.clientX,
-        startY: e.clientY,
-        startTime: Date.now(),
         didMove: false,
         lockedDirection: null,
+        startTime: Date.now(),
+        startX: e.clientX,
+        startY: e.clientY,
+        toast,
       };
 
       toast.swiping = true;
@@ -794,7 +794,7 @@ const {
     }
 
     private handlePointerMove(e: PointerEvent): void {
-      if (!this.activeSwipe) return;
+      if (!this.activeSwipe) {return;}
 
       e.preventDefault();
 
@@ -851,11 +851,11 @@ const {
     }
 
     private handlePointerUp(e: PointerEvent): void {
-      if (!this.activeSwipe) return;
+      if (!this.activeSwipe) {return;}
 
       const { toast } = this.activeSwipe;
       toast.element?.releasePointerCapture(e.pointerId);
-      toast.element?.removeAttribute("data-swiping");
+      delete toast.element.dataset.swiping;
       toast.swiping = false;
 
       const swipeX = toast.swipeX || 0;
@@ -887,7 +887,7 @@ const {
       // Check if this was a long press or if user moved (swiped)
       const pressDuration = Date.now() - this.activeSwipe.startTime;
       const isLongPress = pressDuration >= LONG_PRESS_DURATION;
-      const didMove = this.activeSwipe.didMove;
+      const {didMove} = this.activeSwipe;
 
       // Check if pointer is outside viewport bounds
       const rect = this.viewport.getBoundingClientRect();

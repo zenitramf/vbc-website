@@ -1,5 +1,7 @@
 import ButtonGroup, { buttonGroup } from "./ButtonGroup.astro";
-import ButtonGroupSeparator, { buttonGroupSeparator } from "./ButtonGroupSeparator.astro";
+import ButtonGroupSeparator, {
+  buttonGroupSeparator,
+} from "./ButtonGroupSeparator.astro";
 import ButtonGroupText, { buttonGroupText } from "./ButtonGroupText.astro";
 
 const ButtonGroupVariants = {
@@ -8,7 +10,12 @@ const ButtonGroupVariants = {
   buttonGroupText,
 };
 
-export { ButtonGroup, ButtonGroupSeparator, ButtonGroupText, ButtonGroupVariants };
+export {
+  ButtonGroup,
+  ButtonGroupSeparator,
+  ButtonGroupText,
+  ButtonGroupVariants,
+};
 
 export default {
   Root: ButtonGroup,

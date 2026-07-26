@@ -33,19 +33,6 @@ export const dropdownContent = tv({
     "data-[state=closed]:animate-out data-[state=closed]:fill-mode-forwards fade-out zoom-out-95",
     "absolute will-change-transform",
   ],
-  variants: {
-    side: {
-      bottom: "slide-in-from-top-2 slide-out-to-top-2 top-full",
-      top: "slide-in-from-bottom-2 slide-out-to-bottom-2 bottom-full",
-      right: "slide-in-from-left-2 slide-out-to-left-2 top-0 left-full",
-      left: "slide-in-from-right-2 slide-out-to-right-2 top-0 right-full",
-    },
-    align: {
-      start: "",
-      center: "",
-      end: "",
-    },
-  },
   compoundVariants: [
     {
       side: ["top", "bottom"],
@@ -81,6 +68,19 @@ export const dropdownContent = tv({
   defaultVariants: {
     side: "bottom",
     align: "start",
+  },
+  variants: {
+    side: {
+      bottom: "slide-in-from-top-2 slide-out-to-top-2 top-full",
+      top: "slide-in-from-bottom-2 slide-out-to-bottom-2 bottom-full",
+      right: "slide-in-from-left-2 slide-out-to-left-2 top-0 left-full",
+      left: "slide-in-from-right-2 slide-out-to-right-2 top-0 right-full",
+    },
+    align: {
+      start: "",
+      center: "",
+      end: "",
+    },
   },
 });
 

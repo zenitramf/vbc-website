@@ -1,10 +1,6 @@
+import { initCarousel } from './carousel-script';
+import type { CarouselApi, CarouselManager, CarouselOptions } from './carousel-script';
 import Carousel from "./Carousel.astro";
-import {
-  type CarouselApi,
-  type CarouselManager,
-  type CarouselOptions,
-  initCarousel,
-} from "./carousel-script";
 import CarouselContent from "./CarouselContent.astro";
 import CarouselItem from "./CarouselItem.astro";
 import CarouselNext from "./CarouselNext.astro";
@@ -23,10 +19,10 @@ export {
 };
 
 export default {
-  Root: Carousel,
   Content: CarouselContent,
   Item: CarouselItem,
   Next: CarouselNext,
   Previous: CarouselPrevious,
+  Root: Carousel,
   init: initCarousel,
 };

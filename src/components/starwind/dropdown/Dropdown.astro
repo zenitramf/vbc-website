@@ -53,8 +53,8 @@ const { class: className, openOnHover = false, closeDelay = 200, ...rest } = Ast
     constructor(dropdown: HTMLElement, dropdownIdx: number) {
       this.dropdown = dropdown;
       this.isSubmenu = dropdown.classList.contains("starwind-dropdown-sub");
-      this.openOnHover = dropdown.getAttribute("data-open-on-hover") === "true" || this.isSubmenu;
-      this.closeDelay = parseInt(dropdown.getAttribute("data-close-delay") || "200");
+      this.openOnHover = dropdown.dataset.openOnHover === "true" || this.isSubmenu;
+      this.closeDelay = Number.parseInt(dropdown.getAttribute("data-close-delay") || "200");
 
       // Find the trigger and content that belong to this dropdown, avoiding nested ones
       this.trigger = this.findOwnElement('[data-slot="dropdown-trigger"], [data-sub-trigger]');
@@ -76,14 +76,14 @@ const { class: className, openOnHover = false, closeDelay = 200, ...rest } = Ast
         (this.content as any).__rootDropdown = this.rootDropdown;
       }
 
-      if (!this.trigger || !this.content) return;
+      if (!this.trigger || !this.content) {return;}
 
       // Get animation duration from inline styles if available
       const animationDurationString = this.content.style.animationDuration;
       if (animationDurationString.endsWith("ms")) {
-        this.animationDuration = parseFloat(animationDurationString);
+        this.animationDuration = Number.parseFloat(animationDurationString);
       } else if (animationDurationString.endsWith("s")) {
-        this.animationDuration = parseFloat(animationDurationString) * 1000;
+        this.animationDuration = Number.parseFloat(animationDurationString) * 1000;
       }
 
       this.init(dropdownIdx);
@@ -105,7 +105,7 @@ const { class: className, openOnHover = false, closeDelay = 200, ...rest } = Ast
     }
 
     private setupAccessibility(dropdownIdx: number) {
-      if (!this.trigger || !this.content) return;
+      if (!this.trigger || !this.content) {return;}
 
       // Generate unique IDs for accessibility
       this.trigger.id = `starwind-dropdown${dropdownIdx}-trigger`;
@@ -117,7 +117,7 @@ const { class: className, openOnHover = false, closeDelay = 200, ...rest } = Ast
     }
 
     private setupEvents() {
-      if (!this.trigger || !this.content) return;
+      if (!this.trigger || !this.content) {return;}
 
       // Handle trigger click
       this.trigger.addEventListener("click", (e) => {
@@ -222,8 +222,8 @@ const { class: className, openOnHover = false, closeDelay = 200, ...rest } = Ast
       this.content.addEventListener("click", (e) => {
         const target = e.target as HTMLElement;
         const item = target.closest('[role="menuitem"]');
-        if (item && !(item as HTMLElement).hasAttribute("data-disabled")) {
-          if (item.hasAttribute("aria-haspopup")) return;
+        if (item && !Object.hasOwn((item as HTMLElement).dataset, "disabled")) {
+          if (item.hasAttribute("aria-haspopup")) {return;}
 
           // Close the dropdown after item selection
           this.closeDropdown();
@@ -251,8 +251,8 @@ const { class: className, openOnHover = false, closeDelay = 200, ...rest } = Ast
 
       if (this.openOnHover) {
         this.trigger.addEventListener("pointerenter", (e) => {
-          if (e.pointerType !== "mouse") return;
-          if (this.isClosing) return;
+          if (e.pointerType !== "mouse") {return;}
+          if (this.isClosing) {return;}
           if (!this.isOpen) {
             this.lastOpenSource = "mouse";
             this.openDropdown();
@@ -263,8 +263,8 @@ const { class: className, openOnHover = false, closeDelay = 200, ...rest } = Ast
         });
 
         this.dropdown.addEventListener("pointerleave", (e) => {
-          if (e.pointerType !== "mouse") return;
-          if (this.openChildCount > 0) return;
+          if (e.pointerType !== "mouse") {return;}
+          if (this.openChildCount > 0) {return;}
           if (this.isOpen) {
             this.lastCloseSource = "mouse";
             this.closeDropdownDelayed();
@@ -272,7 +272,7 @@ const { class: className, openOnHover = false, closeDelay = 200, ...rest } = Ast
         });
 
         this.content.addEventListener("pointerenter", (e) => {
-          if (e.pointerType !== "mouse") return;
+          if (e.pointerType !== "mouse") {return;}
           // If the user moves the mouse to the content, cancel the close timer
           this.clearCloseTimer();
         });
@@ -284,71 +284,76 @@ const { class: className, openOnHover = false, closeDelay = 200, ...rest } = Ast
       this.updateDropdownItems();
 
       // Skip if no items
-      if (this.items.length === 0) return;
+      if (this.items.length === 0) {return;}
 
       const currentIdx = this.currentFocusIndex;
       const currentItem = this.items[currentIdx];
 
       switch (e.key) {
-        case "ArrowDown":
+        case "ArrowDown": {
           e.preventDefault();
           e.stopPropagation();
           this.focusItem(currentIdx === -1 ? 0 : currentIdx + 1);
           break;
-        case "ArrowUp":
+        }
+        case "ArrowUp": {
           e.preventDefault();
           e.stopPropagation();
           this.focusItem(currentIdx === -1 ? this.items.length - 1 : currentIdx - 1);
           break;
-        case "ArrowRight":
+        }
+        case "ArrowRight": {
           if (currentItem?.getAttribute("aria-haspopup") === "true") {
             e.preventDefault();
             e.stopPropagation();
             currentItem.click();
           }
           break;
-        case "ArrowLeft":
+        }
+        case "ArrowLeft": {
           if (this.isSubmenu) {
             e.preventDefault();
             e.stopPropagation();
             this.closeDropdown();
           }
           break;
-        case "Home":
+        }
+        case "Home": {
           e.preventDefault();
           e.stopPropagation();
           this.focusItem(0);
           break;
-        case "End":
+        }
+        case "End": {
           e.preventDefault();
           e.stopPropagation();
           this.focusItem(this.items.length - 1);
           break;
+        }
         case "Enter":
-        case " ":
+        case " ": {
           if (currentIdx !== -1) {
             e.preventDefault();
             e.stopPropagation();
             this.items[currentIdx].click();
           }
           break;
+        }
       }
     }
 
     private isTargetInGroup(target: Node): boolean {
       const el = target instanceof HTMLElement ? target : target.parentElement;
-      if (!el) return false;
+      if (!el) {return false;}
       const contentEl = el.closest('[data-slot="dropdown-content"]');
       return !!contentEl && (contentEl as any).__rootDropdown === this.rootDropdown;
     }
 
     private updateDropdownItems() {
-      if (!this.content) return;
+      if (!this.content) {return;}
       // Get all interactive menuitem elements belonging to this menu level only
       this.items = (
-        Array.from(
-          this.content.querySelectorAll('[role="menuitem"]:not([data-disabled="true"])'),
-        ) as HTMLElement[]
+        [...this.content.querySelectorAll('[role="menuitem"]:not([data-disabled="true"])')] as HTMLElement[]
       ).filter((item) => item.closest('[role="menu"]') === this.content);
     }
 
@@ -371,8 +376,8 @@ const { class: className, openOnHover = false, closeDelay = 200, ...rest } = Ast
     }
 
     private openDropdown() {
-      if (this.isClosing) return;
-      if (!this.content || !this.trigger || (this.trigger as any).disabled) return;
+      if (this.isClosing) {return;}
+      if (!this.content || !this.trigger || (this.trigger as any).disabled) {return;}
 
       this.isOpen = true;
       this.trigger.setAttribute("aria-expanded", "true");
@@ -383,7 +388,7 @@ const { class: className, openOnHover = false, closeDelay = 200, ...rest } = Ast
         this.portalContent();
       }
 
-      this.content.setAttribute("data-state", "open");
+      this.content.dataset.state = "open";
 
       // Update the list of dropdown items
       this.updateDropdownItems();
@@ -402,12 +407,12 @@ const { class: className, openOnHover = false, closeDelay = 200, ...rest } = Ast
     }
 
     private closeDropdown(options?: { skipFocus?: boolean }) {
-      if (!this.isOpen) return;
-      if (!this.content || !this.trigger) return;
+      if (!this.isOpen) {return;}
+      if (!this.content || !this.trigger) {return;}
 
       this.isClosing = true;
       this.isOpen = false;
-      this.content.setAttribute("data-state", "closed");
+      this.content.dataset.state = "closed";
 
       // Set focus back on trigger only if opened or closed by keyboard
       // Skip focus if a close-all with focusRoot is closing this submenu (root will handle focus)
@@ -418,14 +423,14 @@ const { class: className, openOnHover = false, closeDelay = 200, ...rest } = Ast
           this.lastCloseSource === "keyboard")
       ) {
         requestAnimationFrame(() => {
-          if (!this.trigger) return;
+          if (!this.trigger) {return;}
           this.trigger.focus();
         });
       }
 
       // Give the content time to animate before hiding
       setTimeout(() => {
-        if (!this.content) return;
+        if (!this.content) {return;}
         if (this.isSubmenu) {
           this.unportalContent();
         }
@@ -440,7 +445,7 @@ const { class: className, openOnHover = false, closeDelay = 200, ...rest } = Ast
     }
 
     private closeDropdownDelayed() {
-      if (!this.content || !this.trigger) return;
+      if (!this.content || !this.trigger) {return;}
 
       // Clear any existing close timer
       this.clearCloseTimer();
@@ -462,14 +467,14 @@ const { class: className, openOnHover = false, closeDelay = 200, ...rest } = Ast
     }
 
     private portalContent() {
-      if (!this.content || !this.trigger) return;
+      if (!this.content || !this.trigger) {return;}
 
       // Save the original position with a placeholder
       this.contentPlaceholder = document.createComment("dropdown-sub-placeholder");
       this.content.parentNode?.insertBefore(this.contentPlaceholder, this.content);
 
       // Move content to body
-      document.body.appendChild(this.content);
+      document.body.append(this.content);
 
       // Apply fixed positioning (overrides the CSS absolute class)
       this.content.style.position = "fixed";
@@ -494,16 +499,16 @@ const { class: className, openOnHover = false, closeDelay = 200, ...rest } = Ast
 
       // Handle hover interactions for portaled content
       const onPointerEnter = (e: PointerEvent) => {
-        if (e.pointerType !== "mouse") return;
+        if (e.pointerType !== "mouse") {return;}
         this.clearCloseTimer();
         // Cancel close timers for all handlers in the group (parents included)
         this.rootDropdown.dispatchEvent(new CustomEvent("starwind-dropdown:cancel-close"));
       };
 
       const onPointerLeave = (e: PointerEvent) => {
-        if (e.pointerType !== "mouse") return;
+        if (e.pointerType !== "mouse") {return;}
         // Don't close if a child submenu is still open
-        if (this.openChildCount > 0) return;
+        if (this.openChildCount > 0) {return;}
         this.lastCloseSource = "mouse";
         this.closeDropdownDelayed();
       };
@@ -520,7 +525,7 @@ const { class: className, openOnHover = false, closeDelay = 200, ...rest } = Ast
     }
 
     private unportalContent() {
-      if (!this.content || !this.contentPlaceholder) return;
+      if (!this.content || !this.contentPlaceholder) {return;}
 
       // Decrement parent's open child count
       if (this.parentHandler) {
@@ -545,12 +550,12 @@ const { class: className, openOnHover = false, closeDelay = 200, ...rest } = Ast
     }
 
     private positionSubContent() {
-      if (!this.content || !this.trigger) return;
+      if (!this.content || !this.trigger) {return;}
 
       const triggerRect = this.trigger.getBoundingClientRect();
 
       // Position to the right of the trigger by default
-      let top = triggerRect.top;
+      let {top} = triggerRect;
       let left = triggerRect.right;
 
       // Measure content dimensions
@@ -574,7 +579,7 @@ const { class: className, openOnHover = false, closeDelay = 200, ...rest } = Ast
     }
 
     private positionContent() {
-      if (!this.content || !this.trigger || this.isSubmenu) return;
+      if (!this.content || !this.trigger || this.isSubmenu) {return;}
 
       // Set content width to match trigger width
       this.content.style.width = "var(--starwind-dropdown-trigger-width)";

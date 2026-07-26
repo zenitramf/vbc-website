@@ -1,6 +1,7 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import { tv, type VariantProps } from "tailwind-variants";
+import { tv } from 'tailwind-variants';
+import type { VariantProps } from 'tailwind-variants';
 
 type Props = HTMLAttributes<"div"> &
   VariantProps<typeof inputOtpSlot> & {
@@ -16,6 +17,7 @@ export const inputOtpSlot = tv({
     "data-[active=true]:aria-invalid:ring-error/40",
     "aria-invalid:border-error data-[active=true]:aria-invalid:border-error",
   ],
+  defaultVariants: { size: "md" },
   variants: {
     size: {
       sm: "size-9 text-sm",
@@ -23,7 +25,6 @@ export const inputOtpSlot = tv({
       lg: "size-12 text-lg",
     },
   },
-  defaultVariants: { size: "md" },
 });
 
 const { size, index, class: className, ...rest } = Astro.props;

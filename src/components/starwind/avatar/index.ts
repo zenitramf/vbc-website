@@ -7,7 +7,7 @@ const AvatarVariants = { avatar, avatarFallback, avatarImage };
 export { Avatar, AvatarFallback, AvatarImage, AvatarVariants };
 
 export default {
-  Root: Avatar,
-  Image: AvatarImage,
   Fallback: AvatarFallback,
+  Image: AvatarImage,
+  Root: Avatar,
 };

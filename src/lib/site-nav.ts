@@ -24,9 +24,8 @@ export const giveHref =
 
 export const footerNav = {
   connect: [
-    { href: "/#ministries", label: "Ministries" },
+    { href: "/#soul-winning", label: "Ministries" },
     { href: "/sermons/", label: "Sermons" },
-    { href: "/media/", label: "Media" },
     { external: true, href: giveHref, label: "Give" },
     {
       external: true,

@@ -88,7 +88,7 @@ const mergedStyle = {
         }
       }
 
-      const shortcut = this.provider.getAttribute("data-keyboard-shortcut") || "b";
+      const shortcut = this.provider.dataset.keyboardShortcut || "b";
       if (e.key === shortcut && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         this.toggle();
@@ -126,12 +126,12 @@ const mergedStyle = {
     isMobile(): boolean {
       // Check if desktop sidebar is hidden (has display: none from hidden class)
       const desktopSidebar = this.provider.querySelector<HTMLElement>('[data-slot="sidebar"]');
-      if (!desktopSidebar) return false;
+      if (!desktopSidebar) {return false;}
       return getComputedStyle(desktopSidebar).display === "none";
     }
 
     getState(): "expanded" | "collapsed" {
-      return this.provider.getAttribute("data-state") as "expanded" | "collapsed";
+      return this.provider.dataset.state as "expanded" | "collapsed";
     }
 
     isOpen(): boolean {
@@ -139,7 +139,7 @@ const mergedStyle = {
     }
 
     isMobileOpen(): boolean {
-      return this.provider.getAttribute("data-mobile-open") === "true";
+      return this.provider.dataset.mobileOpen === "true";
     }
 
     toggle() {
@@ -152,7 +152,7 @@ const mergedStyle = {
 
     setOpen(open: boolean) {
       const state = open ? "expanded" : "collapsed";
-      this.provider.setAttribute("data-state", state);
+      this.provider.dataset.state = state;
       this.provider.dispatchEvent(new CustomEvent("sidebar:change", { detail: { open, state } }));
     }
 
@@ -166,7 +166,7 @@ const mergedStyle = {
     }
 
     setMobileOpen(open: boolean) {
-      this.provider.setAttribute("data-mobile-open", String(open));
+      this.provider.dataset.mobileOpen = String(open);
 
       // Find the mobile sidebar Sheet and use Dialog's programmatic API
       const mobileSheet = this.provider.querySelector<HTMLElement>(".starwind-sheet");

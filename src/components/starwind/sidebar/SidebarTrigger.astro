@@ -7,7 +7,7 @@ const sidebarTrigger = tv({
   base: "starwind-sidebar-trigger",
 });
 
-import { Button } from "@/components/starwind/button";
+import type { Button } from "@/components/starwind/button";
 
 type Props = ComponentProps<typeof Button>;
 
@@ -55,7 +55,7 @@ const { class: className, size = "icon-sm", variant = "ghost", ...rest } = Astro
 
   const setupSidebarTriggers = () => {
     document.querySelectorAll<HTMLElement>(".starwind-sidebar-trigger").forEach((trigger) => {
-      if (triggerInstances.has(trigger)) return;
+      if (triggerInstances.has(trigger)) {return;}
       triggerInstances.set(trigger, new SidebarTriggerHandler(trigger));
     });
   };

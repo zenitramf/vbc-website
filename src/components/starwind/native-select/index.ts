@@ -12,10 +12,15 @@ const NativeSelectVariants = {
   nativeSelectWrapper,
 };
 
-export { NativeSelect, NativeSelectOptGroup, NativeSelectOption, NativeSelectVariants };
+export {
+  NativeSelect,
+  NativeSelectOptGroup,
+  NativeSelectOption,
+  NativeSelectVariants,
+};
 
 export default {
-  Root: NativeSelect,
-  Option: NativeSelectOption,
   OptGroup: NativeSelectOptGroup,
+  Option: NativeSelectOption,
+  Root: NativeSelect,
 };

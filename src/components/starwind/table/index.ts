@@ -31,12 +31,12 @@ export {
 };
 
 export default {
-  Root: Table,
   Body: TableBody,
   Caption: TableCaption,
   Cell: TableCell,
   Foot: TableFoot,
   Head: TableHead,
   Header: TableHeader,
+  Root: Table,
   Row: TableRow,
 };

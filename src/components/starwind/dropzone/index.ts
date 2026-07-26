@@ -1,5 +1,7 @@
 import Dropzone, { dropzone } from "./Dropzone.astro";
-import DropzoneFilesList, { dropzoneFilesList } from "./DropzoneFilesList.astro";
+import DropzoneFilesList, {
+  dropzoneFilesList,
+} from "./DropzoneFilesList.astro";
 import DropzoneLoadingIndicator from "./DropzoneLoadingIndicator.astro";
 import DropzoneUploadIndicator from "./DropzoneUploadIndicator.astro";
 
@@ -17,8 +19,8 @@ export {
 };
 
 export default {
-  Root: Dropzone,
   FilesList: DropzoneFilesList,
-  UploadIndicator: DropzoneUploadIndicator,
   LoadingIndicator: DropzoneLoadingIndicator,
+  Root: Dropzone,
+  UploadIndicator: DropzoneUploadIndicator,
 };

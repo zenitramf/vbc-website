@@ -60,7 +60,7 @@ function getYouTubeId(url: string): string | null {
 
   for (const pattern of patterns) {
     const match = url.match(pattern);
-    if (match) return match[1];
+    if (match) {return match[1];}
   }
   return null;
 }
@@ -70,13 +70,13 @@ function getYouTubeId(url: string): string | null {
  */
 function buildYouTubeEmbedUrl(videoId: string, isShort: boolean): string {
   const params = new URLSearchParams();
-  if (autoplay) params.set("autoplay", "1");
-  if (muted) params.set("mute", "1");
+  if (autoplay) {params.set("autoplay", "1");}
+  if (muted) {params.set("mute", "1");}
   if (loop) {
     params.set("loop", "1");
     params.set("playlist", videoId);
   }
-  if (!controls) params.set("controls", "0");
+  if (!controls) {params.set("controls", "0");}
 
   const baseUrl = `https://www.youtube-nocookie.com/embed/${videoId}`;
   const queryString = params.toString();
