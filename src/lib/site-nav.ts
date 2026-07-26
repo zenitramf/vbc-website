@@ -15,6 +15,7 @@ export const primaryNav: NavItem[] = [
   { href: "/about-vbc/", label: "About VBC" },
   { href: "/meet-the-staff/", label: "Meet The Staff" },
   { href: "/sermons/", label: "Sermons" },
+  { href: "/events/", label: "Events" },
 ];
 
 export const visitHref = "/visit/";
