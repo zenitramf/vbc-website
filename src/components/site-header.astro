@@ -26,7 +26,10 @@ const { pathname } = Astro.url;
         height="48"
         class="site-header__logo-img"
       />
-      <span class="site-header__brand">Victory Baptist Church</span>
+      <span class="site-header__brand" aria-hidden="true">
+        <span class="site-header__brand-primary">Victory</span>
+        <span class="site-header__brand-secondary">Baptist Church</span>
+      </span>
     </a>
 
     <ul class="site-header__links" role="list">
@@ -294,13 +297,27 @@ const { pathname } = Astro.url;
   }
 
   .site-header__brand {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 1.05rem;
-    letter-spacing: -0.02em;
+    display: flex;
+    flex-direction: column;
+    color: rgba(255, 255, 255, 0.72);
+    font-family: var(--font-brand);
+    line-height: 1;
+    text-transform: uppercase;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  }
+
+  .site-header__brand-primary {
+    color: #fff;
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+  }
+
+  .site-header__brand-secondary {
+    margin-top: 0.2rem;
+    font-size: 0.625rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
   }
 
   .site-header__links {
