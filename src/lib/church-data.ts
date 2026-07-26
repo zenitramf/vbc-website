@@ -23,8 +23,9 @@ export const churchInfo = {
   email: "contact@fresnovictory.com",
   facebook: "https://www.facebook.com/fresnovictory",
   logo: "/vbc_logo.svg",
-  mapsUrl: "https://maps.app.goo.gl/Ysiz9UYS1mijVrJH7",
-  mapsUrlAlt: "https://goo.gl/maps/Tf3fDh44gbomRUrT9",
+  // Cross-platform Maps URL (short goo.gl links break on many mobile browsers)
+  mapsUrl:
+    "https://www.google.com/maps/search/?api=1&query=Victory+Baptist+Church%2C+1717+N+Gateway+Blvd+Ste.+105%2C+Fresno%2C+CA+93727",
   name: "Victory Baptist Church",
   phone: "559-394-1989",
   /** E.164 form, used for `<a href="tel:">` and JSON-LD `telephone`. */
@@ -78,7 +79,7 @@ export const ministries: Ministry[] = [
     id: "young-adults",
     name: "Young Adults",
     summary:
-      "Monthly gatherings for high school graduates and college-age adults who want to strengthen their faith and build godly friendships in a pivotal season of life.",
+      "Regular gatherings for high school graduates and college-age adults who want to strengthen their faith and build godly friendships in a pivotal season of life.",
   },
   {
     id: "men",
@@ -96,6 +97,6 @@ export const ministries: Ministry[] = [
     id: "seniors",
     name: "Seniors",
     summary:
-      "Monthly fellowship, Bible study, and prayer for senior adults — led with care by a retired pastor who has served in ministry for over 65 years.",
+      'Our "Prime Timers" group encourages one another with Bible study, and prayer for senior adults.',
   },
 ];
