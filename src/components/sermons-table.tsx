@@ -116,7 +116,7 @@ const columns = [
       </span>
     ),
     header: "Speaker",
-    meta: { className: "hidden md:table-cell" },
+    meta: { className: "hidden w-44 md:table-cell" },
   }),
   columnHelper.display({
     cell: (info) => {
@@ -137,7 +137,7 @@ const columns = [
     },
     header: () => <span className="sr-only">Watch</span>,
     id: "watch",
-    meta: { className: "w-1 whitespace-nowrap text-right" },
+    meta: { className: "w-20 whitespace-nowrap text-right sm:w-28" },
   }),
 ];
 
@@ -289,7 +289,7 @@ export default function SermonsTable({ sermons }: SermonsTableProps) {
   return (
     <div className="animate-fade-up overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
       <div className="overflow-x-auto overflow-y-hidden">
-        <table className="w-full caption-bottom text-sm">
+        <table className="w-full table-fixed caption-bottom text-sm">
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
               <tr

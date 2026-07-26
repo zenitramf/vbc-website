@@ -331,6 +331,7 @@ const { pathname } = Astro.url;
 
   .site-header__link,
   .site-header__parent {
+    position: relative;
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
@@ -344,10 +345,31 @@ const { pathname } = Astro.url;
     cursor: pointer;
   }
 
+  .site-header__link::after,
+  .site-header__parent::after {
+    content: "";
+    position: absolute;
+    right: 0.75rem;
+    bottom: 0.1rem;
+    left: 0.75rem;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, #fde68a, #fbbf24);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
   .site-header__link:hover,
   .site-header__parent:hover,
   .site-header__link.is-active {
     color: #fff;
+  }
+
+  .site-header__link:hover::after,
+  .site-header__parent:hover::after,
+  .site-header__item--has-children:focus-within .site-header__parent::after {
+    transform: scaleX(1);
   }
 
   .site-header__caret {
