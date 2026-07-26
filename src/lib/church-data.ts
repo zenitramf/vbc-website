@@ -21,11 +21,30 @@ export const churchInfo = {
   addressLine1: "1717 N Gateway Blvd Ste. #105",
   addressLine2: "Fresno, CA 93727",
   email: "contact@fresnovictory.com",
+  facebook: "https://www.facebook.com/fresnovictory",
+  logo: "/vbc_logo.svg",
   // Cross-platform Maps URL (short goo.gl links break on many mobile browsers)
   mapsUrl:
     "https://www.google.com/maps/search/?api=1&query=Victory+Baptist+Church%2C+1717+N+Gateway+Blvd+Ste.+105%2C+Fresno%2C+CA+93727",
   name: "Victory Baptist Church",
+  phone: "559-394-1989",
+  /** E.164 form, used for `<a href="tel:">` and JSON-LD `telephone`. */
+  phoneE164: "+15593941989",
   shortName: "VBC",
+  /** Brand navy used in header / skip-link. Surface as `<meta name="theme-color">`. */
+  themeColor: "#0f2744",
+  /** Canonical public origin. Also drives `astro.config.mjs` `site`. */
+  url: "https://www.fresnovictory.com",
+  youtube: "https://www.youtube.com/@fresnovictory",
+};
+
+/** Default site-wide SEO values. Per-page overrides merge on top via `buildSEO()`. */
+export const defaultSEO = {
+  description:
+    "Victory Baptist Church in Fresno, California — an independent Baptist church proclaiming the gospel of Jesus Christ through soul-winning, sound Bible teaching, and Christ-centered worship. Sundays 11am & 6pm, Thursdays 7pm.",
+  /** 1200×630 social share image, served from `public/`. */
+  ogImage: "/og-default.jpg",
+  ogImageAlt: "Fresno skyline and downtown mural",
 };
 
 export interface Ministry {

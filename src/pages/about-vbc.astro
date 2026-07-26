@@ -49,7 +49,7 @@ const beliefs = [
 ---
 
 <PageLayout
-  title="About VBC | Victory Baptist Church"
+  title="About VBC"
   description="Learn about Victory Baptist Church in Fresno — our mission, beliefs, and commitment to the gospel."
 >
   <PageHeader eyebrow="About VBC" title="Who We Are">
@@ -95,7 +95,9 @@ const beliefs = [
 
   <section class="bg-muted px-8 py-16 md:px-16 lg:px-24">
     <div class="mx-auto max-w-5xl">
-      <h2 class="mb-8 font-display text-3xl font-bold text-foreground md:text-4xl">
+      <h2
+        class="mb-8 font-display text-3xl font-bold text-foreground md:text-4xl"
+      >
         Our Beliefs
       </h2>
       <div class="grid gap-8 md:grid-cols-2">
@@ -125,7 +127,9 @@ const beliefs = [
           <li>
             <strong class="text-foreground">Sunday:</strong>
             {" "}
-            {serviceTimes.sundaySchool.time}, {serviceTimes.sundayMorning.time},{" "}
+            {serviceTimes.sundaySchool.time}, {
+              serviceTimes.sundayMorning.time
+            },{" "}
             {serviceTimes.sundayNight.time}
           </li>
           <li>

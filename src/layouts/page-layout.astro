@@ -2,23 +2,14 @@
 import MainLayout from "@/layouts/main-layout.astro";
 import SiteHeader from "@/components/site-header.astro";
 import FooterComponent from "@/components/footer-component.astro";
+import type { SEOInput } from "@/lib/seo";
 
-interface Props {
-  title: string;
-  description?: string;
-}
+type Props = SEOInput;
 
-const { title, description }: Props = Astro.props;
+const seoInput: Props = Astro.props;
 ---
 
-<MainLayout title={title}>
-  {
-    description && (
-      <Fragment slot="head">
-        <meta name="description" content={description} />
-      </Fragment>
-    )
-  }
+<MainLayout {...seoInput} currentUrl={Astro.url}>
   <SiteHeader />
   <main id="main-content" class="site-main" tabindex="-1">
     <slot />

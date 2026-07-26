@@ -7,7 +7,7 @@ import { Button } from "@/components/starwind/button";
 ---
 
 <PageLayout
-  title="Events | Victory Baptist Church"
+  title="Events"
   description="Upcoming events at Victory Baptist Church in Fresno."
 >
   <PageHeader eyebrow="Calendar" title="Events">
@@ -59,13 +59,15 @@ import { Button } from "@/components/starwind/button";
             aria-live="polite"
             aria-label="Loading upcoming events"
           >
-            {[0, 1, 2].map(() => (
-              <div class="rounded-lg border border-border bg-muted/40 p-5">
-                <Skeleton class="h-6 w-3/4" />
-                <Skeleton class="mt-3 h-4 w-1/2" />
-                <Skeleton class="mt-3 h-4 w-2/3" />
-              </div>
-            ))}
+            {
+              [0, 1, 2].map(() => (
+                <div class="rounded-lg border border-border bg-muted/40 p-5">
+                  <Skeleton class="h-6 w-3/4" />
+                  <Skeleton class="mt-3 h-4 w-1/2" />
+                  <Skeleton class="mt-3 h-4 w-2/3" />
+                </div>
+              ))
+            }
             <span class="sr-only">Loading upcoming events…</span>
           </div>
         </UpcomingEvents>

@@ -1,3 +1,5 @@
+import { churchInfo } from "@/lib/church-data";
+
 export interface NavChild {
   href: string;
   label: string;
@@ -26,6 +28,8 @@ export const footerNav = {
   connect: [
     { href: "/#soul-winning", label: "Ministries" },
     { href: "/sermons/", label: "Sermons" },
+    { external: true, href: churchInfo.facebook, label: "Facebook" },
+    { external: true, href: churchInfo.youtube, label: "YouTube" },
     { external: true, href: giveHref, label: "Give" },
     {
       external: true,

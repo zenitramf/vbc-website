@@ -1,8 +1,22 @@
 import cloudflare from "@astrojs/cloudflare";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
+import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
+
+const sitemapExcludedPaths = new Set([
+  "/about",
+  "/about/",
+  "/give",
+  "/give/",
+  "/messages",
+  "/messages/",
+  "/salvation.html",
+  "/salvation.html/",
+  "/staff",
+  "/staff/",
+]);
 
 // https://astro.build/config
 export default defineConfig({
@@ -17,7 +31,13 @@ export default defineConfig({
     domains: ["images.fresnovictory.com"],
   },
 
-  integrations: [react(), mdx()],
+  integrations: [
+    react(),
+    mdx(),
+    sitemap({
+      filter: (page) => !sitemapExcludedPaths.has(new URL(page).pathname),
+    }),
+  ],
 
   redirects: {
     "/about": "/about-vbc/",
@@ -25,6 +45,8 @@ export default defineConfig({
     "/salvation.html": "/salvation/",
     "/staff": "/meet-the-staff/",
   },
+
+  site: "https://www.fresnovictory.com",
 
   trailingSlash: "ignore",
 
