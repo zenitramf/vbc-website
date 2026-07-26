@@ -16,11 +16,24 @@ const { sundayMorning } = serviceTimes;
           height="48"
           class="h-12 w-12 brightness-0 invert"
         />
-        <p class="text-sm leading-relaxed text-background/70">
+        <address class="text-sm not-italic leading-relaxed text-background/70">
           {churchInfo.name}<br />
-          {churchInfo.addressLine1}<br />
-          {churchInfo.addressLine2}
-        </p>
+          <a
+            href={churchInfo.mapsUrl}
+            class="transition-colors hover:text-background"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {churchInfo.addressLine1}<br />
+            {churchInfo.addressLine2}
+          </a><br />
+          <a
+            href={`tel:${churchInfo.phoneE164}`}
+            class="transition-colors hover:text-background"
+          >
+            {churchInfo.phone}
+          </a>
+        </address>
         <p class="text-sm text-background/70">
           Sunday Service — {sundayMorning.time}
         </p>
@@ -58,7 +71,9 @@ const { sundayMorning } = serviceTimes;
               <a
                 href={link.href}
                 class="text-sm text-background/80 transition-colors hover:text-background"
-                target={"external" in link && link.external ? "_blank" : undefined}
+                target={
+                  "external" in link && link.external ? "_blank" : undefined
+                }
                 rel={
                   "external" in link && link.external
                     ? "noopener noreferrer"

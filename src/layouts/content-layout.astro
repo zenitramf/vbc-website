@@ -2,9 +2,13 @@
 import PageLayout from "@/layouts/page-layout.astro";
 import PageHeader from "@/components/page-header.astro";
 import { Prose } from "@/components/starwind/prose";
+import { churchInfo } from "@/lib/church-data";
+import type { SEOInput } from "@/lib/seo";
 
 interface Props {
+  /** Page title (without the ` | ${siteName}` suffix). */
   title?: string;
+  /** MDX/markdown frontmatter, if the page is content-driven. */
   frontmatter?: {
     title?: string;
     description?: string;
@@ -12,12 +16,13 @@ interface Props {
 }
 
 const { title, frontmatter }: Props = Astro.props;
-const pageTitle =
-  frontmatter?.title ?? title ?? "Victory Baptist Church";
+const pageTitle = frontmatter?.title ?? title ?? churchInfo.name;
 const description = frontmatter?.description;
+
+const seoInput: SEOInput = { title: pageTitle, description };
 ---
 
-<PageLayout title={`${pageTitle} | Victory Baptist Church`} description={description}>
+<PageLayout {...seoInput}>
   <PageHeader title={pageTitle} />
   <section class="bg-background px-8 py-12 md:px-16 lg:px-24">
     <div class="mx-auto max-w-3xl">

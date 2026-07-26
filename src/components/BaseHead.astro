@@ -1,0 +1,86 @@
+---
+import { churchInfo } from "@/lib/church-data";
+import { absoluteUrl, type SEO } from "@/lib/seo";
+
+interface Props extends SEO {
+  /** Current page URL, used for canonical when no explicit `canonical` is set. */
+  currentUrl?: URL;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  image,
+  imageAlt,
+  type,
+  noindex,
+  jsonLd,
+  currentUrl,
+} = Astro.props;
+
+const getCanonicalUrl = (): string => {
+  if (canonical) return absoluteUrl(canonical);
+  if (currentUrl) return new URL(currentUrl.pathname, churchInfo.url).href;
+  return churchInfo.url;
+};
+
+const canonicalUrl = getCanonicalUrl();
+const ogImageUrl = absoluteUrl(image);
+const siteName = churchInfo.name;
+---
+
+{/* Required base */}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content={Astro.generator} />
+<title>{title}</title>
+<meta name="description" content={description} />
+
+{/* Robots / canonical */}
+{
+  noindex ? (
+    <meta name="robots" content="noindex, follow" />
+  ) : (
+    <meta name="robots" content="index, follow" />
+  )
+}
+<link rel="canonical" href={canonicalUrl} />
+
+{/* Icons + theme color */}
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" href={churchInfo.logo} type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<meta name="theme-color" content={churchInfo.themeColor} />
+
+{/* OpenGraph */}
+<meta property="og:type" content={type} />
+<meta property="og:locale" content="en_US" />
+<meta property="og:site_name" content={siteName} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:image:alt" content={imageAlt} />
+
+{/* Twitter card (mirror of OG values) */}
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageUrl} />
+<meta name="twitter:image:alt" content={imageAlt} />
+
+{/* Fonts */}
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;0,9..144,800;1,9..144,700&family=Manrope:wght@400;500;600;700;800&family=Oswald:wght@400;500;600;700&display=swap"
+  rel="stylesheet"
+/>
+
+{/* Structured data */}
+{
+  jsonLd && (
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  )
+}

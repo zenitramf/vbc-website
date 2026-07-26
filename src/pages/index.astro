@@ -9,10 +9,15 @@ import StaffCalendarSection from "../components/staff-calendar-section.astro";
 import GivingSection from "../components/giving-section.astro";
 import FooterComponent from "../components/footer-component.astro";
 import heroBg from "@/images/home-page_fvbc_hero.webp";
+import { churchOrganizationLd } from "@/lib/seo";
 ---
 
-<MainLayout title="Fresno Victory Baptist Church">
-  <Fragment slot="head">
+<MainLayout
+  title="Fresno Victory Baptist Church"
+  titleTemplate={false}
+  jsonLd={churchOrganizationLd()}
+>
+  <Fragment slot="head-extra">
     <link rel="preload" as="image" href={heroBg.src} fetchpriority="high" />
   </Fragment>
   <main id="main-content" class="site-main" tabindex="-1">

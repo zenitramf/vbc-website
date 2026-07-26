@@ -1,26 +1,21 @@
 ---
 import "@/styles/starwind.css";
 
-interface Props {
-  title: string;
+import BaseHead from "@/components/BaseHead.astro";
+import { buildSEO, type SEOInput } from "@/lib/seo";
+
+interface Props extends SEOInput {
+  currentUrl?: URL;
 }
 
-const { title }: Props = Astro.props;
+const { currentUrl, ...seoInput }: Props = Astro.props;
+const seo = buildSEO(seoInput);
 ---
 
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="generator" content={Astro.generator} />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;0,9..144,800;1,9..144,700&family=Manrope:wght@400;500;600;700;800&family=Oswald:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <title>{title}</title>
-    <slot name="head" />
+    <BaseHead {...seo} currentUrl={currentUrl ?? Astro.url} />
+    <slot name="head-extra" />
   </head>
   <body class="font-sans antialiased">
     <a class="skip-link" href="#main-content">Skip to main content</a>
