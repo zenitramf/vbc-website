@@ -1,6 +1,6 @@
 ---
+import { ArrowRight, Calendar, Users } from "lucide-react";
 import { Button } from "@/components/starwind/button";
-import { unsplash } from "@/lib/unsplash";
 ---
 
 <section
@@ -19,78 +19,74 @@ import { unsplash } from "@/lib/unsplash";
       </h2>
     </div>
 
-    <div class="grid grid-cols-1 gap-10 md:grid-cols-2">
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
       <a
         href="/meet-the-staff/"
-        class="reveal group block focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-primary/50"
+        class="reveal group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-background p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-primary/50 md:p-10"
       >
-        <div class="relative mb-5 aspect-video overflow-hidden">
-          <img
-            src={unsplash.staff}
-            alt="Pastors and leaders serving together"
-            class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-            width="1400"
-            height="788"
-            loading="lazy"
-            decoding="async"
-          />
-          <div
-            class="pointer-events-none absolute inset-0 bg-linear-to-t from-foreground/45 via-transparent to-transparent"
-            aria-hidden="true"
-          >
-          </div>
-        </div>
-        <p class="mb-2 text-sm font-bold uppercase tracking-[0.18em] text-primary">
+        <Users
+          className="absolute -right-8 -top-8 size-44 rotate-12 text-primary/[0.05] transition-transform duration-500 group-hover:rotate-6 group-hover:scale-110"
+          aria-hidden="true"
+        />
+        <span
+          class="mb-8 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-accent text-accent-foreground"
+        >
+          <Users className="size-6" aria-hidden="true" />
+        </span>
+        <p
+          class="mb-2 text-sm font-bold uppercase tracking-[0.18em] text-primary"
+        >
           Our Team
         </p>
         <h3 class="mb-2 font-display text-2xl font-bold text-foreground">
           Meet the pastors &amp; leaders
         </h3>
-        <p class="mb-5 text-muted-foreground leading-relaxed">
+        <p class="text-muted-foreground leading-relaxed">
           Get to know the men and women who shepherd our congregation and serve
           Fresno with humility and love.
         </p>
         <span
-          class="inline-flex text-sm font-semibold text-primary transition-colors group-hover:text-primary-accent"
+          class="mt-auto inline-flex items-center gap-2 pt-6 text-sm font-semibold text-primary transition-colors group-hover:text-primary-accent"
         >
-          Meet Our Staff →
+          Meet Our Staff
+          <ArrowRight
+            className="size-4 transition-transform duration-300 group-hover:translate-x-1"
+            aria-hidden="true"
+          />
         </span>
       </a>
 
       <a
         href="/events/"
-        class="reveal reveal-delay-1 group block focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-primary/50"
+        class="reveal reveal-delay-1 group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-background p-8 transition-all duration-300 hover:-translate-y-1 hover:border-cta/40 hover:shadow-xl focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-primary/50 md:p-10"
       >
-        <div class="relative mb-5 aspect-video overflow-hidden">
-          <img
-            src={unsplash.events}
-            alt="Church community gathering for an event"
-            class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-            width="1400"
-            height="788"
-            loading="lazy"
-            decoding="async"
-          />
-          <div
-            class="pointer-events-none absolute inset-0 bg-linear-to-t from-foreground/45 via-transparent to-transparent"
-            aria-hidden="true"
-          >
-          </div>
-        </div>
+        <Calendar
+          className="absolute -right-8 -top-8 size-44 rotate-12 text-cta/[0.05] transition-transform duration-500 group-hover:rotate-6 group-hover:scale-110"
+          aria-hidden="true"
+        />
+        <span
+          class="mb-8 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-cta/10 text-cta"
+        >
+          <Calendar className="size-6" aria-hidden="true" />
+        </span>
         <p class="mb-2 text-sm font-bold uppercase tracking-[0.18em] text-cta">
           Events
         </p>
         <h3 class="mb-2 font-display text-2xl font-bold text-foreground">
           What's coming up
         </h3>
-        <p class="mb-5 text-muted-foreground leading-relaxed">
+        <p class="text-muted-foreground leading-relaxed">
           From Sunday services to outreach nights, there's always something
           happening at VBC. Come be part of it.
         </p>
         <span
-          class="inline-flex text-sm font-semibold text-primary transition-colors group-hover:text-primary-accent"
+          class="mt-auto inline-flex items-center gap-2 pt-6 text-sm font-semibold text-primary transition-colors group-hover:text-primary-accent"
         >
-          View Calendar →
+          View Calendar
+          <ArrowRight
+            className="size-4 transition-transform duration-300 group-hover:translate-x-1"
+            aria-hidden="true"
+          />
         </span>
       </a>
     </div>
