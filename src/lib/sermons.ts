@@ -1,3 +1,9 @@
+export const formatSermonDate = (publishedAt: string): string =>
+  new Intl.DateTimeFormat("en-US", {
+    dateStyle: "medium",
+    timeZone: "America/Los_Angeles",
+  }).format(new Date(publishedAt));
+
 export interface Sermon {
   publishedAt: string;
   speaker: string;

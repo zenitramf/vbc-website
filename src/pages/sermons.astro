@@ -3,6 +3,7 @@ import { env } from "cloudflare:workers";
 
 import PageLayout from "@/layouts/page-layout.astro";
 import PageHeader from "@/components/page-header.astro";
+import SermonFeatured from "@/components/sermon-featured";
 import SermonsTable from "@/components/sermons-table";
 import { getSermons } from "@/lib/sermons";
 import type { Sermon } from "@/lib/sermons";
@@ -17,6 +18,8 @@ try {
 } catch {
   sermonsAreAvailable = false;
 }
+
+const [latestSermon, ...archiveSermons] = sermons;
 ---
 
 <PageLayout
@@ -32,17 +35,26 @@ try {
 
   <section class="bg-background px-8 py-16 md:px-16 lg:px-24">
     <div class="mx-auto max-w-5xl">
-      <h2 class="mb-8 font-display text-2xl font-bold text-foreground">
-        Latest Teaching
-      </h2>
-
       {
-        sermonsAreAvailable ? (
-          <SermonsTable client:load sermons={sermons} />
-        ) : (
+        !sermonsAreAvailable ? (
           <p class="text-muted-foreground leading-relaxed">
             Sermons are temporarily unavailable. Please check back soon.
           </p>
+        ) : latestSermon ? (
+          <div>
+            <SermonFeatured client:load sermon={latestSermon} />
+
+            {archiveSermons.length > 0 && (
+              <div class="mt-16">
+                <h2 class="mb-8 font-display text-2xl font-bold text-foreground">
+                  Sermon Archive
+                </h2>
+                <SermonsTable client:load sermons={archiveSermons} />
+              </div>
+            )}
+          </div>
+        ) : (
+          <SermonsTable client:load sermons={sermons} />
         )
       }
     </div>
