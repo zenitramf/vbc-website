@@ -125,7 +125,7 @@ const columns = [
       return (
         <a
           aria-label={`Watch "${sermon.title}" on YouTube`}
-          className="inline-flex h-9 items-center gap-1.5 rounded-md border border-border bg-secondary px-3 text-sm font-medium whitespace-nowrap text-secondary-foreground transition-all hover:bg-secondary/80 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-outline/50 sm:px-4"
+          className="inline-flex h-9 items-center gap-1.5 rounded-md px-3 text-sm font-medium whitespace-nowrap text-secondary-foreground transition-all hover:bg-secondary/80 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-outline/50 sm:px-4"
           href={sermon.youtubeUrl}
           rel="noopener noreferrer"
           target="_blank"
