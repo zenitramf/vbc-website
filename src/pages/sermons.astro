@@ -1,7 +1,22 @@
 ---
+import { env } from "cloudflare:workers";
+
 import PageLayout from "@/layouts/page-layout.astro";
 import PageHeader from "@/components/page-header.astro";
-import { Button } from "@/components/starwind/button";
+import SermonsTable from "@/components/sermons-table";
+import { getSermons } from "@/lib/sermons";
+import type { Sermon } from "@/lib/sermons";
+
+export const prerender = false;
+
+let sermons: Sermon[] = [];
+let sermonsAreAvailable = true;
+
+try {
+  sermons = await getSermons(env);
+} catch {
+  sermonsAreAvailable = false;
+}
 ---
 
 <PageLayout
@@ -16,18 +31,20 @@ import { Button } from "@/components/starwind/button";
   </PageHeader>
 
   <section class="bg-background px-8 py-16 md:px-16 lg:px-24">
-    <div class="mx-auto max-w-3xl">
-      <h2 class="mb-4 font-display text-2xl font-bold text-foreground">
+    <div class="mx-auto max-w-5xl">
+      <h2 class="mb-8 font-display text-2xl font-bold text-foreground">
         Latest Teaching
       </h2>
-      <p class="mb-8 text-muted-foreground leading-relaxed">
-        Sermon archives and livestream links will live here. In the meantime,
-        visit our media page or reach out if you would like a recent message.
-      </p>
-      <div class="flex flex-wrap gap-3">
-        <Button href="/media/" size="lg">View Media</Button>
-        <Button href="/visit/" variant="secondary" size="lg">Join Us Live</Button>
-      </div>
+
+      {
+        sermonsAreAvailable ? (
+          <SermonsTable client:load sermons={sermons} />
+        ) : (
+          <p class="text-muted-foreground leading-relaxed">
+            Sermons are temporarily unavailable. Please check back soon.
+          </p>
+        )
+      }
     </div>
   </section>
 </PageLayout>

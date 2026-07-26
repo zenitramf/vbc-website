@@ -22,7 +22,6 @@ export default defineConfig({
   redirects: {
     "/about/": "/about-vbc/",
     "/give/": "https://tithe.ly/give_new/www/#/tithely/give-one-time/1285261",
-    "/messages/": "/sermons/",
     "/staff/": "/meet-the-staff/",
   },
 
