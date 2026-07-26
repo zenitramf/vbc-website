@@ -576,6 +576,9 @@ const gatherings = [
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 1.5rem;
+    padding: 5.5rem 1.25rem 2rem;
+    overflow-y: auto;
     clip-path: circle(0% at calc(100% - 2rem - 22px) calc(1.5rem + 22px));
     transition: clip-path 0.45s cubic-bezier(0.4, 0, 0.2, 1);
   }
@@ -597,7 +600,7 @@ const gatherings = [
     list-style: none;
     padding: 0;
     margin: 0;
-    width: 100%;
+    width: min(100%, 28rem);
   }
 
   .hero__mobile-item:not(:last-child) {
@@ -608,23 +611,21 @@ const gatherings = [
     display: block;
     width: 100%;
     text-align: center;
-    padding: 1.15rem 2rem;
+    padding: clamp(0.85rem, 2.5vh, 1.15rem) 1.25rem;
     color: #fff;
     text-decoration: none;
-    font-size: 1.75rem;
+    font-size: clamp(1.25rem, 5vw, 1.75rem);
     font-weight: 700;
     letter-spacing: -0.02em;
     font-family: var(--font-display);
   }
 
   .hero__mobile-cta {
-    position: absolute;
-    bottom: 2.5rem;
-    left: 0;
-    right: 0;
     display: flex;
     justify-content: center;
-    padding-inline: 2rem;
+    width: 100%;
+    padding-inline: 1.25rem;
+    margin-top: 0.5rem;
   }
 
   .hero__mobile-cta-btn {
