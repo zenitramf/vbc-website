@@ -203,21 +203,52 @@ const gatherings = [
     }
   });
 
+  const hero = document.querySelector(".hero") as HTMLElement | null;
   const nav = document.querySelector(".hero__nav") as HTMLElement | null;
+  let navTicking = false;
+  let navInitialized = false;
 
-  const updateNav = () => {
-    if (!nav) {
+  const applyNavState = (scrolled: boolean) => {
+    if (!(hero && nav)) {
       return;
     }
-    const isDesktop = window.innerWidth >= 768;
-    nav.classList.toggle(
-      "hero__nav--scrolled",
-      isDesktop && window.scrollY > 10
-    );
+    hero.style.setProperty("--p", scrolled ? "1" : "0");
+    nav.classList.toggle("hero__nav--scrolled", scrolled);
   };
 
-  window.addEventListener("scroll", updateNav, { passive: true });
-  window.addEventListener("resize", updateNav, { passive: true });
+  // First sync (e.g. restored scroll position) must apply the state
+  // instantly, without playing the transition.
+  const syncNavInstant = (scrolled: boolean) => {
+    hero?.classList.add("hero--no-motion");
+    applyNavState(scrolled);
+    requestAnimationFrame(() => {
+      hero?.classList.remove("hero--no-motion");
+    });
+  };
+
+  const updateNav = () => {
+    navTicking = false;
+    if (!(hero && nav)) {
+      return;
+    }
+    const scrolled = window.innerWidth >= 768 && window.scrollY > 10;
+    if (navInitialized) {
+      applyNavState(scrolled);
+      return;
+    }
+    navInitialized = true;
+    syncNavInstant(scrolled);
+  };
+
+  const requestNavUpdate = () => {
+    if (!navTicking) {
+      navTicking = true;
+      requestAnimationFrame(updateNav);
+    }
+  };
+
+  window.addEventListener("scroll", requestNavUpdate, { passive: true });
+  window.addEventListener("resize", requestNavUpdate, { passive: true });
   updateNav();
 
   const revealEls = document.querySelectorAll(".reveal");
@@ -245,7 +276,17 @@ const gatherings = [
 </script>
 
 <style>
+  /* Registering --p lets the header transformation animate as one timed
+     transition: the first scroll flips it to 1 and the move always runs to
+     completion; scrolling back to the top reverses it. */
+  @property --p {
+    syntax: "<number>";
+    inherits: true;
+    initial-value: 0;
+  }
+
   .hero {
+    --p: 0;
     --hero-ink: #050d1c;
     --hero-gold: #fbbf24;
     --hero-gold-soft: #fde68a;
@@ -261,6 +302,11 @@ const gatherings = [
     align-items: center;
     justify-content: center;
     background-color: var(--hero-ink);
+    transition: --p 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .hero--no-motion {
+    transition: none;
   }
 
   .hero__media {
@@ -792,30 +838,60 @@ const gatherings = [
       display: inline-flex;
     }
 
+    /* Desktop header: at the top of the page (--p = 0) the logo is large and
+       top-centered with the nav links stacked below it. The first scroll
+       flips --p to 1, gliding the logo into its small left-hand slot and
+       lifting the links into the bar. */
     .hero__nav {
+      --logo-w: 8rem;
+      --logo-h: calc(var(--logo-w) * 0.53125); /* logo aspect: 128 × 68 */
+      --logo-scale: 2.5;
+      --s: calc(1 + (var(--logo-scale) - 1) * (1 - var(--p)));
+      /* Links stay stacked until the logo has moved aside, then rise. */
+      --p-links: clamp(0, (var(--p) - 0.45) / 0.55, 1);
+      --nav-pad-x: 4rem;
+
       position: fixed;
       display: grid;
-      grid-template-columns: 1fr auto 0fr;
+      grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      padding: 1.75rem 4rem;
-      transition:
-        background 0.3s ease,
-        padding 0.3s ease,
-        box-shadow 0.3s ease,
-        border-color 0.3s ease,
-        grid-template-columns 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: calc(0.875rem + (1 - var(--p)) * 0.875rem) var(--nav-pad-x);
       border-bottom: 1px solid transparent;
     }
 
-    .hero__nav--scrolled {
+    /* Scrolled bar chrome fades in behind the content so blur stays constant. */
+    .hero__nav::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
       background: rgba(5, 13, 28, 0.85);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      border-bottom-color: rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       box-shadow: 0 1px 12px rgba(0, 0, 0, 0.25);
-      grid-template-columns: 1fr auto 1fr;
-      padding-top: 0.875rem;
-      padding-bottom: 0.875rem;
+      opacity: var(--p);
+      pointer-events: none;
+    }
+
+    .hero__logo {
+      justify-self: start;
+      transform-origin: left center;
+      transform: translate(
+          calc(
+            (1 - var(--p)) *
+              (50vw - var(--nav-pad-x) - (var(--logo-w) * var(--s)) / 2)
+          ),
+          calc((1 - var(--p)) * (var(--logo-h) * (var(--s) - 1)) / 2)
+        )
+        scale(var(--s));
+    }
+
+    /* Keep the logo at its intended size: preflight's max-width would let
+       narrow grid tracks squeeze it. */
+    .hero__logo-img {
+      width: var(--logo-w);
+      max-width: none;
     }
 
     .hero__hamburger {
@@ -824,33 +900,28 @@ const gatherings = [
 
     .hero__nav-links {
       display: flex;
-      justify-content: flex-end;
-    }
-
-    .hero__nav--scrolled .hero__nav-links {
       justify-content: center;
+      transform: translateY(
+        calc((1 - var(--p-links)) * var(--logo-h) * var(--logo-scale))
+      );
+      /* Fade while crossing the logo's path so they never collide. */
+      opacity: calc(1 - 4 * var(--p-links) * (1 - var(--p-links)));
     }
 
     .hero__nav-cta {
-      display: flex;
+      display: none;
       justify-content: flex-end;
-      overflow: hidden;
-      opacity: 0;
-      transform: translateX(8px);
-      transition:
-        opacity 0.25s ease 0.1s,
-        transform 0.25s ease 0.1s;
+      opacity: var(--p);
+      transform: translateX(calc((1 - var(--p)) * 8px));
       pointer-events: none;
     }
 
     .hero__nav--scrolled .hero__nav-cta {
-      opacity: 1;
-      transform: translateX(0);
       pointer-events: auto;
     }
 
     .hero__content {
-      padding: 8rem 3rem 9rem;
+      padding: calc(8rem + (1 - var(--p)) * 5rem) 3rem 9rem;
     }
 
     .hero__times {
@@ -858,13 +929,47 @@ const gatherings = [
     }
   }
 
+  /* Shorter desktop viewports: shrink the stacked header so it cannot
+     collide with the hero headline. */
+  @media (min-width: 768px) and (max-height: 760px) {
+    .hero__nav {
+      --logo-scale: 2;
+    }
+
+    .hero__content {
+      padding-top: calc(7rem + (1 - var(--p)) * 4rem);
+    }
+  }
+
+  /* Narrow desktops: tighter chrome so logo + links fit without overlap. */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .hero__nav {
+      --nav-pad-x: 1.5rem;
+      --logo-w: 6.5rem;
+    }
+
+    .hero__nav-link,
+    .hero__nav-parent {
+      font-size: 0.875rem;
+      padding-inline: 0.5rem;
+    }
+  }
+
   @media (min-width: 1024px) {
     .hero__nav {
-      padding-inline: 6rem;
+      --nav-pad-x: 6rem;
+    }
+
+    .hero__nav-cta {
+      display: flex;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .hero {
+      transition: none;
+    }
+
     .hero__bg,
     .hero__glow,
     .hero__eyebrow,
