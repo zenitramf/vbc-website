@@ -38,14 +38,16 @@ const seo = buildSEO(seoInput);
     font-size: 0.875rem;
     font-weight: 800;
     text-decoration: none;
-    transform: translateY(calc(-100% - 1rem));
-    transition: transform 160ms ease;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 160ms ease;
   }
 
   .skip-link:focus-visible {
     outline: 3px solid #f4d58d;
     outline-offset: 3px;
-    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
   }
 
   .site-main:focus {
