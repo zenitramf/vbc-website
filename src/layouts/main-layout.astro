@@ -2,7 +2,6 @@
 import "@/styles/starwind.css";
 
 import BaseHead from "@/components/base-head.astro";
-import { churchInfo } from "@/lib/church-data";
 import { buildSEO } from "@/lib/seo";
 import type { SEOInput } from "@/lib/seo";
 
@@ -14,7 +13,7 @@ const { currentUrl, ...seoInput }: Props = Astro.props;
 const seo = buildSEO(seoInput);
 ---
 
-<html lang="en" style={`--browser-chrome-tint: ${churchInfo.themeColor}`}>
+<html lang="en">
   <head>
     <BaseHead {...seo} currentUrl={currentUrl ?? Astro.url} />
     <slot name="head-extra" />
@@ -26,15 +25,6 @@ const seo = buildSEO(seoInput);
 </html>
 
 <style is:global>
-  /*
-    Safari 26+ ignores theme-color and html background. It samples
-    fixed/sticky backgrounds near the viewport edge, then body.
-    Body must be the header navy so the iOS status bar matches.
-  */
-  body {
-    background-color: var(--browser-chrome-tint, #0f2744);
-  }
-
   .skip-link {
     position: fixed;
     top: 0.75rem;
