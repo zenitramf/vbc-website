@@ -1,8 +1,9 @@
 ---
 import "@/styles/starwind.css";
 
-import BaseHead from "@/components/BaseHead.astro";
-import { buildSEO, type SEOInput } from "@/lib/seo";
+import BaseHead from "@/components/base-head.astro";
+import { buildSEO } from "@/lib/seo";
+import type { SEOInput } from "@/lib/seo";
 
 interface Props extends SEOInput {
   currentUrl?: URL;

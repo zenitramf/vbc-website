@@ -1,6 +1,7 @@
 ---
 import { churchInfo } from "@/lib/church-data";
-import { absoluteUrl, type SEO } from "@/lib/seo";
+import { absoluteUrl } from "@/lib/seo";
+import type { SEO } from "@/lib/seo";
 
 interface Props extends SEO {
   /** Current page URL, used for canonical when no explicit `canonical` is set. */
@@ -20,8 +21,16 @@ const {
 } = Astro.props;
 
 const getCanonicalUrl = (): string => {
-  if (canonical) return absoluteUrl(canonical);
-  if (currentUrl) return new URL(currentUrl.pathname, churchInfo.url).href;
+  if (canonical) {
+    return absoluteUrl(canonical);
+  }
+  if (currentUrl) {
+    const canonicalPath =
+      currentUrl.pathname === "/" || currentUrl.pathname.endsWith("/")
+        ? currentUrl.pathname
+        : `${currentUrl.pathname}/`;
+    return new URL(canonicalPath, churchInfo.url).href;
+  }
   return churchInfo.url;
 };
 

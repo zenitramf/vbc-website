@@ -46,7 +46,7 @@ export default defineConfig({
     "/staff": "/meet-the-staff/",
   },
 
-  site: "https://www.fresnovictory.com",
+  site: "https://fresnovictory.com",
 
   trailingSlash: "ignore",
 

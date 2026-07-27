@@ -34,7 +34,7 @@ export const churchInfo = {
   /** Brand navy used in header / skip-link. Surface as `<meta name="theme-color">`. */
   themeColor: "#0f2744",
   /** Canonical public origin. Also drives `astro.config.mjs` `site`. */
-  url: "https://www.fresnovictory.com",
+  url: "https://fresnovictory.com",
   youtube: "https://www.youtube.com/@fresnovictory",
 };
 
