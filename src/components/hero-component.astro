@@ -2,7 +2,7 @@
 import heroBg from "@/images/home-page_fvbc_hero.webp";
 import { Button } from "@/components/starwind/button";
 import { serviceTimes } from "@/lib/church-data";
-import { visitHref } from "@/lib/site-nav";
+import { giveHref, primaryNav, visitHref } from "@/lib/site-nav";
 
 const gatherings = [
   { label: "Sunday School", time: serviceTimes.sundaySchool.time },
@@ -35,6 +35,61 @@ const gatherings = [
     <div class="hero__glow hero__glow--cool"></div>
     <div class="hero__grain"></div>
   </div>
+
+  {/* Desktop-only brand nav inside the hero. SiteHeader takes over after scroll. */}
+  <nav class="hero__nav" aria-label="Homepage">
+    <a href="/" class="hero__logo" aria-label="Home">
+      <img
+        src="/vbc_logo_text.svg"
+        alt=""
+        width="128"
+        height="68"
+        class="hero__logo-img"
+      />
+    </a>
+
+    <ul class="hero__nav-links" role="list">
+      {
+        primaryNav.map((item) =>
+          item.children ? (
+            <li class="hero__nav-item hero__nav-item--has-children">
+              <button type="button" class="hero__nav-link hero__nav-parent">
+                {item.label}
+                <span class="hero__caret" aria-hidden="true">
+                  ▾
+                </span>
+              </button>
+              <ul class="hero__dropdown" role="list">
+                {item.children.map((child) => (
+                  <li>
+                    <a href={child.href} class="hero__dropdown-link">
+                      {child.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ) : (
+            <li class="hero__nav-item">
+              <a href={item.href} class="hero__nav-link">
+                {item.label}
+              </a>
+            </li>
+          )
+        )
+      }
+      <li class="hero__nav-item">
+        <a
+          href={giveHref}
+          class="hero__nav-link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Give
+        </a>
+      </li>
+    </ul>
+  </nav>
 
   <div class="hero__content">
     <h1 class="hero__headline">
@@ -192,6 +247,134 @@ const gatherings = [
     opacity: 0.05;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     pointer-events: none;
+  }
+
+  /* Hidden on mobile — SiteHeader covers navigation after the hero. */
+  .hero__nav {
+    display: none;
+  }
+
+  .hero__logo {
+    display: block;
+  }
+
+  .hero__logo-img {
+    width: 8rem;
+    height: auto;
+    filter: brightness(0) invert(1);
+    display: block;
+    max-width: none;
+  }
+
+  .hero__nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .hero__nav-item {
+    position: relative;
+  }
+
+  .hero__nav-link,
+  .hero__nav-parent {
+    position: relative;
+    color: rgba(255, 255, 255, 0.88);
+    text-decoration: none;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    transition: color 0.15s ease;
+    background: none;
+    border: 0;
+    padding: 0.4rem 0.65rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .hero__nav-link::after,
+  .hero__nav-parent::after {
+    content: "";
+    position: absolute;
+    left: 0.65rem;
+    right: 0.65rem;
+    bottom: 0.1rem;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--hero-gold-soft), var(--hero-gold));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .hero__nav-item--has-children:focus-within .hero__nav-parent::after {
+    transform: scaleX(1);
+  }
+
+  @media (hover: hover) {
+    .hero__nav-link:hover,
+    .hero__nav-parent:hover {
+      color: #fff;
+    }
+
+    .hero__nav-link:hover::after,
+    .hero__nav-parent:hover::after {
+      transform: scaleX(1);
+    }
+  }
+
+  .hero__caret {
+    font-size: 0.65rem;
+    opacity: 0.8;
+  }
+
+  .hero__dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 12.5rem;
+    margin: 0;
+    padding: 0.5rem;
+    list-style: none;
+    background: rgba(5, 13, 28, 0.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 0.85rem;
+    box-shadow: 0 18px 40px rgba(2, 6, 16, 0.45);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(0.35rem);
+    transition:
+      opacity 0.15s ease,
+      transform 0.15s ease,
+      visibility 0.15s ease;
+  }
+
+  .hero__nav-item--has-children:hover .hero__dropdown,
+  .hero__nav-item--has-children:focus-within .hero__dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .hero__dropdown-link {
+    display: block;
+    padding: 0.55rem 0.85rem;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+  }
+
+  .hero__dropdown-link:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
   }
 
   .hero__content {
@@ -411,6 +594,73 @@ const gatherings = [
 
     .hero__times {
       display: flex;
+    }
+  }
+
+  /* Static desktop brand nav: large centered logo with links stacked below.
+     Absolute (not fixed) so it scrolls away with the hero — SiteHeader owns
+     sticky chrome after the hero leaves the viewport. */
+  @media (min-width: 900px) {
+    .hero__nav {
+      --logo-w: 20rem;
+      --nav-pad-x: 4rem;
+
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1.75rem var(--nav-pad-x) 0;
+      background: transparent;
+    }
+
+    .hero__logo-img {
+      width: var(--logo-w);
+    }
+
+    .hero__nav-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .hero__content {
+      padding: 13rem 3rem 9rem;
+    }
+  }
+
+  @media (min-width: 900px) and (max-height: 760px) {
+    .hero__nav {
+      --logo-w: 16rem;
+      gap: 0.5rem;
+      padding-top: 1.25rem;
+    }
+
+    .hero__content {
+      padding-top: 11rem;
+    }
+  }
+
+  @media (min-width: 900px) and (max-width: 1023px) {
+    .hero__nav {
+      --logo-w: 16.25rem;
+      --nav-pad-x: 1.5rem;
+    }
+
+    .hero__nav-link,
+    .hero__nav-parent {
+      font-size: 0.875rem;
+      padding-inline: 0.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero__nav {
+      --nav-pad-x: 6rem;
     }
   }
 
