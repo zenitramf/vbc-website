@@ -563,6 +563,13 @@ const gatherings = [
     }
   }
 
+  @media (max-width: 899px) {
+    .hero {
+      /* Always-visible SiteHeader occupies 4.5rem on mobile. */
+      height: calc(100svh - 4.5rem);
+    }
+  }
+
   @media (max-width: 767px) {
     .hero__eyebrow,
     .hero__headline,
