@@ -160,6 +160,8 @@ const { pathname } = Astro.url;
     </div>
   </nav>
 </header>
+{/* Reserves flow height while the header is position:fixed on mobile. */}
+<div class="site-header__spacer" aria-hidden="true"></div>
 
 <script>
   const header = document.querySelector<HTMLElement>(".site-header");
@@ -206,6 +208,16 @@ const { pathname } = Astro.url;
     }
   };
 
+  // Close without the clip-path animation so Safari's back/forward snapshot
+  // never captures the navy overlay mid-collapse.
+  const closeMenuForNavigation = () => {
+    header?.classList.add("site-header--no-motion");
+    setMenuOpen(false, false);
+    window.requestAnimationFrame(() => {
+      header?.classList.remove("site-header--no-motion");
+    });
+  };
+
   const getFocusableElements = () => {
     const logo = header?.querySelector<HTMLAnchorElement>(".site-header__logo");
     return [logo, menuButton, ...mobileLinks, mobileCta].filter(
@@ -247,10 +259,10 @@ const { pathname } = Astro.url;
   });
 
   for (const link of mobileLinks) {
-    link.addEventListener("click", () => setMenuOpen(false, false));
+    link.addEventListener("click", closeMenuForNavigation);
   }
 
-  mobileCta?.addEventListener("click", () => setMenuOpen(false, false));
+  mobileCta?.addEventListener("click", closeMenuForNavigation);
 
   document.addEventListener("keydown", (event) => {
     if (!isMenuOpen()) {
@@ -269,6 +281,21 @@ const { pathname } = Astro.url;
       setMenuOpen(false, false);
     }
   });
+
+  // BFCache restore can replay in-flight header transitions; suppress for
+  // one frame so the restored page paints in its settled state.
+  window.addEventListener("pageshow", (event) => {
+    if (!event.persisted) {
+      return;
+    }
+    header?.classList.add("site-header--no-motion");
+    if (isMenuOpen()) {
+      setMenuOpen(false, false);
+    }
+    window.requestAnimationFrame(() => {
+      header?.classList.remove("site-header--no-motion");
+    });
+  });
 </script>
 
 <style>
@@ -283,14 +310,20 @@ const { pathname } = Astro.url;
     box-shadow: 0 1px 12px rgba(0, 0, 0, 0.18);
   }
 
+  .site-header__spacer {
+    display: none;
+  }
+
   .site-header__nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
+    min-height: 4.5rem;
     padding: 0.875rem 1.5rem;
     max-width: 80rem;
     margin-inline: auto;
+    box-sizing: border-box;
   }
 
   .site-header__logo {
@@ -607,6 +640,26 @@ const { pathname } = Astro.url;
     .site-header__hamburger span,
     .site-header__mobile {
       transition: none;
+    }
+  }
+
+  /* Instant close / bfcache restore — do not animate into Safari's snapshot. */
+  .site-header--no-motion .site-header__hamburger span,
+  .site-header--no-motion .site-header__mobile {
+    transition: none;
+  }
+
+  /* iOS WebKit mis-paints a sticky bar when the stuck state is recomputed
+     during history-restored scrolling; pin it and reserve its height instead. */
+  @media (max-width: 899px) {
+    .site-header {
+      position: fixed;
+      inset-inline: 0;
+    }
+
+    .site-header__spacer {
+      display: block;
+      height: 4.5rem;
     }
   }
 
