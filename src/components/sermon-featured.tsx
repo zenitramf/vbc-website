@@ -17,7 +17,7 @@ const secondaryButtonClass =
 export default function SermonFeatured({ sermon }: SermonFeaturedProps) {
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const embedUrl = `https://www.youtube-nocookie.com/embed/${sermon.youtubeId}?autoplay=1&rel=0`;
+  const embedUrl = `https://www.youtube-nocookie.com/embed/${sermon.youtubeId}?autoplay=1&playsinline=1&rel=0`;
 
   return (
     <article className="animate-fade-up overflow-hidden rounded-2xl border border-border bg-linear-to-br from-accent/30 via-card to-card shadow-sm">

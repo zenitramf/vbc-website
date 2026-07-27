@@ -665,11 +665,12 @@ const salvationContactHref = `mailto:${churchInfo.email}?subject=${encodeURIComp
       background-color 180ms ease,
       border-color 180ms ease,
       color 180ms ease,
-      transform 180ms ease;
+      transform 180ms ease,
+      opacity 180ms ease;
   }
 
-  .salvation-button:hover {
-    transform: translateY(-2px);
+  .salvation-button:active {
+    opacity: 0.9;
   }
 
   .salvation-button:focus-visible,
@@ -696,19 +697,10 @@ const salvationContactHref = `mailto:${churchInfo.email}?subject=${encodeURIComp
     box-shadow: 0 0.8rem 2.5rem rgba(0, 0, 0, 0.2);
   }
 
-  .salvation-button--light:hover {
-    background: var(--salvation-gold-light);
-  }
-
   .salvation-button--outline {
     border-color: rgba(255, 255, 255, 0.38);
     color: #fff;
     background: rgba(255, 255, 255, 0.04);
-  }
-
-  .salvation-button--outline:hover {
-    border-color: rgba(255, 255, 255, 0.75);
-    background: rgba(255, 255, 255, 0.1);
   }
 
   .salvation-button--cta {
@@ -717,8 +709,23 @@ const salvationContactHref = `mailto:${churchInfo.email}?subject=${encodeURIComp
     box-shadow: 0 1rem 2.5rem rgba(22, 163, 74, 0.2);
   }
 
-  .salvation-button--cta:hover {
-    background: #12813c;
+  @media (hover: hover) {
+    .salvation-button:hover {
+      transform: translateY(-2px);
+    }
+
+    .salvation-button--light:hover {
+      background: var(--salvation-gold-light);
+    }
+
+    .salvation-button--outline:hover {
+      border-color: rgba(255, 255, 255, 0.75);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .salvation-button--cta:hover {
+      background: #12813c;
+    }
   }
 
   .hero-scripture {
@@ -735,6 +742,7 @@ const salvationContactHref = `mailto:${churchInfo.email}?subject=${encodeURIComp
       rgba(255, 255, 255, 0.035)
     );
     box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.2);
+    -webkit-backdrop-filter: blur(0.8rem);
     backdrop-filter: blur(0.8rem);
     animation: hero-card 1s 0.28s both cubic-bezier(0.22, 1, 0.36, 1);
   }
@@ -835,6 +843,7 @@ const salvationContactHref = `mailto:${churchInfo.email}?subject=${encodeURIComp
     z-index: 20;
     border-bottom: 1px solid var(--salvation-line);
     background: rgba(255, 253, 248, 0.96);
+    -webkit-backdrop-filter: blur(1rem);
     backdrop-filter: blur(1rem);
   }
 
@@ -865,8 +874,10 @@ const salvationContactHref = `mailto:${churchInfo.email}?subject=${encodeURIComp
     transition: background-color 180ms ease;
   }
 
-  .message-map a:hover {
-    background: rgba(201, 151, 63, 0.08);
+  @media (hover: hover) {
+    .message-map a:hover {
+      background: rgba(201, 151, 63, 0.08);
+    }
   }
 
   .map-number {
@@ -1686,8 +1697,10 @@ const salvationContactHref = `mailto:${churchInfo.email}?subject=${encodeURIComp
       transition: none;
     }
 
-    .salvation-button:hover {
-      transform: none;
+    @media (hover: hover) {
+      .salvation-button:hover {
+        transform: none;
+      }
     }
   }
 </style>

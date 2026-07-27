@@ -30,13 +30,13 @@ export const button = tv({
       sm: "h-9 px-4 text-sm has-[>svg]:px-3 [&_svg:not([class*='size-'])]:size-3.5",
     },
     variant: {
-      cta: "bg-cta text-cta-foreground hover:bg-cta/90 focus-visible:ring-cta/50",
+      cta: "bg-cta text-cta-foreground hover:bg-cta/90 active:bg-cta/80 focus-visible:ring-cta/50",
       outline:
-        "bg-transparent text-white border border-white hover:bg-white/10 focus-visible:ring-white/50",
+        "bg-transparent text-white border border-white hover:bg-white/10 active:bg-white/15 focus-visible:ring-white/50",
       primary:
-        "bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:ring-primary/50",
+        "bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/80 focus-visible:ring-primary/50",
       secondary:
-        "bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-border focus-visible:ring-outline/50",
+        "bg-secondary text-secondary-foreground hover:bg-secondary/80 active:bg-secondary/70 border border-border focus-visible:ring-outline/50",
     },
   },
 });

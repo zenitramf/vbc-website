@@ -383,15 +383,20 @@ const gatherings = [
     transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .hero__nav-link:hover,
-  .hero__nav-parent:hover {
-    color: #fff;
-  }
-
-  .hero__nav-link:hover::after,
-  .hero__nav-parent:hover::after,
   .hero__nav-item--has-children:focus-within .hero__nav-parent::after {
     transform: scaleX(1);
+  }
+
+  @media (hover: hover) {
+    .hero__nav-link:hover,
+    .hero__nav-parent:hover {
+      color: #fff;
+    }
+
+    .hero__nav-link:hover::after,
+    .hero__nav-parent:hover::after {
+      transform: scaleX(1);
+    }
   }
 
   .hero__caret {
@@ -633,6 +638,10 @@ const gatherings = [
   /* Shared SiteHeader is the mobile chrome (<900px) — skip content fade-ins
      so the hero copy is immediate under it. */
   @media (max-width: 899px) {
+    .hero {
+      height: calc(100svh - 4.5rem);
+    }
+
     .hero__eyebrow,
     .hero__headline,
     .hero__support,
@@ -645,6 +654,12 @@ const gatherings = [
   @media (max-width: 767px) {
     .hero__actions {
       flex-direction: column;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .hero__headline-pair > span {
+      white-space: normal;
     }
   }
 
