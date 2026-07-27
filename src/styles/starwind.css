@@ -189,6 +189,9 @@
   * {
     @apply border-border outline-outline/50;
   }
+  html {
+    -webkit-tap-highlight-color: rgba(15, 39, 68, 0.18);
+  }
   body {
     @apply bg-background text-foreground scheme-light dark:scheme-dark;
   }
