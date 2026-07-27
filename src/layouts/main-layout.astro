@@ -2,6 +2,7 @@
 import "@/styles/starwind.css";
 
 import BaseHead from "@/components/base-head.astro";
+import { churchInfo } from "@/lib/church-data";
 import { buildSEO } from "@/lib/seo";
 import type { SEOInput } from "@/lib/seo";
 
@@ -13,18 +14,44 @@ const { currentUrl, ...seoInput }: Props = Astro.props;
 const seo = buildSEO(seoInput);
 ---
 
-<html lang="en">
+<html lang="en" style={`--browser-chrome-tint: ${churchInfo.themeColor}`}>
   <head>
     <BaseHead {...seo} currentUrl={currentUrl ?? Astro.url} />
     <slot name="head-extra" />
   </head>
   <body class="font-sans antialiased">
+    {/*
+      Safari 26+ ignores theme-color and samples CSS instead. A fixed strip
+      at the top edge tints the status bar to match the navy header; html
+      covers overscroll when no fixed sample applies.
+    */}
+    <div class="browser-chrome-tint" aria-hidden="true"></div>
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <slot />
   </body>
 </html>
 
 <style is:global>
+  html {
+    background-color: var(--browser-chrome-tint, #0f2744);
+  }
+
+  /*
+    Safari samples fixed/sticky elements within ~4px of the viewport edge.
+    Keep this a real element with background-color (not a ::before). Body
+    stays light so the bottom toolbar does not pick up the navy tint.
+  */
+  .browser-chrome-tint {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: var(--browser-chrome-tint, #0f2744);
+    pointer-events: none;
+    z-index: 2147483646;
+  }
+
   .skip-link {
     position: fixed;
     top: 0.75rem;
