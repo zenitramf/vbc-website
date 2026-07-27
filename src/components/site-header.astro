@@ -4,14 +4,20 @@ import { giveHref, primaryNav, visitHref } from "@/lib/site-nav";
 
 interface Props {
   variant?: "solid" | "transparent";
+  /** When true, hide at the desktop breakpoint so a page-specific header can take over. */
+  mobileOnly?: boolean;
 }
 
-const { variant = "solid" }: Props = Astro.props;
+const { variant = "solid", mobileOnly = false }: Props = Astro.props;
 const { pathname } = Astro.url;
 ---
 
 <header
-  class:list={["site-header", variant === "solid" && "site-header--solid"]}
+  class:list={[
+    "site-header",
+    variant === "solid" && "site-header--solid",
+    mobileOnly && "site-header--mobile-only",
+  ]}
 >
   <nav class="site-header__nav" aria-label="Main navigation">
     <a
@@ -585,6 +591,10 @@ const { pathname } = Astro.url;
   }
 
   @media (min-width: 900px) {
+    .site-header--mobile-only {
+      display: none;
+    }
+
     .site-header__nav {
       padding-inline: 2.5rem;
     }
