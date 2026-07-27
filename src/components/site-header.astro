@@ -4,7 +4,7 @@ import { giveHref, primaryNav, visitHref } from "@/lib/site-nav";
 
 interface Props {
   variant?: "solid" | "transparent";
-  /** When true, keep the header hidden until the homepage hero leaves the viewport. */
+  /** When true (desktop only), keep the header hidden until the homepage hero leaves the viewport. Mobile always shows the header. */
   revealAfterHero?: boolean;
 }
 
@@ -19,8 +19,6 @@ const { pathname } = Astro.url;
     revealAfterHero && "site-header--reveal-after-hero",
   ]}
   data-reveal-after-hero={revealAfterHero ? "" : undefined}
-  aria-hidden={revealAfterHero ? "true" : undefined}
-  inert={revealAfterHero ? true : undefined}
 >
   <nav class="site-header__nav" aria-label="Main navigation">
     <a
@@ -293,11 +291,29 @@ const { pathname } = Astro.url;
       return;
     }
     header.classList.toggle("is-visible", visible);
-    header.toggleAttribute("aria-hidden", !visible);
-    header.toggleAttribute("inert", !visible);
+    // Only inert/aria-hidden while the desktop reveal effect is hiding the bar.
+    const hideFromA11y = desktopMedia.matches && !visible;
+    header.toggleAttribute("aria-hidden", hideFromA11y);
+    header.toggleAttribute("inert", hideFromA11y);
     if (!visible && isMenuOpen()) {
       setMenuOpen(false, false);
     }
+  };
+
+  const syncRevealAfterHero = () => {
+    if (!revealAfterHero || !header) {
+      return;
+    }
+    // Mobile: always show. Desktop: show only once the hero has left view.
+    if (!desktopMedia.matches) {
+      setHeaderVisible(true);
+      return;
+    }
+    if (!hero) {
+      setHeaderVisible(true);
+      return;
+    }
+    setHeaderVisible(hero.getBoundingClientRect().bottom <= 0);
   };
 
   if (revealAfterHero && header && hero && "IntersectionObserver" in window) {
@@ -306,15 +322,20 @@ const { pathname } = Astro.url;
         if (!entry) {
           return;
         }
+        if (!desktopMedia.matches) {
+          setHeaderVisible(true);
+          return;
+        }
         setHeaderVisible(!entry.isIntersecting);
       },
       { threshold: 0 }
     );
 
     observer.observe(hero);
-  } else if (revealAfterHero && header && !hero) {
-    setHeaderVisible(true);
   }
+
+  syncRevealAfterHero();
+  desktopMedia.addEventListener("change", syncRevealAfterHero);
 
   // BFCache restore can replay in-flight header transitions; suppress for
   // one frame so the restored page paints in its settled state.
@@ -326,9 +347,7 @@ const { pathname } = Astro.url;
     if (isMenuOpen()) {
       setMenuOpen(false, false);
     }
-    if (revealAfterHero && header && hero) {
-      setHeaderVisible(hero.getBoundingClientRect().bottom <= 0);
-    }
+    syncRevealAfterHero();
     window.requestAnimationFrame(() => {
       header?.classList.remove("site-header--no-motion");
     });
@@ -342,19 +361,22 @@ const { pathname } = Astro.url;
     z-index: 40;
   }
 
-  .site-header--reveal-after-hero {
-    position: fixed;
-    inset-inline: 0;
-    top: 0;
-    width: 100%;
-    transform: translateY(-100%);
-    pointer-events: none;
-    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-  }
+  /* Desktop-only: hide until the hero scrolls away. Mobile always shows. */
+  @media (min-width: 900px) {
+    .site-header--reveal-after-hero {
+      position: fixed;
+      inset-inline: 0;
+      top: 0;
+      width: 100%;
+      transform: translateY(-100%);
+      pointer-events: none;
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
 
-  .site-header--reveal-after-hero.is-visible {
-    transform: none;
-    pointer-events: auto;
+    .site-header--reveal-after-hero.is-visible {
+      transform: none;
+      pointer-events: auto;
+    }
   }
 
   .site-header--solid {
@@ -714,11 +736,6 @@ const { pathname } = Astro.url;
     .site-header__spacer {
       display: block;
       height: 4.5rem;
-    }
-
-    /* Homepage reveal mode overlays until past the hero — no reserved gap. */
-    .site-header--reveal-after-hero + .site-header__spacer {
-      display: none;
     }
   }
 
