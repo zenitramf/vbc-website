@@ -384,7 +384,9 @@ const gatherings = [
   }
 
   .hero__nav {
-    position: absolute;
+    /* fixed + solid background-color: Safari 26 samples this for the status
+       bar (theme-color and transparent/absolute headers are ignored). */
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
@@ -392,8 +394,8 @@ const gatherings = [
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1.5rem 2rem;
-    background: transparent;
+    padding: calc(1.5rem + env(safe-area-inset-top, 0px)) 2rem 1.5rem;
+    background-color: #0f2744;
   }
 
   .hero__nav-cta {
@@ -579,12 +581,18 @@ const gatherings = [
     gap: 1.5rem;
     padding: 5.5rem 1.25rem 2rem;
     overflow-y: auto;
-    clip-path: circle(0% at calc(100% - 2rem - 22px) calc(1.5rem + 22px));
+    clip-path: circle(
+      0% at calc(100% - 2rem - 22px)
+        calc(1.5rem + env(safe-area-inset-top, 0px) + 22px)
+    );
     transition: clip-path 0.45s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   #hero-nav-cbox:checked ~ .hero__mobile-menu {
-    clip-path: circle(150% at calc(100% - 2rem - 22px) calc(1.5rem + 22px));
+    clip-path: circle(
+      150% at calc(100% - 2rem - 22px)
+        calc(1.5rem + env(safe-area-inset-top, 0px) + 22px)
+    );
   }
 
   .hero:has(#hero-nav-cbox:checked) .hero__nav {
@@ -646,7 +654,7 @@ const gatherings = [
     position: relative;
     z-index: 10;
     width: min(100%, 90rem);
-    padding: 7rem 1.5rem 4rem;
+    padding: calc(7rem + env(safe-area-inset-top, 0px)) 1.5rem 4rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -856,7 +864,13 @@ const gatherings = [
       display: grid;
       grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      padding: calc(0.875rem + (1 - var(--p)) * 0.875rem) var(--nav-pad-x);
+      /* Solid color on the fixed element (not ::before) — Safari 26 samples it. */
+      background-color: #0f2744;
+      padding: calc(
+          0.875rem + env(safe-area-inset-top, 0px) + (1 - var(--p)) * 0.875rem
+        )
+        var(--nav-pad-x)
+        calc(0.875rem + (1 - var(--p)) * 0.875rem);
       border-bottom: 1px solid transparent;
     }
 

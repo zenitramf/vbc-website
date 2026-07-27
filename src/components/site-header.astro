@@ -273,7 +273,8 @@ const { pathname } = Astro.url;
   }
 
   .site-header--solid {
-    background: rgba(15, 39, 68, 0.97);
+    /* Solid (not rgba) so Safari 26 can sample a predictable status-bar tint. */
+    background-color: #0f2744;
     box-shadow: 0 1px 12px rgba(0, 0, 0, 0.18);
   }
 
@@ -282,7 +283,7 @@ const { pathname } = Astro.url;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    padding: 0.875rem 1.5rem;
+    padding: calc(0.875rem + env(safe-area-inset-top, 0px)) 1.5rem 0.875rem;
     max-width: 80rem;
     margin-inline: auto;
   }
@@ -505,7 +506,10 @@ const { pathname } = Astro.url;
     visibility: hidden;
     overflow-y: auto;
     background: rgba(15, 39, 68, 0.98);
-    clip-path: circle(0% at calc(100% - 1.5rem - 22px) calc(0.875rem + 22px));
+    clip-path: circle(
+      0% at calc(100% - 1.5rem - 22px)
+        calc(0.875rem + env(safe-area-inset-top, 0px) + 22px)
+    );
     pointer-events: none;
     transition:
       clip-path 0.4s cubic-bezier(0.4, 0, 0.2, 1),
@@ -514,7 +518,10 @@ const { pathname } = Astro.url;
 
   .site-header__mobile.is-open {
     visibility: visible;
-    clip-path: circle(150% at calc(100% - 1.5rem - 22px) calc(0.875rem + 22px));
+    clip-path: circle(
+      150% at calc(100% - 1.5rem - 22px)
+        calc(0.875rem + env(safe-area-inset-top, 0px) + 22px)
+    );
     pointer-events: auto;
     transition-delay: 0s;
   }
