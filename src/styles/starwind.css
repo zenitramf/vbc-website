@@ -224,4 +224,18 @@
   .reveal-delay-2 {
     transition-delay: 0.2s;
   }
+
+  /* Mobile header breakpoint — keep section content visible with no fade. */
+  @media (max-width: 767px) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+
+    .reveal-delay-1,
+    .reveal-delay-2 {
+      transition-delay: 0s;
+    }
+  }
 }

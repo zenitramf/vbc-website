@@ -252,7 +252,15 @@ const gatherings = [
   updateNav();
 
   const revealEls = document.querySelectorAll(".reveal");
-  if (revealEls.length > 0 && "IntersectionObserver" in window) {
+  const prefersInstantReveal =
+    window.matchMedia("(max-width: 767px)").matches ||
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (
+    revealEls.length > 0 &&
+    "IntersectionObserver" in window &&
+    !prefersInstantReveal
+  ) {
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
