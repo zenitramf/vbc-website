@@ -1,6 +1,7 @@
 ---
 // oxlint-disable import/no-relative-parent-imports
 import MainLayout from "../layouts/main-layout.astro";
+import SiteHeader from "../components/site-header.astro";
 import HeroComponent from "../components/hero-component.astro";
 import MinistriesSection from "../components/ministries-section.astro";
 import AboutSection from "../components/about-section.astro";
@@ -20,6 +21,7 @@ import { churchOrganizationLd } from "@/lib/seo";
   <Fragment slot="head-extra">
     <link rel="preload" as="image" href={heroBg.src} fetchpriority="high" />
   </Fragment>
+  <SiteHeader mobileOnly />
   <main id="main-content" class="site-main" tabindex="-1">
     <HeroComponent />
     <MinistriesSection />
