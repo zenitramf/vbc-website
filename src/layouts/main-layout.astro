@@ -52,6 +52,12 @@ const seo = buildSEO(seoInput);
     outline: none;
   }
 
+  @media (hover: none) and (pointer: coarse) {
+    .skip-link {
+      display: none;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .skip-link {
       transition: none;
