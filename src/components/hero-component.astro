@@ -2,7 +2,7 @@
 import heroBg from "@/images/home-page_fvbc_hero.webp";
 import { Button } from "@/components/starwind/button";
 import { serviceTimes } from "@/lib/church-data";
-import { giveHref, primaryNav, visitHref } from "@/lib/site-nav";
+import { visitHref } from "@/lib/site-nav";
 
 const gatherings = [
   { label: "Sunday School", time: serviceTimes.sundaySchool.time },
@@ -35,65 +35,6 @@ const gatherings = [
     <div class="hero__glow hero__glow--cool"></div>
     <div class="hero__grain"></div>
   </div>
-
-  {/* Desktop-only: mobile uses the shared SiteHeader from the homepage. */}
-  <nav class="hero__nav" aria-label="Main navigation">
-    <a href="/" class="hero__logo" aria-label="Home">
-      <img
-        src="/vbc_logo_text.svg"
-        alt=""
-        width="128"
-        height="68"
-        class="hero__logo-img"
-      />
-    </a>
-
-    <ul class="hero__nav-links" role="list">
-      {
-        primaryNav.map((item) =>
-          item.children ? (
-            <li class="hero__nav-item hero__nav-item--has-children">
-              <button type="button" class="hero__nav-link hero__nav-parent">
-                {item.label}
-                <span class="hero__caret" aria-hidden="true">
-                  ▾
-                </span>
-              </button>
-              <ul class="hero__dropdown" role="list">
-                {item.children.map((child) => (
-                  <li>
-                    <a href={child.href} class="hero__dropdown-link">
-                      {child.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ) : (
-            <li class="hero__nav-item">
-              <a href={item.href} class="hero__nav-link">
-                {item.label}
-              </a>
-            </li>
-          )
-        )
-      }
-      <li class="hero__nav-item">
-        <a
-          href={giveHref}
-          class="hero__nav-link"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Give
-        </a>
-      </li>
-    </ul>
-
-    <div class="hero__nav-cta">
-      <Button variant="cta" size="sm" href={visitHref}>Visit Us</Button>
-    </div>
-  </nav>
 
   <div class="hero__content">
     <h1 class="hero__headline">
@@ -128,55 +69,6 @@ const gatherings = [
 </section>
 
 <script>
-  const hero = document.querySelector(".hero") as HTMLElement | null;
-  const nav = document.querySelector(".hero__nav") as HTMLElement | null;
-  let navTicking = false;
-  let navInitialized = false;
-
-  const applyNavState = (scrolled: boolean) => {
-    if (!(hero && nav)) {
-      return;
-    }
-    hero.style.setProperty("--p", scrolled ? "1" : "0");
-    nav.classList.toggle("hero__nav--scrolled", scrolled);
-  };
-
-  // First sync (e.g. restored scroll position) must apply the state
-  // instantly, without playing the transition.
-  const syncNavInstant = (scrolled: boolean) => {
-    hero?.classList.add("hero--no-motion");
-    applyNavState(scrolled);
-    requestAnimationFrame(() => {
-      hero?.classList.remove("hero--no-motion");
-    });
-  };
-
-  const updateNav = () => {
-    navTicking = false;
-    if (!(hero && nav)) {
-      return;
-    }
-    // Match SiteHeader desktop breakpoint — hero nav is desktop-only.
-    const scrolled = window.innerWidth >= 900 && window.scrollY > 10;
-    if (navInitialized) {
-      applyNavState(scrolled);
-      return;
-    }
-    navInitialized = true;
-    syncNavInstant(scrolled);
-  };
-
-  const requestNavUpdate = () => {
-    if (!navTicking) {
-      navTicking = true;
-      requestAnimationFrame(updateNav);
-    }
-  };
-
-  window.addEventListener("scroll", requestNavUpdate, { passive: true });
-  window.addEventListener("resize", requestNavUpdate, { passive: true });
-  updateNav();
-
   const revealEls = document.querySelectorAll(".reveal");
   const prefersInstantReveal =
     window.matchMedia("(max-width: 767px)").matches ||
@@ -210,17 +102,7 @@ const gatherings = [
 </script>
 
 <style>
-  /* Registering --p lets the header transformation animate as one timed
-     transition: the first scroll flips it to 1 and the move always runs to
-     completion; scrolling back to the top reverses it. */
-  @property --p {
-    syntax: "<number>";
-    inherits: true;
-    initial-value: 0;
-  }
-
   .hero {
-    --p: 0;
     --hero-ink: #050d1c;
     --hero-gold: #fbbf24;
     --hero-gold-soft: #fde68a;
@@ -236,11 +118,6 @@ const gatherings = [
     align-items: center;
     justify-content: center;
     background-color: var(--hero-ink);
-    transition: --p 0.75s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .hero--no-motion {
-    transition: none;
   }
 
   .hero__media {
@@ -315,138 +192,6 @@ const gatherings = [
     opacity: 0.05;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     pointer-events: none;
-  }
-
-  /* Hidden on mobile — SiteHeader owns the homepage navbar there. */
-  .hero__nav {
-    display: none;
-  }
-
-  .hero__nav-cta {
-    display: none;
-  }
-
-  .hero__logo {
-    display: block;
-    transition: opacity 0.2s ease;
-  }
-
-  .hero__logo-img {
-    width: 8rem;
-    height: auto;
-    filter: brightness(0) invert(1);
-    display: block;
-  }
-
-  .hero__nav-links {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    gap: 0.5rem;
-    align-items: center;
-  }
-
-  .hero__nav-item {
-    position: relative;
-  }
-
-  .hero__nav-link,
-  .hero__nav-parent {
-    position: relative;
-    color: rgba(255, 255, 255, 0.88);
-    text-decoration: none;
-    font-size: 0.9375rem;
-    font-weight: 600;
-    letter-spacing: 0.01em;
-    transition: color 0.15s ease;
-    background: none;
-    border: 0;
-    padding: 0.4rem 0.65rem;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-  }
-
-  .hero__nav-link::after,
-  .hero__nav-parent::after {
-    content: "";
-    position: absolute;
-    left: 0.65rem;
-    right: 0.65rem;
-    bottom: 0.1rem;
-    height: 2px;
-    border-radius: 2px;
-    background: linear-gradient(90deg, var(--hero-gold-soft), var(--hero-gold));
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .hero__nav-item--has-children:focus-within .hero__nav-parent::after {
-    transform: scaleX(1);
-  }
-
-  @media (hover: hover) {
-    .hero__nav-link:hover,
-    .hero__nav-parent:hover {
-      color: #fff;
-    }
-
-    .hero__nav-link:hover::after,
-    .hero__nav-parent:hover::after {
-      transform: scaleX(1);
-    }
-  }
-
-  .hero__caret {
-    font-size: 0.65rem;
-    opacity: 0.8;
-  }
-
-  .hero__dropdown {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    min-width: 12.5rem;
-    margin: 0;
-    padding: 0.5rem;
-    list-style: none;
-    background: rgba(5, 13, 28, 0.92);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 0.85rem;
-    box-shadow: 0 18px 40px rgba(2, 6, 16, 0.45);
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(0.35rem);
-    transition:
-      opacity 0.15s ease,
-      transform 0.15s ease,
-      visibility 0.15s ease;
-  }
-
-  .hero__nav-item--has-children:hover .hero__dropdown,
-  .hero__nav-item--has-children:focus-within .hero__dropdown {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-  }
-
-  .hero__dropdown-link {
-    display: block;
-    padding: 0.55rem 0.85rem;
-    color: rgba(255, 255, 255, 0.9);
-    text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 600;
-    border-radius: 0.5rem;
-  }
-
-  .hero__dropdown-link:hover {
-    background: rgba(255, 255, 255, 0.08);
-    color: #fff;
   }
 
   .hero__content {
@@ -635,13 +380,7 @@ const gatherings = [
     }
   }
 
-  /* Shared SiteHeader is the mobile chrome (<900px) — skip content fade-ins
-     so the hero copy is immediate under it. */
-  @media (max-width: 899px) {
-    .hero {
-      height: calc(100svh - 4.5rem);
-    }
-
+  @media (max-width: 767px) {
     .hero__eyebrow,
     .hero__headline,
     .hero__support,
@@ -649,9 +388,7 @@ const gatherings = [
     .hero__times {
       animation: none;
     }
-  }
 
-  @media (max-width: 767px) {
     .hero__actions {
       flex-direction: column;
     }
@@ -677,136 +414,7 @@ const gatherings = [
     }
   }
 
-  /* Desktop header (matches SiteHeader breakpoint): at the top of the page
-     (--p = 0) the logo is large and top-centered with the nav links stacked
-     below it. The first scroll flips --p to 1, gliding the logo into its
-     small left-hand slot and lifting the links into the bar. */
-  @media (min-width: 900px) {
-    .hero__nav {
-      --logo-w: 8rem;
-      --logo-h: calc(var(--logo-w) * 0.53125); /* logo aspect: 128 × 68 */
-      --logo-scale: 2.5;
-      --s: calc(1 + (var(--logo-scale) - 1) * (1 - var(--p)));
-      /* Links stay stacked until the logo has moved aside, then rise. */
-      --p-links: clamp(0, (var(--p) - 0.45) / 0.55, 1);
-      --nav-pad-x: 4rem;
-
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 20;
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items: center;
-      padding: calc(0.875rem + (1 - var(--p)) * 0.875rem) var(--nav-pad-x);
-      border-bottom: 1px solid transparent;
-      background: transparent;
-    }
-
-    /* Scrolled bar chrome fades in behind the content so blur stays constant. */
-    .hero__nav::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      background: rgba(5, 13, 28, 0.85);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 1px 12px rgba(0, 0, 0, 0.25);
-      opacity: var(--p);
-      pointer-events: none;
-    }
-
-    .hero__logo {
-      justify-self: start;
-      transform-origin: left center;
-      transform: translate(
-          calc(
-            (1 - var(--p)) *
-              (50vw - var(--nav-pad-x) - (var(--logo-w) * var(--s)) / 2)
-          ),
-          calc((1 - var(--p)) * (var(--logo-h) * (var(--s) - 1)) / 2)
-        )
-        scale(var(--s));
-    }
-
-    /* Keep the logo at its intended size: preflight's max-width would let
-       narrow grid tracks squeeze it. */
-    .hero__logo-img {
-      width: var(--logo-w);
-      max-width: none;
-    }
-
-    .hero__nav-links {
-      display: flex;
-      justify-content: center;
-      transform: translateY(
-        calc((1 - var(--p-links)) * var(--logo-h) * var(--logo-scale))
-      );
-      /* Fade while crossing the logo's path so they never collide. */
-      opacity: calc(1 - 4 * var(--p-links) * (1 - var(--p-links)));
-    }
-
-    .hero__nav-cta {
-      display: none;
-      justify-content: flex-end;
-      opacity: var(--p);
-      transform: translateX(calc((1 - var(--p)) * 8px));
-      pointer-events: none;
-    }
-
-    .hero__nav--scrolled .hero__nav-cta {
-      pointer-events: auto;
-    }
-
-    .hero__content {
-      padding: calc(8rem + (1 - var(--p)) * 5rem) 3rem 9rem;
-    }
-  }
-
-  /* Shorter desktop viewports: shrink the stacked header so it cannot
-     collide with the hero headline. */
-  @media (min-width: 900px) and (max-height: 760px) {
-    .hero__nav {
-      --logo-scale: 2;
-    }
-
-    .hero__content {
-      padding-top: calc(7rem + (1 - var(--p)) * 4rem);
-    }
-  }
-
-  /* Narrow desktops: tighter chrome so logo + links fit without overlap. */
-  @media (min-width: 900px) and (max-width: 1023px) {
-    .hero__nav {
-      --nav-pad-x: 1.5rem;
-      --logo-w: 6.5rem;
-    }
-
-    .hero__nav-link,
-    .hero__nav-parent {
-      font-size: 0.875rem;
-      padding-inline: 0.5rem;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .hero__nav {
-      --nav-pad-x: 6rem;
-    }
-
-    .hero__nav-cta {
-      display: flex;
-    }
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    .hero {
-      transition: none;
-    }
-
     .hero__bg,
     .hero__glow,
     .hero__eyebrow,

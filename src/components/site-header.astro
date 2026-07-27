@@ -4,11 +4,11 @@ import { giveHref, primaryNav, visitHref } from "@/lib/site-nav";
 
 interface Props {
   variant?: "solid" | "transparent";
-  /** When true, hide at the desktop breakpoint so a page-specific header can take over. */
-  mobileOnly?: boolean;
+  /** When true, keep the header hidden until the homepage hero leaves the viewport. */
+  revealAfterHero?: boolean;
 }
 
-const { variant = "solid", mobileOnly = false }: Props = Astro.props;
+const { variant = "solid", revealAfterHero = false }: Props = Astro.props;
 const { pathname } = Astro.url;
 ---
 
@@ -16,8 +16,11 @@ const { pathname } = Astro.url;
   class:list={[
     "site-header",
     variant === "solid" && "site-header--solid",
-    mobileOnly && "site-header--mobile-only",
+    revealAfterHero && "site-header--reveal-after-hero",
   ]}
+  data-reveal-after-hero={revealAfterHero ? "" : undefined}
+  aria-hidden={revealAfterHero ? "true" : undefined}
+  inert={revealAfterHero ? true : undefined}
 >
   <nav class="site-header__nav" aria-label="Main navigation">
     <a
@@ -269,6 +272,34 @@ const { pathname } = Astro.url;
       setMenuOpen(false, false);
     }
   });
+
+  const revealAfterHero = header?.dataset.revealAfterHero !== undefined;
+  const hero = document.querySelector<HTMLElement>(".hero");
+
+  if (revealAfterHero && header && hero && "IntersectionObserver" in window) {
+    const setHeaderVisible = (visible: boolean) => {
+      header.classList.toggle("is-visible", visible);
+      header.toggleAttribute("aria-hidden", !visible);
+      header.toggleAttribute("inert", !visible);
+      if (!visible && isMenuOpen()) {
+        setMenuOpen(false, false);
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry) {
+          return;
+        }
+        setHeaderVisible(!entry.isIntersecting);
+      },
+      { threshold: 0 }
+    );
+
+    observer.observe(hero);
+  } else if (revealAfterHero && header && !hero) {
+    header.classList.add("is-visible");
+  }
 </script>
 
 <style>
@@ -276,6 +307,21 @@ const { pathname } = Astro.url;
     position: sticky;
     top: 0;
     z-index: 40;
+  }
+
+  .site-header--reveal-after-hero {
+    position: fixed;
+    inset-inline: 0;
+    top: 0;
+    width: 100%;
+    transform: translateY(-100%);
+    pointer-events: none;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .site-header--reveal-after-hero.is-visible {
+    transform: none;
+    pointer-events: auto;
   }
 
   .site-header--solid {
@@ -604,6 +650,7 @@ const { pathname } = Astro.url;
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .site-header--reveal-after-hero,
     .site-header__hamburger span,
     .site-header__mobile {
       transition: none;
@@ -611,10 +658,6 @@ const { pathname } = Astro.url;
   }
 
   @media (min-width: 900px) {
-    .site-header--mobile-only {
-      display: none;
-    }
-
     .site-header__nav {
       padding-inline: 2.5rem;
     }
