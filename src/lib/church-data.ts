@@ -1,21 +1,51 @@
+/**
+ * Canonical service schedule — single source of truth for the site and the
+ * public `/api/service-times.json` endpoint (consumed by other VBC properties).
+ * Times are wall-clock in America/Los_Angeles (Fresno).
+ */
+export const SERVICE_TIMEZONE = "America/Los_Angeles" as const;
+
+export type ServiceTime = {
+  id: string;
+  label: string;
+  day: string;
+  time: string;
+};
+
 export const serviceTimes = {
-  bibleStudy: {
-    day: "Thursday",
-    time: "7pm",
+  sundaySchool: {
+    day: "Sunday",
+    id: "sundaySchool",
+    label: "Sunday School",
+    time: "10am",
   },
   sundayMorning: {
     day: "Sunday",
+    id: "sundayMorning",
+    label: "Sunday Worship",
     time: "11am",
   },
   sundayNight: {
     day: "Sunday",
+    id: "sundayNight",
+    label: "Sunday Evening",
     time: "6pm",
   },
-  sundaySchool: {
-    day: "Sunday",
-    time: "10am",
+  bibleStudy: {
+    day: "Thursday",
+    id: "bibleStudy",
+    label: "Bible Study",
+    time: "7pm",
   },
-};
+} as const satisfies Record<string, ServiceTime>;
+
+/** Ordered list for display and API consumers (Sunday morning through midweek). */
+export const serviceTimesList: readonly ServiceTime[] = [
+  serviceTimes.sundaySchool,
+  serviceTimes.sundayMorning,
+  serviceTimes.sundayNight,
+  serviceTimes.bibleStudy,
+];
 
 export const churchInfo = {
   addressLine1: "1717 N Gateway Blvd Ste. #105",
