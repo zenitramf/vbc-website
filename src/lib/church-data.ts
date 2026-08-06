@@ -10,6 +10,8 @@ export type ServiceTime = {
   label: string;
   day: string;
   time: string;
+  /** When true, live Spanish interpretation is available at this gathering. */
+  translationAvailable?: boolean;
 };
 
 export const serviceTimes = {
@@ -39,12 +41,38 @@ export const serviceTimes = {
   },
 } as const satisfies Record<string, ServiceTime>;
 
-/** Ordered list for display and API consumers (Sunday morning through midweek). */
+/** English-site ordered schedule (Sunday school through midweek). */
 export const serviceTimesList: readonly ServiceTime[] = [
   serviceTimes.sundaySchool,
   serviceTimes.sundayMorning,
   serviceTimes.sundayNight,
   serviceTimes.bibleStudy,
+];
+
+/**
+ * Spanish-site / staging schedule — no Sunday school; morning is earlier with
+ * live translation; evening is a dedicated Spanish service.
+ */
+export const spanishServiceTimesList: readonly ServiceTime[] = [
+  {
+    day: "Sunday",
+    id: "sundayMorning",
+    label: "Sunday Worship",
+    time: "10:30am",
+    translationAvailable: true,
+  },
+  {
+    day: "Sunday",
+    id: "spanishService",
+    label: "Spanish Service",
+    time: "5pm",
+  },
+  {
+    day: "Thursday",
+    id: "bibleStudy",
+    label: "Bible Study",
+    time: serviceTimes.bibleStudy.time,
+  },
 ];
 
 export const churchInfo = {

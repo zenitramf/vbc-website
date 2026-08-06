@@ -3,8 +3,8 @@ import type { APIRoute } from "astro";
 import {
   churchInfo,
   SERVICE_TIMEZONE,
-  serviceTimes,
   serviceTimesList,
+  spanishServiceTimesList,
 } from "@/lib/church-data";
 
 export const prerender = false;
@@ -30,8 +30,10 @@ export const GET: APIRoute = () =>
         shortName: churchInfo.shortName,
         url: churchInfo.url,
       },
-      serviceTimes,
+      /** English-site schedule (includes Sunday school). */
       services: serviceTimesList,
+      /** Spanish-site / staging schedule (no Sunday school). */
+      spanish: spanishServiceTimesList,
       timezone: SERVICE_TIMEZONE,
     },
     {
