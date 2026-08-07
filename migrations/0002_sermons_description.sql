@@ -1,0 +1,1 @@
+ALTER TABLE sermons ADD COLUMN description TEXT NOT NULL DEFAULT '';

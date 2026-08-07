@@ -5,21 +5,22 @@ import PageLayout from "@/layouts/page-layout.astro";
 import PageHeader from "@/components/page-header.astro";
 import SermonFeatured from "@/components/sermon-featured";
 import SermonsTable from "@/components/sermons-table";
-import { getSermons } from "@/lib/sermons";
+import { getSermonsPageData } from "@/lib/sermons";
 import type { Sermon } from "@/lib/sermons";
 
 export const prerender = false;
 
-let sermons: Sermon[] = [];
+let featuredSermon: Sermon | undefined;
+let archiveSermons: Sermon[] = [];
 let sermonsAreAvailable = true;
 
 try {
-  sermons = await getSermons(env);
+  const pageData = await getSermonsPageData(env);
+  featuredSermon = pageData.featured;
+  archiveSermons = pageData.archive;
 } catch {
   sermonsAreAvailable = false;
 }
-
-const [latestSermon, ...archiveSermons] = sermons;
 ---
 
 <PageLayout
@@ -40,9 +41,9 @@ const [latestSermon, ...archiveSermons] = sermons;
           <p class="text-muted-foreground leading-relaxed">
             Sermons are temporarily unavailable. Please check back soon.
           </p>
-        ) : latestSermon ? (
+        ) : featuredSermon ? (
           <div>
-            <SermonFeatured client:load sermon={latestSermon} />
+            <SermonFeatured client:load sermon={featuredSermon} />
 
             {archiveSermons.length > 0 && (
               <div class="mt-16">
@@ -54,7 +55,7 @@ const [latestSermon, ...archiveSermons] = sermons;
             )}
           </div>
         ) : (
-          <SermonsTable client:load sermons={sermons} />
+          <SermonsTable client:load sermons={archiveSermons} />
         )
       }
     </div>

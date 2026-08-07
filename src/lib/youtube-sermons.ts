@@ -42,6 +42,7 @@ interface YouTubeVideo {
   id?: string;
   liveStreamingDetails?: Record<string, unknown>;
   snippet?: {
+    description?: string;
     publishedAt?: string;
     thumbnails?: {
       high?: { url?: string };
@@ -53,6 +54,7 @@ interface YouTubeVideo {
 }
 
 export interface SyncedSermon {
+  description: string;
   publishedAt: string;
   speaker: string;
   thumbnailUrl: string;
@@ -218,6 +220,7 @@ const toSyncedSermon = (video: YouTubeVideo): SyncedSermon | undefined => {
   }
 
   return {
+    description: video.snippet?.description ?? "",
     publishedAt,
     speaker: DEFAULT_SPEAKER,
     thumbnailUrl,
@@ -252,14 +255,15 @@ const upsertSermons = async (
   const syncedAt = new Date().toISOString();
   const statement = database.prepare(
     `INSERT INTO sermons (
-       youtube_id, title, speaker, thumbnail_url, published_at, youtube_url, synced_at
-     ) VALUES (?, ?, ?, ?, ?, ?, ?)
+       youtube_id, title, speaker, thumbnail_url, published_at, youtube_url, description, synced_at
+     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
      ON CONFLICT(youtube_id) DO UPDATE SET
        title = excluded.title,
        speaker = excluded.speaker,
        thumbnail_url = excluded.thumbnail_url,
        published_at = excluded.published_at,
        youtube_url = excluded.youtube_url,
+       description = excluded.description,
        synced_at = excluded.synced_at`
   );
 
@@ -273,6 +277,7 @@ const upsertSermons = async (
           sermon.thumbnailUrl,
           sermon.publishedAt,
           sermon.youtubeUrl,
+          sermon.description,
           syncedAt
         )
       )
