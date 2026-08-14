@@ -4,7 +4,6 @@ import PageHeader from "@/components/page-header.astro";
 import { Button } from "@/components/starwind/button";
 import { churchInfo } from "@/lib/church-data";
 import pastorWillisPhoto from "@/images/rwillis_profile.webp";
-import andrewMunizPhoto from "@/images/andrew_profile.webp";
 
 const pastorWillisBio = [
   "Pastor Willis began serving at Victory Baptist Church while still attending college in 2011. Upon graduation in 2012, Pastor Willis moved to Fresno and served as the assistant pastor.",
@@ -12,16 +11,11 @@ const pastorWillisBio = [
   "In 2021 Pastor Willis became the senior pastor of Victory Baptist Church. Pastor Willis serves with his wife Kali and their five children. They have been married for eight years.",
   "Pastor Willis is committed to faithfully and Biblically serving the Victory Baptist Church and the Fresno community.",
 ];
-
-const andrewMunizBio = [
-  "Andrew Muniz came to Christ in 2021 at Teen Camp and soon after surrendered his life to vocational ministry. He currently interns at Victory Baptist Church, serving in Spanish Ministry and Evangelism.",
-  "Through Saturday outreach and Spanish translation, Andrew helps Spanish-speaking neighbors hear the gospel and connect with the life of the church in Fresno.",
-];
 ---
 
 <PageLayout
   title="Meet The Staff"
-  description="Meet Pastor Ryan Willis, Andrew Muniz, and the staff of Victory Baptist Church in Fresno."
+  description="Meet Pastor Ryan Willis and the staff of Victory Baptist Church in Fresno."
 >
   <PageHeader eyebrow="Leadership" title="Meet The Staff">
     <p>
@@ -62,35 +56,6 @@ const andrewMunizBio = [
         </div>
         <div class="space-y-5 text-lg leading-relaxed text-muted-foreground">
           {pastorWillisBio.map((paragraph) => <p>{paragraph}</p>)}
-        </div>
-      </article>
-
-      <article>
-        <div class="mb-8 flex items-center gap-5">
-          <img
-            src={andrewMunizPhoto.src}
-            width={112}
-            height={112}
-            alt=""
-            class="size-24 shrink-0 rounded-full border-[3px] border-primary object-cover object-top md:size-28"
-            loading="eager"
-            decoding="async"
-          />
-          <div>
-            <p
-              class="mb-1 text-sm font-semibold uppercase tracking-widest text-primary"
-            >
-              Spanish Ministry / Evangelism
-            </p>
-            <h2
-              class="font-display text-3xl font-bold text-foreground md:text-4xl"
-            >
-              Andrew Muniz
-            </h2>
-          </div>
-        </div>
-        <div class="space-y-5 text-lg leading-relaxed text-muted-foreground">
-          {andrewMunizBio.map((paragraph) => <p>{paragraph}</p>)}
         </div>
       </article>
 
