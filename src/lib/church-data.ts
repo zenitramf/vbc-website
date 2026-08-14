@@ -99,7 +99,7 @@ export const churchInfo = {
 /** Default site-wide SEO values. Per-page overrides merge on top via `buildSEO()`. */
 export const defaultSEO = {
   description:
-    "Victory Baptist Church in Fresno, California — an independent Baptist church proclaiming the gospel of Jesus Christ through soul-winning, sound Bible teaching, and Christ-centered worship. Sundays 11am & 6pm, Thursdays 7pm.",
+    "Victory Baptist Church in Fresno, California — an independent Baptist church proclaiming the gospel of Jesus Christ through personal evangelism, sound Bible teaching, and Christ-centered worship. Sundays 11am & 6pm, Thursdays 7pm.",
   /** 1200×630 social share image, served from `public/`. */
   ogImage: "/og-default.jpg",
   ogImageAlt: "Fresno skyline and downtown mural",
@@ -112,12 +112,26 @@ export interface Ministry {
   featured?: boolean;
 }
 
-/** Ministries shown on the home page — soul-winning / outreach first. */
+/** Standing weekly personal evangelism — shown on `/events`. */
+export const personalEvangelismTimes = {
+  saturday: {
+    day: "Saturday",
+    id: "saturdayPersonalEvangelism",
+    label: "Personal Evangelism",
+    time: "10:30am",
+  },
+} as const satisfies Record<string, ServiceTime>;
+
+export const personalEvangelismTimesList: readonly ServiceTime[] = [
+  personalEvangelismTimes.saturday,
+];
+
+/** Ministries shown on the home page — personal evangelism / outreach first. */
 export const ministries: Ministry[] = [
   {
     featured: true,
     id: "soul-winning",
-    name: "Soul-Winning",
+    name: "Personal Evangelism",
     summary:
       "One of our greatest responsibilities is to reach others with the gospel of Jesus Christ. We engage in weekly door-to-door evangelism, community outreach events, missionary support, and training believers to share the gospel.",
   },

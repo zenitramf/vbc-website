@@ -4,6 +4,7 @@ import PageHeader from "@/components/page-header.astro";
 import UpcomingEvents from "@/components/upcoming-events.astro";
 import Skeleton from "@/components/starwind/skeleton/Skeleton.astro";
 import { Button } from "@/components/starwind/button";
+import { personalEvangelismTimesList } from "@/lib/church-data";
 ---
 
 <PageLayout
@@ -31,12 +32,24 @@ import { Button } from "@/components/starwind/button";
 
       <article class="border-t border-border pt-6">
         <h2 class="mb-2 font-display text-2xl font-bold text-foreground">
-          Soul-Winning Outreach
+          Personal Evangelism
         </h2>
         <p class="mb-4 text-muted-foreground leading-relaxed">
           Weekly door-to-door evangelism and community outreach throughout the
-          year. Ask a greeter how to get involved.
+          year. Meet at the church, then go out with a partner. Ask a greeter
+          how to get involved.
         </p>
+        <ul class="mb-4 space-y-2 text-muted-foreground">
+          {
+            personalEvangelismTimesList.map((gathering) => (
+              <li>
+                <strong class="text-foreground">{gathering.day}</strong>
+                {" — "}
+                {gathering.time}
+              </li>
+            ))
+          }
+        </ul>
         <Button href="/#soul-winning" variant="cta">Learn About Outreach</Button
         >
       </article>

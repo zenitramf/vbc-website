@@ -220,18 +220,22 @@ const toUpcomingEvent = (
   };
 };
 
-const removeConsecutiveRecurringEvents = (
+const keepFirstRecurringInstance = (
   events: UpcomingCalendarEvent[]
 ): UpcomingCalendarEvent[] => {
-  let previousRecurringEventId: string | undefined;
+  const seenRecurringEventIds = new Set<string>();
 
   return events.filter((event) => {
-    const isConsecutiveRepeat =
-      event.recurringEventId &&
-      event.recurringEventId === previousRecurringEventId;
+    if (!event.recurringEventId) {
+      return true;
+    }
 
-    previousRecurringEventId = event.recurringEventId;
-    return !isConsecutiveRepeat;
+    if (seenRecurringEventIds.has(event.recurringEventId)) {
+      return false;
+    }
+
+    seenRecurringEventIds.add(event.recurringEventId);
+    return true;
   });
 };
 
@@ -301,7 +305,7 @@ export const getUpcomingMinistryEvents = async (
       return upcomingEvent ? [upcomingEvent] : [];
     });
 
-  return removeConsecutiveRecurringEvents(upcomingEvents)
+  return keepFirstRecurringInstance(upcomingEvents)
     .map(({ event }) => event)
     .slice(0, EVENT_LIMIT);
 };
