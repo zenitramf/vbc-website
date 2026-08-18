@@ -1,0 +1,25 @@
+# Local Wrangler / Cloudflare secrets for `pnpm dev` (with CF_PLATFORM_PROXY=1)
+# and `pnpm preview` / `wrangler dev`.
+#
+# Copy to `.dev.vars` (gitignored) and fill in real values:
+#   cp .dev.vars.example .dev.vars
+#
+# Not required for most static/SSR page work. Needed for:
+#   - sermon sync + authorizing /api/sermons-sync.json  → YOUTUBE_API_KEY
+#   - /events and /api/events.json                      → GOOGLE_* below
+#
+# After setting YOUTUBE_API_KEY, seed local D1:
+#   curl -H "Authorization: Bearer $YOUTUBE_API_KEY" \
+#     http://127.0.0.1:4321/api/sermons-sync.json
+
+# YouTube Data API key (also used as Bearer token for manual sync).
+YOUTUBE_API_KEY=
+
+# Google Calendar ID for the ministry calendar.
+GOOGLE_MINISTRY_CAL=
+
+# Google service-account credentials as a single-line JSON string.
+# Must include client_email and private_key (JSON.parse'd at runtime).
+# Example shape (do not commit real keys):
+# GOOGLE_SERVICE_ACCOUNT_JSON={"type":"service_account","project_id":"...","private_key_id":"...","private_key":"-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n","client_email":"...@....iam.gserviceaccount.com","client_id":"...","token_uri":"https://oauth2.googleapis.com/token"}
+GOOGLE_SERVICE_ACCOUNT_JSON=
