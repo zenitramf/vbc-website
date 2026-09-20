@@ -1,6 +1,6 @@
 ---
 import { Button } from "@/components/starwind/button";
-import { giveHref, primaryNav, visitHref } from "@/lib/site-nav";
+import { primaryNav, visitHref } from "@/lib/site-nav";
 
 interface Props {
   variant?: "solid" | "transparent";
@@ -76,10 +76,13 @@ const { pathname } = Astro.url;
                 href={item.href}
                 class:list={[
                   "site-header__link",
-                  item.href &&
+                  !item.external &&
+                    item.href &&
                     pathname.startsWith(item.href.replace(/\/$/, "")) &&
                     "is-active",
                 ]}
+                target={item.external ? "_blank" : undefined}
+                rel={item.external ? "noopener noreferrer" : undefined}
               >
                 {item.label}
               </a>
@@ -87,16 +90,6 @@ const { pathname } = Astro.url;
           )
         )
       }
-      <li class="site-header__item">
-        <a
-          href={giveHref}
-          class="site-header__link"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Give
-        </a>
-      </li>
     </ul>
 
     <div class="site-header__actions">
@@ -138,23 +131,18 @@ const { pathname } = Astro.url;
               ))
             : [
                 <li>
-                  <a href={item.href} class="site-header__mobile-link">
+                  <a
+                    href={item.href}
+                    class="site-header__mobile-link"
+                    target={item.external ? "_blank" : undefined}
+                    rel={item.external ? "noopener noreferrer" : undefined}
+                  >
                     {item.label}
                   </a>
                 </li>,
               ]
         )
       }
-      <li>
-        <a
-          href={giveHref}
-          class="site-header__mobile-link"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Give
-        </a>
-      </li>
     </ul>
     <div class="site-header__mobile-cta">
       <a href={visitHref} class="site-header__mobile-cta-btn">Visit Us</a>

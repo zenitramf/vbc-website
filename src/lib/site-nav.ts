@@ -9,20 +9,29 @@ export interface NavItem {
   href?: string;
   label: string;
   children?: NavChild[];
+  /** Opens in a new tab with rel="noopener noreferrer". */
+  external?: boolean;
 }
 
-/** Primary navigation matching fresnovictory.com route structure. */
+export const visitHref = "/visit/";
+export const giveHref =
+  "https://tithe.ly/give_new/www/#/tithely/give-one-time/1285261";
+export const espanolHref = "https://iglesiafresno.com";
+
+/**
+ * Single source of truth for the primary header/hero navigation.
+ * Both SiteHeader and the homepage hero nav render from this list, so link
+ * changes only need to happen here. Route structure matches fresnovictory.com.
+ */
 export const primaryNav: NavItem[] = [
   { href: "/salvation/", label: "Heaven" },
   { href: "/about-vbc/", label: "About VBC" },
   { href: "/meet-the-staff/", label: "Meet The Staff" },
   { href: "/sermons/", label: "Sermons" },
   { href: "/events/", label: "Events" },
+  { href: espanolHref, label: "Español", external: true },
+  { href: giveHref, label: "Give", external: true },
 ];
-
-export const visitHref = "/visit/";
-export const giveHref =
-  "https://tithe.ly/give_new/www/#/tithely/give-one-time/1285261";
 
 export const footerNav = {
   connect: [

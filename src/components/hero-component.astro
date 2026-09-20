@@ -2,7 +2,7 @@
 import heroBg from "@/images/home-page_fvbc_hero.webp";
 import { Button } from "@/components/starwind/button";
 import { serviceTimes } from "@/lib/church-data";
-import { giveHref, primaryNav, visitHref } from "@/lib/site-nav";
+import { primaryNav, visitHref } from "@/lib/site-nav";
 
 const gatherings = [
   { label: "Sunday School", time: serviceTimes.sundaySchool.time },
@@ -71,23 +71,18 @@ const gatherings = [
             </li>
           ) : (
             <li class="hero__nav-item">
-              <a href={item.href} class="hero__nav-link">
+              <a
+                href={item.href}
+                class="hero__nav-link"
+                target={item.external ? "_blank" : undefined}
+                rel={item.external ? "noopener noreferrer" : undefined}
+              >
                 {item.label}
               </a>
             </li>
           )
         )
       }
-      <li class="hero__nav-item">
-        <a
-          href={giveHref}
-          class="hero__nav-link"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Give
-        </a>
-      </li>
     </ul>
   </nav>
 
