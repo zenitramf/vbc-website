@@ -99,7 +99,7 @@ export const churchInfo = {
 /** Default site-wide SEO values. Per-page overrides merge on top via `buildSEO()`. */
 export const defaultSEO = {
   description:
-    "Victory Baptist Church in Fresno, California — an independent Baptist church proclaiming the gospel of Jesus Christ through personal evangelism, sound Bible teaching, and Christ-centered worship. Sundays 11am & 6pm, Thursdays 7pm.",
+    "Victory Baptist Church in Fresno, California: an independent Baptist church proclaiming the gospel of Jesus Christ through personal evangelism, sound Bible teaching, and Christ-centered worship. Sundays 11am & 6pm, Thursdays 7pm.",
   /** 1200×630 social share image, served from `public/`. */
   ogImage: "/og-default.jpg",
   ogImageAlt: "Fresno skyline and downtown mural",

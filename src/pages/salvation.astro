@@ -9,7 +9,7 @@ const salvationContactHref = `mailto:${churchInfo.email}?subject=${encodeURIComp
 
 <PageLayout
   title="What Does It Mean To Be Saved?"
-  description="The Bible way to heaven — how to know you have eternal life through Jesus Christ."
+  description="The Bible way to heaven. How to know you have eternal life through Jesus Christ."
 >
   <div class="salvation-page">
     <div class="reading-progress" data-reading-progress aria-hidden="true">
@@ -28,7 +28,7 @@ const salvationContactHref = `mailto:${churchInfo.email}?subject=${encodeURIComp
             <span aria-hidden="true"></span>
             The Bible Way to Heaven
           </p>
-          <h1 id="salvation-title">You can <em>know.</em></h1>
+          <h1 id="salvation-title">You can <span class="hero-know">know.</span></h1>
           <p class="hero-intro">
             Every person eventually asks questions like these:
           </p>
@@ -148,7 +148,7 @@ const salvationContactHref = `mailto:${churchInfo.email}?subject=${encodeURIComp
             </p>
 
             <blockquote class="verse-card verse-card--dark">
-              <span class="verse-label">The consequence—and the promise</span>
+              <span class="verse-label">The consequence and the promise</span>
               <p>
                 For the wages of sin is death; but the gift of God is eternal
                 life through Jesus Christ our Lord.
@@ -226,9 +226,6 @@ const salvationContactHref = `mailto:${churchInfo.email}?subject=${encodeURIComp
     <section class="answer-section" aria-labelledby="answer-title">
       <div class="salvation-shell answer-shell">
         <header class="answer-heading">
-          <p class="answer-kicker">
-            Though we were separated from God, He loved us.
-          </p>
           <h2 id="answer-title">Jesus Christ paid the price for our sin.</h2>
         </header>
 
@@ -283,7 +280,7 @@ const salvationContactHref = `mailto:${churchInfo.email}?subject=${encodeURIComp
         <header class="story-heading response-heading">
           <p class="section-eyebrow"><span>03</span> Your Response</p>
           <h2 id="response-title">Trust Jesus Christ alone.</h2>
-          <p>Salvation is received by faith—not achieved by effort.</p>
+          <p>Salvation is received by faith, not achieved by effort.</p>
         </header>
 
         <div class="response-copy">
@@ -326,7 +323,7 @@ const salvationContactHref = `mailto:${churchInfo.email}?subject=${encodeURIComp
                 penalty of my sin, and I trust you to provide eternal life to
                 me.
               </p>
-              <footer>— Amen</footer>
+              <footer>Amen</footer>
             </blockquote>
           </aside>
         </div>
@@ -585,9 +582,10 @@ const salvationContactHref = `mailto:${churchInfo.email}?subject=${encodeURIComp
     animation: hero-rise 0.85s 0.14s both cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .hero-copy h1 em {
+  .hero-copy h1 .hero-know {
     display: block;
     color: var(--salvation-gold-light);
+    font-style: normal;
     font-weight: 700;
   }
 
@@ -622,7 +620,7 @@ const salvationContactHref = `mailto:${churchInfo.email}?subject=${encodeURIComp
 
   .hero-questions li::before {
     color: var(--salvation-gold-light);
-    content: "—";
+    content: "•";
   }
 
   .hero-answer {
@@ -1218,15 +1216,6 @@ const salvationContactHref = `mailto:${churchInfo.email}?subject=${encodeURIComp
     max-width: 51rem;
     margin-inline: auto;
     text-align: center;
-  }
-
-  .answer-kicker {
-    margin: 0 0 1.2rem;
-    color: var(--salvation-gold-dark);
-    font-size: 0.76rem;
-    font-weight: 800;
-    letter-spacing: 0.13em;
-    text-transform: uppercase;
   }
 
   .john-card {

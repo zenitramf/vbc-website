@@ -43,8 +43,7 @@ import { personalEvangelismTimesList } from "@/lib/church-data";
           {
             personalEvangelismTimesList.map((gathering) => (
               <li>
-                <strong class="text-foreground">{gathering.day}</strong>
-                {" — "}
+                <strong class="text-foreground">{gathering.day}:</strong>{" "}
                 {gathering.time}
               </li>
             ))
