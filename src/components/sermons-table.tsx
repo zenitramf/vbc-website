@@ -12,7 +12,6 @@ import {
   ChevronRight,
   MonitorPlay,
   Play,
-  User,
 } from "lucide-react";
 
 import { formatSermonDate } from "@/lib/sermons";
@@ -98,25 +97,12 @@ const columns = [
               <CalendarDays aria-hidden="true" className="size-3.5" />
               {formatSermonDate(sermon.publishedAt)}
             </p>
-            <p className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground md:hidden">
-              <User aria-hidden="true" className="size-3.5" />
-              {sermon.speaker}
-            </p>
+
           </div>
         </div>
       );
     },
     header: "Message",
-  }),
-  columnHelper.accessor("speaker", {
-    cell: (info) => (
-      <span className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-xs font-medium whitespace-nowrap text-secondary-foreground">
-        <User aria-hidden="true" className="size-3.5" />
-        {info.getValue()}
-      </span>
-    ),
-    header: "Speaker",
-    meta: { className: "hidden w-44 md:table-cell" },
   }),
   columnHelper.display({
     cell: (info) => {
