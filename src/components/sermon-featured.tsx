@@ -1,4 +1,4 @@
-import { ArrowUpRight, CalendarDays, Play, User } from "lucide-react";
+import { ArrowUpRight, CalendarDays, Play } from "lucide-react";
 import { useState } from "react";
 
 import { formatSermonDate } from "@/lib/sermons";
@@ -75,10 +75,6 @@ export default function SermonFeatured({ sermon }: SermonFeaturedProps) {
                 className="size-4 text-primary"
               />
               {formatSermonDate(sermon.publishedAt)}
-            </span>
-            <span className="flex items-center gap-1.5">
-              <User aria-hidden="true" className="size-4 text-primary" />
-              {sermon.speaker}
             </span>
           </div>
           <div className="flex flex-wrap gap-3">
