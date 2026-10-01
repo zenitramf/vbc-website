@@ -5,12 +5,12 @@ import { serviceTimes } from "@/lib/church-data";
 import { primaryNav, visitHref } from "@/lib/site-nav";
 
 const gatherings = [
-  { label: "Sunday School", time: serviceTimes.sundaySchool.time },
-  { label: "Morning Worship", time: serviceTimes.sundayMorning.time },
-  { label: "Discipleship", time: serviceTimes.sundayNight.time },
+  { label: "Sunday School", time: `${serviceTimes.sundaySchool.time} (Sun)` },
+  { label: "Morning Worship", time: `${serviceTimes.sundayMorning.time} (Sun)` },
+  { label: "Discipleship", time: `${serviceTimes.sundayNight.time} (Sun)` },
   {
-    label: `${serviceTimes.bibleStudy.day} Bible Study`,
-    time: serviceTimes.bibleStudy.time,
+    label: "Bible Study",
+    time: `${serviceTimes.bibleStudy.time} (Thurs)`,
   },
 ];
 ---
