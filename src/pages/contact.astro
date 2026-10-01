@@ -1,0 +1,54 @@
+---
+// Page frontmatter returns redirect responses at the top level by design;
+// there is no enclosing function to return from.
+// oxlint-disable unicorn/prefer-module
+import { env } from "cloudflare:workers";
+
+import PageLayout from "@/layouts/page-layout.astro";
+import { Card, CardContent } from "@/components/starwind/card";
+import ContactForm from "@/components/contact/contact-form.astro";
+import { CONTACT_THANKS_PATH } from "@/lib/connect-form";
+import { submitContactForm } from "@/lib/connect-submit";
+
+export const prerender = false;
+
+Astro.response.headers.set("Cache-Control", "no-store");
+
+if (Astro.request.method !== "POST") {
+  // The canonical form lives on /visit; this page re-renders POSTs that
+  // could not be delivered so the visitor's message is never lost.
+  return Astro.redirect("/visit#contact", 302);
+}
+
+const result = await submitContactForm(Astro.request, env);
+if (!result.errorCode) {
+  return Astro.redirect(CONTACT_THANKS_PATH, 303);
+}
+
+Astro.response.status = result.status;
+---
+
+<PageLayout
+  title="Contact Us"
+  description="Fix and resend your message to Victory Baptist Church; we kept what you wrote."
+  noindex
+>
+  <section class="bg-background px-8 py-12 md:px-16 lg:px-24">
+    <div class="mx-auto grid max-w-3xl gap-6">
+      <h1
+        class="font-display text-4xl font-bold tracking-tight text-foreground md:text-5xl"
+      >
+        Contact Us
+      </h1>
+      <Card>
+        <CardContent>
+          <ContactForm errorCode={result.errorCode} values={result.values} />
+        </CardContent>
+      </Card>
+      <p class="text-sm text-muted-foreground">
+        Prefer the full page?{" "}
+        <a class="underline" href="/visit#contact">Back to Plan Your Visit</a>
+      </p>
+    </div>
+  </section>
+</PageLayout>

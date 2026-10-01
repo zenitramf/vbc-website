@@ -24,6 +24,7 @@ export const CONNECT_FIELD_LIMITS = {
   email: 200,
   how_heard_other: 200,
   interests_other: 200,
+  message: 2000,
   name: 200,
   phone: 200,
   prayer: 2000,
@@ -33,6 +34,10 @@ export const CONNECT_FIELD_LIMITS = {
 // buffering arbitrary request bodies in the Worker.
 export const CONNECT_MAX_BODY_BYTES = 64 * 1024;
 
+/** Public contact form handler and confirmation page. */
+export const CONTACT_PATH = "/contact";
+export const CONTACT_THANKS_PATH = "/contact/thanks";
+
 export type ConnectErrorCode =
   | "contact"
   | "content"
@@ -40,6 +45,7 @@ export type ConnectErrorCode =
   | "email"
   | "format"
   | "length"
+  | "message"
   | "name";
 
 export const CONNECT_ERROR_MESSAGES: Record<ConnectErrorCode, string> = {
@@ -51,7 +57,8 @@ export const CONNECT_ERROR_MESSAGES: Record<ConnectErrorCode, string> = {
   format:
     "We couldn't read the form. Please submit it from this page without attaching files.",
   length:
-    "Please check the length of your answers: the prayer request can be up to 2000 characters and every other field up to 200. We kept what you wrote so you can fix it.",
+    "Please check the length of your answers: long texts (prayer request or message) can be up to 2000 characters and every other field up to 200. We kept what you wrote so you can fix it.",
+  message: "Please write your message so we can help you.",
   name: "Please enter your name so we can get to know you.",
 };
 

@@ -1,5 +1,9 @@
-import { sendConnectEmail } from "@/lib/connect-email";
-import type { ConnectEmailEnv, ConnectSubmission } from "@/lib/connect-email";
+import { sendConnectEmail, sendContactEmail } from "@/lib/connect-email";
+import type {
+  ConnectEmailEnv,
+  ConnectSubmission,
+  ContactSubmission,
+} from "@/lib/connect-email";
 import {
   CONNECT_FIELD_LIMITS,
   CONNECT_MAX_BODY_BYTES,
@@ -85,7 +89,7 @@ const exceedsLimits = (values: URLSearchParams): boolean =>
     values.getAll(field).some((value) => value.length > limit)
   );
 
-const validationError = (values: URLSearchParams): ConnectErrorCode | null => {
+const validateCore = (values: URLSearchParams): ConnectErrorCode | null => {
   const text = (field: string): string => values.get(field) ?? "";
   if (exceedsLimits(values)) {
     return "length";
@@ -102,26 +106,49 @@ const validationError = (values: URLSearchParams): ConnectErrorCode | null => {
   return null;
 };
 
-/** Reads, bounds and validates the form: honeypot, limits, name, contact. */
-const parseForm = async (request: Request): Promise<FormParseResult> => {
-  let values: URLSearchParams;
-  try {
-    values = await readForm(request);
-  } catch (error) {
-    return readFailure(error, request);
-  }
+const failure = (
+  values: URLSearchParams,
+  errorCode: ConnectErrorCode
+): FormParseResult => ({
+  errorCode,
+  honeypot: false,
+  status: HTTP_UNPROCESSABLE,
+  values,
+});
 
+/** Validates parsed values: shared core, plus the message for the contact form. */
+const finishParse = (
+  values: URLSearchParams,
+  { requireMessage }: { requireMessage: boolean }
+): FormParseResult => {
   // Honeypot: no email, but the same confirmation as a successful submission.
   if (values.get("website_url")?.trim()) {
     return { errorCode: null, honeypot: true, status: HTTP_SEE_OTHER, values };
   }
-  const errorCode = validationError(values);
-  return {
-    errorCode,
-    honeypot: false,
-    status: errorCode ? HTTP_UNPROCESSABLE : HTTP_SEE_OTHER,
-    values,
-  };
+  const coreError = validateCore(values);
+  if (coreError) {
+    return failure(values, coreError);
+  }
+  if (requireMessage && !values.get("message")?.trim()) {
+    return failure(values, "message");
+  }
+  return { errorCode: null, honeypot: false, status: HTTP_SEE_OTHER, values };
+};
+
+/**
+ * Reads, bounds and validates the shared form core: honeypot, field limits,
+ * name, and at least one contact channel. The contact form additionally
+ * requires a message.
+ */
+const parseForm = async (
+  request: Request,
+  options: { requireMessage: boolean }
+): Promise<FormParseResult> => {
+  try {
+    return finishParse(await readForm(request), options);
+  } catch (error) {
+    return readFailure(error, request);
+  }
 };
 
 /** Keeps only known option labels (plus "Other"), de-duplicated. */
@@ -161,7 +188,7 @@ export const submitConnectForm = async (
   request: Request,
   env: ConnectEmailEnv
 ): Promise<FormParseResult> => {
-  const parsed = await parseForm(request);
+  const parsed = await parseForm(request, { requireMessage: false });
   if (parsed.errorCode || parsed.honeypot) {
     return parsed;
   }
@@ -171,6 +198,44 @@ export const submitConnectForm = async (
   } catch {
     // Do not log message content, contact details, or provider error text.
     console.error("[connect] Email delivery failed");
+    return { ...parsed, errorCode: "delivery", status: HTTP_BAD_GATEWAY };
+  }
+  return parsed;
+};
+
+const buildContactSubmission = (
+  request: Request,
+  values: URLSearchParams
+): ContactSubmission => {
+  const text = (field: string): string => values.get(field) ?? "";
+  return {
+    email: text("email"),
+    message: text("message"),
+    name: text("name"),
+    phone: text("phone"),
+    submittedAt: new Date().toISOString(),
+    userAgent: (request.headers.get("user-agent") ?? "").slice(
+      0,
+      MAX_USER_AGENT_LENGTH
+    ),
+  };
+};
+
+/** Public contact form on /visit: name, contact channel, message. */
+export const submitContactForm = async (
+  request: Request,
+  env: ConnectEmailEnv
+): Promise<FormParseResult> => {
+  const parsed = await parseForm(request, { requireMessage: true });
+  if (parsed.errorCode || parsed.honeypot) {
+    return parsed;
+  }
+
+  try {
+    await sendContactEmail(env, buildContactSubmission(request, parsed.values));
+  } catch {
+    // Do not log message content, contact details, or provider error text.
+    console.error("[contact] Email delivery failed");
     return { ...parsed, errorCode: "delivery", status: HTTP_BAD_GATEWAY };
   }
   return parsed;

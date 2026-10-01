@@ -189,3 +189,73 @@ export const sendConnectEmail = (
     buildConnectEmail(submission),
     submission.email || CONNECT_EMAIL_TO
   );
+
+export interface ContactSubmission {
+  email: string;
+  message: string;
+  name: string;
+  phone: string;
+  submittedAt: string;
+  userAgent: string;
+}
+
+/** Plain contact inquiry from the public form on the Plan Your Visit page. */
+export const buildContactEmail = (
+  submission: ContactSubmission
+): ConnectEmailContent => {
+  const contact =
+    [submission.email, submission.phone].filter(Boolean).join(" · ") || "—";
+  const receivedAt = formatSubmittedAt(submission.submittedAt);
+
+  const text = [
+    "New contact message",
+    "",
+    "Source: Contact form (Plan Your Visit page)",
+    "",
+    `Name: ${submission.name || "—"}`,
+    `Email: ${submission.email || "—"}`,
+    `Phone: ${submission.phone || "—"}`,
+    "",
+    "Message:",
+    submission.message || "—",
+    "",
+    `Submitted: ${receivedAt}`,
+  ].join("\n");
+
+  const html = [
+    `<div style="background:#fbbf24;border-radius:8px;padding:14px 18px;margin:0 0 20px"><p style="margin:0;font-size:15px;color:#1c1917"><strong>SOURCE:</strong> <strong>Contact form — &quot;Plan Your Visit&quot; page (/visit)</strong></p></div>`,
+    "<h2>New contact message</h2>",
+    `<table cellpadding="6" cellspacing="0" style="border-collapse:collapse">`,
+    ...(
+      [
+        ["Name", submission.name],
+        ["Email", submission.email],
+        ["Phone", submission.phone],
+      ] as [string, string][]
+    ).map(
+      ([label, value]) =>
+        `<tr><td style="vertical-align:top"><strong>${escapeHtml(label)}</strong></td><td>${escapeHtml(value || "—")}</td></tr>`
+    ),
+    "</table>",
+    "<h3>Message</h3>",
+    `<p style="white-space:pre-wrap">${escapeHtml(submission.message || "—")}</p>`,
+    `<p style="color:#666;font-size:12px">Submitted: ${escapeHtml(receivedAt)}<br />Contact: ${escapeHtml(contact)}<br />Browser: ${escapeHtml(submission.userAgent)}</p>`,
+  ].join("\n");
+
+  return {
+    html,
+    subject: `New contact message: ${submission.name || "Visitor"}`,
+    text,
+  };
+};
+
+/** Sends the public contact inquiry with the same delivery guarantees. */
+export const sendContactEmail = (
+  env: ConnectEmailEnv,
+  submission: ContactSubmission
+): Promise<ConnectEmailTransport> =>
+  deliver(
+    env,
+    buildContactEmail(submission),
+    submission.email || CONNECT_EMAIL_TO
+  );
