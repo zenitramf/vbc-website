@@ -1,0 +1,44 @@
+---
+import PageLayout from "@/layouts/page-layout.astro";
+import { Button } from "@/components/starwind/button";
+import { churchInfo } from "@/lib/church-data";
+
+export const prerender = false;
+---
+
+<PageLayout
+  title="Thank You"
+  description="We received your connection card. Someone from Victory Baptist Church will be in touch."
+  noindex
+>
+  <section class="bg-background px-8 py-24 md:px-16 lg:px-24">
+    <div class="mx-auto grid max-w-2xl gap-6 text-center">
+      <p
+        class="text-sm font-bold uppercase tracking-[0.2em] text-primary-accent"
+      >
+        {churchInfo.name}
+      </p>
+      <h1
+        class="font-display text-4xl font-bold tracking-tight text-foreground md:text-5xl"
+      >
+        Thank you! We received your information
+      </h1>
+      <p class="text-lg leading-relaxed text-muted-foreground">
+        Someone from our team will be in touch soon. If you shared a prayer
+        request, we'll be praying for you.
+      </p>
+      <div class="flex flex-wrap justify-center gap-3">
+        <Button href="/" size="lg">Back to Home</Button>
+        <Button href="/visit/" size="lg" variant="secondary">
+          Plan Your Visit
+        </Button>
+      </div>
+      <p class="text-sm text-muted-foreground">
+        Need something right now? Email us at{" "}
+        <a class="underline" href={`mailto:${churchInfo.email}`}>
+          {churchInfo.email}
+        </a>
+      </p>
+    </div>
+  </section>
+</PageLayout>

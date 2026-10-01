@@ -1,0 +1,347 @@
+---
+import { env } from "cloudflare:workers";
+
+import PageHeader from "@/components/page-header.astro";
+import Alert from "@/components/starwind/alert/Alert.astro";
+import { Button } from "@/components/starwind/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+} from "@/components/starwind/card";
+import Checkbox from "@/components/starwind/checkbox/Checkbox.astro";
+import Input from "@/components/starwind/input/Input.astro";
+import Label from "@/components/starwind/label/Label.astro";
+import Textarea from "@/components/starwind/textarea/Textarea.astro";
+import PageLayout from "@/layouts/page-layout.astro";
+import {
+  CONNECT_ERROR_MESSAGES,
+  CONNECT_FIELD_LIMITS,
+  connectOptionId,
+  HOW_HEARD_OPTIONS,
+  INTEREST_OPTIONS,
+} from "@/lib/connect-form";
+import type { ConnectErrorCode } from "@/lib/connect-form";
+import { CONNECT_API_PATH, CONNECT_THANKS_PATH } from "@/lib/connect-gate";
+import { submitConnectForm } from "@/lib/connect-submit";
+
+export const prerender = false;
+
+Astro.response.headers.set("Cache-Control", "no-store");
+
+let values = new URLSearchParams();
+let errorCode: ConnectErrorCode | null = null;
+if (Astro.request.method === "POST") {
+  const result = await submitConnectForm(Astro.request, env);
+  if (!result.errorCode) {
+    return Astro.redirect(CONNECT_THANKS_PATH, 303);
+  }
+  values = result.values;
+  errorCode = result.errorCode;
+  Astro.response.status = result.status;
+}
+
+const formErrorMessage = errorCode ? CONNECT_ERROR_MESSAGES[errorCode] : null;
+const exceedsLimit = (field: keyof typeof CONNECT_FIELD_LIMITS): boolean =>
+  values
+    .getAll(field)
+    .some((value) => value.length > CONNECT_FIELD_LIMITS[field]);
+const describedBy = (
+  ...ids: (string | false | null | undefined)[]
+): string | undefined => ids.filter(Boolean).join(" ") || undefined;
+const invalid = (condition: boolean): "true" | undefined =>
+  condition ? "true" : undefined;
+
+const nameError = errorCode === "name" ? CONNECT_ERROR_MESSAGES.name : null;
+const contactError =
+  errorCode === "contact" || errorCode === "email"
+    ? CONNECT_ERROR_MESSAGES[errorCode]
+    : null;
+---
+
+<PageLayout
+  title="Connect With Us"
+  description="Share your information with Victory Baptist Church and someone from our team will be in touch."
+  noindex
+>
+  <PageHeader eyebrow="Connect" title="Connect With Us">
+    <p>
+      We'd love to get to know you. Tell us a little about yourself and someone
+      from our team will gladly reach out.
+    </p>
+  </PageHeader>
+
+  <section class="bg-background px-8 py-16 md:px-16 lg:px-24">
+    <div
+      class="mx-auto grid max-w-5xl gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16"
+    >
+      <div class="grid gap-5 lg:sticky lg:top-28">
+        <h2 class="font-display text-2xl font-bold text-foreground">
+          What happens next
+        </h2>
+        <ul class="grid gap-3 text-muted-foreground">
+          <li class="flex gap-3">
+            <span aria-hidden="true" class="text-primary-accent">→</span>
+            We pray over every request you share.
+          </li>
+          <li class="flex gap-3">
+            <span aria-hidden="true" class="text-primary-accent">→</span>
+            We answer your questions about the church and the faith.
+          </li>
+          <li class="flex gap-3">
+            <span aria-hidden="true" class="text-primary-accent">→</span>
+            We help you take your next step: salvation, baptism, discipleship, or
+            serving.
+          </li>
+        </ul>
+        <p class="text-sm text-muted-foreground">
+          We use your information only to contact you and pray for you.
+        </p>
+      </div>
+
+      <div class="grid gap-6">
+        {
+          formErrorMessage && (
+            <Alert id="form-error" variant="error">
+              <p class="font-medium">We couldn't send the form</p>
+              <p class="mt-1 text-sm text-muted-foreground">
+                {formErrorMessage}
+              </p>
+            </Alert>
+          )
+        }
+
+        <Card>
+          <CardHeader>
+            <h2 class="text-2xl font-semibold tracking-tight text-foreground">
+              Connection Card
+            </h2>
+            <CardDescription>
+              It takes less than two minutes. Fields marked with{" "}
+              <span aria-hidden="true" class="text-error">*</span> are required. Text
+              fields accept up to 200 characters and the prayer request up to 2000.
+            </CardDescription>
+          </CardHeader>
+
+          <CardContent>
+            <form action={CONNECT_API_PATH} class="grid gap-8" method="POST">
+              <div aria-hidden="true" class="hidden">
+                <label for="website_url">Do not fill out this field</label>
+                <input
+                  autocomplete="off"
+                  id="website_url"
+                  name="website_url"
+                  tabindex="-1"
+                />
+              </div>
+
+              <div class="grid gap-2">
+                <Label for="name">
+                  Name <span aria-hidden="true" class="text-error">*</span>
+                </Label>
+                <Input
+                  aria-describedby={describedBy(
+                    nameError && "name-error",
+                    exceedsLimit("name") && "form-error"
+                  )}
+                  aria-invalid={invalid(
+                    Boolean(nameError) || exceedsLimit("name")
+                  )}
+                  autocomplete="name"
+                  id="name"
+                  maxlength={CONNECT_FIELD_LIMITS.name}
+                  name="name"
+                  required
+                  value={values.get("name") ?? ""}
+                />
+                {
+                  nameError && (
+                    <p class="text-sm text-error" id="name-error">
+                      {nameError}
+                    </p>
+                  )
+                }
+              </div>
+
+              <div class="grid content-start gap-6 sm:grid-cols-2">
+                <div class="grid content-start gap-2">
+                  <Label for="email">Email</Label>
+                  <Input
+                    aria-describedby={describedBy(
+                      "contact-help",
+                      contactError && "contact-error",
+                      exceedsLimit("email") && "form-error"
+                    )}
+                    aria-invalid={invalid(
+                      Boolean(contactError) || exceedsLimit("email")
+                    )}
+                    autocomplete="email"
+                    id="email"
+                    maxlength={CONNECT_FIELD_LIMITS.email}
+                    name="email"
+                    type="email"
+                    value={values.get("email") ?? ""}
+                  />
+                  <p class="text-sm text-muted-foreground" id="contact-help">
+                    Leave us at least one way to reach you.
+                  </p>
+                </div>
+
+                <div class="grid content-start gap-2">
+                  <Label for="phone">Phone</Label>
+                  <Input
+                    aria-describedby={describedBy(
+                      "contact-help",
+                      contactError && "contact-error",
+                      exceedsLimit("phone") && "form-error"
+                    )}
+                    aria-invalid={invalid(
+                      errorCode === "contact" || exceedsLimit("phone")
+                    )}
+                    autocomplete="tel"
+                    id="phone"
+                    maxlength={CONNECT_FIELD_LIMITS.phone}
+                    name="phone"
+                    type="tel"
+                    value={values.get("phone") ?? ""}
+                  />
+                </div>
+              </div>
+              {
+                contactError && (
+                  <p class="text-sm text-error" id="contact-error">
+                    {contactError}
+                  </p>
+                )
+              }
+
+              <fieldset class="grid gap-4">
+                <legend class="mb-4 font-medium text-foreground">
+                  How did you hear about us?
+                </legend>
+                <div class="grid gap-3 sm:grid-cols-2">
+                  {
+                    HOW_HEARD_OPTIONS.map((label) => (
+                      <Checkbox
+                        checked={values.getAll("how_heard").includes(label)}
+                        id={connectOptionId("how-heard", label)}
+                        label={label}
+                        name="how_heard"
+                        value={label}
+                      />
+                    ))
+                  }
+                </div>
+                <div class="grid gap-3" data-other-group>
+                  <Checkbox
+                    checked={values.getAll("how_heard").includes("Other")}
+                    id={connectOptionId("how-heard", "Other")}
+                    label="Other"
+                    name="how_heard"
+                    value="Other"
+                  />
+                  <div class="grid gap-2" data-other-input hidden>
+                    <Label for="how_heard_other">Please specify:</Label>
+                    <Input
+                      aria-describedby={describedBy(
+                        exceedsLimit("how_heard_other") && "form-error"
+                      )}
+                      aria-invalid={invalid(exceedsLimit("how_heard_other"))}
+                      id="how_heard_other"
+                      maxlength={CONNECT_FIELD_LIMITS.how_heard_other}
+                      name="how_heard_other"
+                      value={values.get("how_heard_other") ?? ""}
+                    />
+                  </div>
+                </div>
+              </fieldset>
+
+              <div class="grid gap-2">
+                <Label for="prayer">How can we pray for you?</Label>
+                <Textarea
+                  aria-describedby={describedBy(
+                    "prayer-help",
+                    exceedsLimit("prayer") && "form-error"
+                  )}
+                  aria-invalid={invalid(exceedsLimit("prayer"))}
+                  id="prayer"
+                  maxlength={CONNECT_FIELD_LIMITS.prayer}
+                  name="prayer"
+                  rows={4}
+                  value={values.get("prayer") ?? ""}
+                />
+                <p class="text-sm text-muted-foreground" id="prayer-help">
+                  Up to 2000 characters. We'll treat it with confidence and
+                  respect.
+                </p>
+              </div>
+
+              <fieldset class="grid gap-4">
+                <legend class="mb-4 font-medium text-foreground">
+                  I want to know more about...
+                </legend>
+                <div class="grid gap-3 sm:grid-cols-2">
+                  {
+                    INTEREST_OPTIONS.map((label) => (
+                      <Checkbox
+                        checked={values.getAll("interests").includes(label)}
+                        id={connectOptionId("interest", label)}
+                        label={label}
+                        name="interests"
+                        value={label}
+                      />
+                    ))
+                  }
+                </div>
+                <div class="grid gap-3" data-other-group>
+                  <Checkbox
+                    checked={values.getAll("interests").includes("Other")}
+                    id={connectOptionId("interest", "Other")}
+                    label="Other"
+                    name="interests"
+                    value="Other"
+                  />
+                  <div class="grid gap-2" data-other-input hidden>
+                    <Label for="interests_other">Please specify:</Label>
+                    <Input
+                      aria-describedby={describedBy(
+                        exceedsLimit("interests_other") && "form-error"
+                      )}
+                      aria-invalid={invalid(exceedsLimit("interests_other"))}
+                      id="interests_other"
+                      maxlength={CONNECT_FIELD_LIMITS.interests_other}
+                      name="interests_other"
+                      value={values.get("interests_other") ?? ""}
+                    />
+                  </div>
+                </div>
+              </fieldset>
+
+              <div>
+                <Button size="lg" type="submit">Send</Button>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Reveal each "Other" text input only while its checkbox is checked.
+    for (const group of document.querySelectorAll("[data-other-group]")) {
+      const checkbox = group.querySelector<HTMLInputElement>(
+        'input[type="checkbox"]'
+      );
+      const target = group.querySelector<HTMLElement>("[data-other-input]");
+      if (checkbox && target) {
+        const sync = () => {
+          target.hidden = !checkbox.checked;
+        };
+        checkbox.addEventListener("change", sync);
+        sync();
+      }
+    }
+  </script>
+</PageLayout>

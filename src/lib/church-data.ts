@@ -19,19 +19,19 @@ export const serviceTimes = {
     day: "Sunday",
     id: "sundaySchool",
     label: "Sunday School",
-    time: "10am",
+    time: "9am",
   },
   sundayMorning: {
     day: "Sunday",
     id: "sundayMorning",
     label: "Sunday Worship",
-    time: "11am",
+    time: "10:30am",
   },
   sundayNight: {
     day: "Sunday",
     id: "sundayNight",
-    label: "Sunday Evening",
-    time: "6pm",
+    label: "Discipleship",
+    time: "5pm",
   },
   bibleStudy: {
     day: "Thursday",
@@ -50,8 +50,9 @@ export const serviceTimesList: readonly ServiceTime[] = [
 ];
 
 /**
- * Spanish-site / staging schedule — no Sunday school; morning is earlier with
- * live translation; evening is a dedicated Spanish service.
+ * Spanish-site / staging schedule — no Sunday school; shares the unified
+ * morning and evening service times, with a dedicated Spanish evening service
+ * running alongside English discipleship.
  */
 export const spanishServiceTimesList: readonly ServiceTime[] = [
   {
@@ -59,7 +60,6 @@ export const spanishServiceTimesList: readonly ServiceTime[] = [
     id: "sundayMorning",
     label: "Sunday Worship",
     time: "10:30am",
-    translationAvailable: true,
   },
   {
     day: "Sunday",
@@ -99,7 +99,7 @@ export const churchInfo = {
 /** Default site-wide SEO values. Per-page overrides merge on top via `buildSEO()`. */
 export const defaultSEO = {
   description:
-    "Victory Baptist Church in Fresno, California: an independent Baptist church proclaiming the gospel of Jesus Christ through personal evangelism, sound Bible teaching, and Christ-centered worship. Sundays 11am & 6pm, Thursdays 7pm.",
+    "Victory Baptist Church in Fresno, California: an independent Baptist church proclaiming the gospel of Jesus Christ through personal evangelism, sound Bible teaching, and Christ-centered worship. Sundays 9am, 10:30am & 5pm, Thursdays 7pm.",
   /** 1200×630 social share image, served from `public/`. */
   ogImage: "/og-default.jpg",
   ogImageAlt: "Fresno skyline and downtown mural",

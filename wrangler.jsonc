@@ -22,6 +22,17 @@
   "observability": {
     "enabled": true,
   },
+  // Connection form delivery (see README, "Connection form"). Requires Email
+  // Sending enabled for fresnovictory.com and contact@fresnovictory.com
+  // verified as a destination address. If the binding is unavailable, the
+  // form falls back to the RESEND_API_KEY secret.
+  "send_email": [
+    {
+      "name": "CONNECT_EMAIL",
+      "allowed_sender_addresses": ["website@fresnovictory.com"],
+      "destination_address": "contact@fresnovictory.com",
+    },
+  ],
   "triggers": {
     // Daily sync of YouTube Videos into D1 (UTC noon).
     "crons": ["0 12 * * *"],

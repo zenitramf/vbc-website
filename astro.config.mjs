@@ -8,6 +8,10 @@ import { defineConfig } from "astro/config";
 const sitemapExcludedPaths = new Set([
   "/about",
   "/about/",
+  "/connect",
+  "/connect/",
+  "/connect/thanks",
+  "/connect/thanks/",
   "/give",
   "/give/",
   "/messages",

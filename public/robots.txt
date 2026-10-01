@@ -1,4 +1,9 @@
 User-agent: *
 Allow: /
 
+# Private connection form: reachable only through the printed QR code.
+Disallow: /qr/
+Disallow: /connect
+Disallow: /api/connect
+
 Sitemap: https://fresnovictory.com/sitemap-index.xml
