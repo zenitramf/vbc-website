@@ -5,6 +5,17 @@ const SHORTS_MAX_SECONDS = 60;
 const VIDEO_DETAILS_BATCH_SIZE = 50;
 const YOUTUBE_API_BASE = "https://www.googleapis.com/youtube/v3";
 
+// Workers Free allows 50 external subrequests per invocation, so a sync must
+// never re-fetch the channel's full upload history. Each run scans at most
+// MAX_PLAYLIST_PAGES_PER_SYNC playlist pages for new uploads (stopping as
+// soon as a page has nothing new) and refreshes one rotating batch of
+// already-stored sermons, keeping a run to roughly a dozen fetches.
+const MAX_PLAYLIST_PAGES_PER_SYNC = 8;
+const REFRESH_SERMON_LIMIT = 50;
+// Re-examine unknown uploads from slightly before the newest stored sermon
+// so uploads published around the previous run are not missed.
+const SYNC_OVERLAP_MS = 48 * 60 * 60 * 1000;
+
 const ISO_DURATION_PATTERN = /^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/;
 
 interface YouTubeSermonsEnv {
@@ -22,13 +33,22 @@ interface ChannelListResponse {
   }[];
 }
 
+interface PlaylistItem {
+  contentDetails?: {
+    videoId?: string;
+    videoPublishedAt?: string;
+  };
+}
+
 interface PlaylistItemsResponse {
-  items?: {
-    contentDetails?: {
-      videoId?: string;
-    };
-  }[];
+  items?: PlaylistItem[];
   nextPageToken?: string;
+}
+
+interface StoredSermonRow {
+  published_at: string;
+  synced_at: string;
+  youtube_id: string;
 }
 
 interface VideoListResponse {
@@ -125,30 +145,102 @@ const createPlaylistPageParams = (
   ...(pageToken ? { pageToken } : {}),
 });
 
-const collectPlaylistVideoIds = (
-  items: PlaylistItemsResponse["items"]
+/**
+ * Stored sermons ordered by least-recently-synced first, so the first
+ * REFRESH_SERMON_LIMIT rows form a rotating metadata-refresh batch.
+ */
+const getStoredSermons = async (
+  database: D1Database
+): Promise<StoredSermonRow[]> => {
+  const result = await database
+    .prepare(
+      `SELECT youtube_id, published_at, synced_at
+       FROM sermons
+       ORDER BY synced_at ASC`
+    )
+    .all<StoredSermonRow>();
+
+  return result.results ?? [];
+};
+
+const getCandidateThresholdMs = (
+  storedSermons: StoredSermonRow[]
+): number | undefined => {
+  let latestPublishedMs: number | undefined;
+
+  for (const sermon of storedSermons) {
+    const publishedMs = Date.parse(sermon.published_at);
+    if (
+      !Number.isNaN(publishedMs) &&
+      (latestPublishedMs === undefined || publishedMs > latestPublishedMs)
+    ) {
+      latestPublishedMs = publishedMs;
+    }
+  }
+
+  return latestPublishedMs === undefined
+    ? undefined
+    : latestPublishedMs - SYNC_OVERLAP_MS;
+};
+
+const collectCandidateVideoIds = (
+  items: PlaylistItem[] | undefined,
+  knownVideoIds: ReadonlySet<string>,
+  thresholdMs: number | undefined
 ): string[] =>
   (items ?? []).flatMap((item) => {
     const videoId = item.contentDetails?.videoId;
-    return videoId ? [videoId] : [];
+    const videoPublishedAt = item.contentDetails?.videoPublishedAt;
+
+    // Items without a publish date are deleted/private placeholders.
+    if (!(videoId && videoPublishedAt) || knownVideoIds.has(videoId)) {
+      return [];
+    }
+
+    if (
+      thresholdMs !== undefined &&
+      Date.parse(videoPublishedAt) < thresholdMs
+    ) {
+      return [];
+    }
+
+    return [videoId];
   });
 
-const getUploadVideoIds = async (
+/**
+ * Scans the uploads playlist newest-first for videos not yet stored,
+ * stopping at the first page with nothing new. The uploads playlist is in
+ * reverse chronological order, so later pages can only be older. The page
+ * cap bounds the fetch count when catching up after a long gap (or seeding
+ * an empty database, which then backfills the newest uploads first).
+ */
+const getCandidateVideoIds = async (
   apiKey: string,
-  uploadsPlaylistId: string
+  uploadsPlaylistId: string,
+  knownVideoIds: ReadonlySet<string>,
+  thresholdMs: number | undefined
 ): Promise<string[]> => {
   const videoIds: string[] = [];
   let pageToken: string | undefined;
 
-  do {
+  for (let page = 0; page < MAX_PLAYLIST_PAGES_PER_SYNC; page += 1) {
     const data = await youtubeFetch<PlaylistItemsResponse>(
       "playlistItems",
       apiKey,
       createPlaylistPageParams(uploadsPlaylistId, pageToken)
     );
-    videoIds.push(...collectPlaylistVideoIds(data.items));
+    const pageCandidates = collectCandidateVideoIds(
+      data.items,
+      knownVideoIds,
+      thresholdMs
+    );
+    videoIds.push(...pageCandidates);
     pageToken = data.nextPageToken;
-  } while (pageToken);
+
+    if (pageCandidates.length === 0 || !pageToken) {
+      break;
+    }
+  }
 
   return videoIds;
 };
@@ -299,16 +391,52 @@ const selectSermons = (
   };
 };
 
+/** New-upload candidates plus the next rotating metadata-refresh batch. */
+const getSyncVideoIds = async (
+  apiKey: string,
+  uploadsPlaylistId: string,
+  storedSermons: StoredSermonRow[]
+): Promise<string[]> => {
+  const knownVideoIds = new Set(
+    storedSermons.map((sermon) => sermon.youtube_id)
+  );
+  const candidateVideoIds = await getCandidateVideoIds(
+    apiKey,
+    uploadsPlaylistId,
+    knownVideoIds,
+    getCandidateThresholdMs(storedSermons)
+  );
+  const refreshVideoIds = storedSermons
+    .slice(0, REFRESH_SERMON_LIMIT)
+    .map((sermon) => sermon.youtube_id);
+
+  return [...new Set([...candidateVideoIds, ...refreshVideoIds])];
+};
+
+/**
+ * Incrementally syncs sermons within the Workers subrequest budget: only
+ * uploads newer than the stored watermark are examined in detail, plus one
+ * rotating batch of stored sermons whose metadata is refreshed. `synced`
+ * counts sermons upserted this run and `skipped` counts examined videos
+ * filtered out as shorts, livestream archives, or incomplete entries.
+ */
 export const syncYouTubeSermons = async (
   environment: YouTubeSermonsEnv
 ): Promise<SermonSyncResult> => {
   const apiKey = getApiKey(environment);
+  const database = environment.fvbc_sermons;
   const uploadsPlaylistId = await getUploadsPlaylistId(apiKey);
-  const videoIds = await getUploadVideoIds(apiKey, uploadsPlaylistId);
-  const videos = await getVideoDetails(apiKey, videoIds);
+  const storedSermons = await getStoredSermons(database);
+  const videoIds = await getSyncVideoIds(
+    apiKey,
+    uploadsPlaylistId,
+    storedSermons
+  );
+  const videos =
+    videoIds.length === 0 ? [] : await getVideoDetails(apiKey, videoIds);
   const { sermons, skipped } = selectSermons(videos);
 
-  await upsertSermons(environment.fvbc_sermons, sermons);
+  await upsertSermons(database, sermons);
 
   return {
     skipped,

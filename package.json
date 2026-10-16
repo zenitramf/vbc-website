@@ -12,6 +12,7 @@
     "connect:url": "node --experimental-strip-types scripts/connect-qr-url.mjs",
     "check": "ultracite check",
     "fix": "ultracite fix",
+    "test": "node --test src/lib/youtube-sermons.test.ts",
     "generate-types": "wrangler types"
   },
   "dependencies": {

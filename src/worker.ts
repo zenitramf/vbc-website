@@ -7,9 +7,16 @@ export default {
     return handle(request, env, ctx);
   },
   async scheduled(_controller, env) {
-    const result = await syncYouTubeSermons(env);
-    console.info(
-      `YouTube sermon sync complete: synced=${result.synced} skipped=${result.skipped}`
-    );
+    try {
+      const result = await syncYouTubeSermons(env);
+      console.info(
+        `YouTube sermon sync complete: synced=${result.synced} skipped=${result.skipped}`
+      );
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Unknown sync error.";
+      console.error(`YouTube sermon sync failed: ${message}`);
+      throw error;
+    }
   },
 } satisfies ExportedHandler<Env>;
