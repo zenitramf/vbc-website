@@ -23,7 +23,7 @@ export const CONTACT_MIN_FILL_MS = 3000;
  * dashboard → Turnstile). Site keys are not secret; the matching secret key is
  * the `TURNSTILE_SECRET_KEY` Worker secret.
  */
-export const TURNSTILE_SITE_KEY = "";
+export const TURNSTILE_SITE_KEY = "0x4AAAAAAF4HKxo8jlT898rD";
 
 /** Cloudflare's always-pass test keys, used for local development only. */
 export const TURNSTILE_TEST_SITE_KEY = "1x00000000000000000000AA";
