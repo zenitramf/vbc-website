@@ -17,6 +17,7 @@ import Checkbox from "@/components/starwind/checkbox/Checkbox.astro";
 import Input from "@/components/starwind/input/Input.astro";
 import Label from "@/components/starwind/label/Label.astro";
 import Textarea from "@/components/starwind/textarea/Textarea.astro";
+import TurnstileWidget from "@/components/turnstile-widget.astro";
 import PageLayout from "@/layouts/page-layout.astro";
 import {
   CONNECT_ERROR_MESSAGES,
@@ -320,7 +321,8 @@ const contactError =
                 </div>
               </fieldset>
 
-              <div>
+              <div class="grid justify-items-start gap-3">
+                <TurnstileWidget action="connect" />
                 <Button size="lg" type="submit">Send</Button>
               </div>
             </form>
