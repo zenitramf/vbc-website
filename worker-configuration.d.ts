@@ -15,6 +15,7 @@ declare namespace Cloudflare {
     GOOGLE_SERVICE_ACCOUNT_JSON: string;
     QR_CONNECT_SECRET: string;
     RESEND_API_KEY: string;
+    TURNSTILE_SECRET_KEY: string;
   }
 }
 interface Env extends Cloudflare.Env {}
@@ -32,6 +33,7 @@ declare namespace NodeJS {
       | "GOOGLE_SERVICE_ACCOUNT_JSON"
       | "QR_CONNECT_SECRET"
       | "RESEND_API_KEY"
+      | "TURNSTILE_SECRET_KEY"
     >
   > {}
 }

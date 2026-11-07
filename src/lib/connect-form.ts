@@ -46,7 +46,8 @@ export type ConnectErrorCode =
   | "format"
   | "length"
   | "message"
-  | "name";
+  | "name"
+  | "verification";
 
 export const CONNECT_ERROR_MESSAGES: Record<ConnectErrorCode, string> = {
   contact: "Leave us your email or phone number so we can get back to you.",
@@ -60,6 +61,7 @@ export const CONNECT_ERROR_MESSAGES: Record<ConnectErrorCode, string> = {
     "Please check the length of your answers: long texts (prayer request or message) can be up to 2000 characters and every other field up to 200. We kept what you wrote so you can fix it.",
   message: "Please write your message so we can help you.",
   name: "Please enter your name so we can get to know you.",
+  verification: `We couldn't confirm the form was sent by a person. Please wait a moment and send it again, or email us at ${churchInfo.email}. We kept what you wrote.`,
 };
 
 const ACCENT_MARKS = /[\u0300-\u036F]/g;

@@ -92,3 +92,17 @@ The Plan Your Visit page ends with a public contact form (name, email or phone, 
 | `GET /contact/thanks` | public | Confirmation page |
 
 Failures re-render `/contact` with everything the visitor typed (`422` validation, `502` delivery); only success redirects. `GET /contact` bounces to `/visit#contact`. The recovery and confirmation pages are on demand, `noindex`, and excluded from the sitemap. No QR gate, honeypot, body cap and `no-store` rules are the same as the connection card.
+
+### Bot protection (both forms)
+
+Both forms carry a hidden honeypot field and a [Cloudflare Turnstile](https://developers.cloudflare.com/turnstile/) widget (`src/components/turnstile-widget.astro`). The widget runs in managed, interaction-only mode, so most visitors see nothing; a checkbox appears only when Cloudflare wants a click. Before any email is sent, the Worker confirms the widget's token with Siteverify (`src/lib/turnstile.ts`). Missing or rejected tokens re-render the form with the visitor's input and a "couldn't confirm" message (`403`). If the secret is missing or Siteverify can't be reached, the check fails closed and the error is logged.
+
+The contact form also drops anything sent less than 3 seconds after the page loaded (`CONTACT_MIN_FILL_MS`). The browser records the time on the page in the hidden `elapsed_ms` field on submit. Too-fast submissions get the normal thank-you page but no email, the same as honeypot hits. The QR-gated connection card skips this check, because phone autofill can legitimately fill it in seconds.
+
+Setup:
+
+1. Cloudflare dashboard → Turnstile → **Add widget**: hostname `fresnovictory.com`, mode **Managed**.
+2. Put the public **site key** in `TURNSTILE_SITE_KEY` (`src/lib/turnstile.ts`). Production builds fail until it's set (or the `PUBLIC_TURNSTILE_SITE_KEY` build variable is).
+3. Store the **secret key**: `pnpm exec wrangler secret put TURNSTILE_SECRET_KEY`. Set it before deploying, or every submission is rejected.
+
+Locally, `astro dev` uses Cloudflare's always-pass test keys, so no setup is needed. To test a production build on localhost, add `localhost` to the widget's hostnames, or build with the test site key (`PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA`) and put the test secret in `.dev.vars`.

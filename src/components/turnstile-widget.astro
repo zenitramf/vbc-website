@@ -1,0 +1,38 @@
+---
+import { TURNSTILE_SITE_KEY, TURNSTILE_TEST_SITE_KEY } from "@/lib/turnstile";
+
+interface Props {
+  /** Label reported to Turnstile analytics, e.g. "contact". */
+  action: string;
+}
+
+const { action } = Astro.props;
+
+// `PUBLIC_TURNSTILE_SITE_KEY` overrides the committed key, e.g. to test a
+// production build on localhost with a separate widget. Production builds
+// without any key are stopped in astro.config (`requireTurnstileSiteKey`).
+const siteKey =
+  import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ||
+  (import.meta.env.DEV ? TURNSTILE_TEST_SITE_KEY : TURNSTILE_SITE_KEY);
+---
+
+<!--
+  Managed widget: most visitors pass without seeing anything; the box only
+  appears when Cloudflare needs a click. It adds `cf-turnstile-response` to the
+  enclosing form.
+-->
+<div
+  class="cf-turnstile justify-self-stretch"
+  data-action={action}
+  data-appearance="interaction-only"
+  data-language="auto"
+  data-sitekey={siteKey}
+  data-size="flexible"
+  data-theme="auto"
+>
+</div>
+<script
+  is:inline
+  async
+  defer
+  src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>

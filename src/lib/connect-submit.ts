@@ -11,21 +11,33 @@ import {
   INTEREST_OPTIONS,
 } from "@/lib/connect-form";
 import type { ConnectErrorCode } from "@/lib/connect-form";
+import {
+  CONTACT_MIN_FILL_MS,
+  ELAPSED_FIELD,
+  submittedTooFast,
+  TURNSTILE_RESPONSE_FIELD,
+  TURNSTILE_TEST_SECRET_KEY,
+  verifyTurnstileToken,
+} from "@/lib/turnstile";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const FORM_CONTENT_TYPE = "application/x-www-form-urlencoded";
 const MAX_USER_AGENT_LENGTH = 300;
 const HTTP_BAD_REQUEST = 400;
+const HTTP_FORBIDDEN = 403;
 const HTTP_PAYLOAD_TOO_LARGE = 413;
 const HTTP_UNSUPPORTED_MEDIA_TYPE = 415;
 const HTTP_UNPROCESSABLE = 422;
 const HTTP_BAD_GATEWAY = 502;
 const HTTP_SEE_OTHER = 303;
 
+export type FormSubmitEnv = ConnectEmailEnv &
+  Partial<Pick<Env, "TURNSTILE_SECRET_KEY">>;
+
 export interface FormParseResult {
+  /** Likely bot (honeypot, too fast): pretend success, deliver nothing. */
+  discarded: boolean;
   errorCode: ConnectErrorCode | null;
-  /** Honeypot hit — pretend success without delivering anything. */
-  honeypot: boolean;
   status: number;
   values: URLSearchParams;
 }
@@ -77,8 +89,8 @@ const readFailure = (error: unknown, request: Request): FormParseResult => {
     status = HTTP_UNSUPPORTED_MEDIA_TYPE;
   }
   return {
+    discarded: false,
     errorCode: tooLarge ? "content" : "format",
-    honeypot: false,
     status,
     values: new URLSearchParams(),
   };
@@ -110,8 +122,8 @@ const failure = (
   values: URLSearchParams,
   errorCode: ConnectErrorCode
 ): FormParseResult => ({
+  discarded: false,
   errorCode,
-  honeypot: false,
   status: HTTP_UNPROCESSABLE,
   values,
 });
@@ -123,7 +135,7 @@ const finishParse = (
 ): FormParseResult => {
   // Honeypot: no email, but the same confirmation as a successful submission.
   if (values.get("website_url")?.trim()) {
-    return { errorCode: null, honeypot: true, status: HTTP_SEE_OTHER, values };
+    return { discarded: true, errorCode: null, status: HTTP_SEE_OTHER, values };
   }
   const coreError = validateCore(values);
   if (coreError) {
@@ -132,7 +144,7 @@ const finishParse = (
   if (requireMessage && !values.get("message")?.trim()) {
     return failure(values, "message");
   }
-  return { errorCode: null, honeypot: false, status: HTTP_SEE_OTHER, values };
+  return { discarded: false, errorCode: null, status: HTTP_SEE_OTHER, values };
 };
 
 /**
@@ -149,6 +161,44 @@ const parseForm = async (
   } catch (error) {
     return readFailure(error, request);
   }
+};
+
+// Local development falls back to Cloudflare's always-pass test secret, which
+// pairs with the test site key the widget uses under `astro dev`.
+const turnstileSecret = (env: FormSubmitEnv): string | undefined =>
+  env.TURNSTILE_SECRET_KEY ||
+  (import.meta.env.DEV ? TURNSTILE_TEST_SECRET_KEY : undefined);
+
+/**
+ * Bot checks after validation: Turnstile, then (contact form only) the minimum
+ * time on the page. Turnstile goes first so a visitor without JavaScript sees
+ * an error to act on instead of a silent drop. Returns null when the
+ * submission may be delivered.
+ */
+const checkHuman = async (
+  request: Request,
+  env: FormSubmitEnv,
+  parsed: FormParseResult,
+  { label, minFillMs }: { label: string; minFillMs?: number }
+): Promise<FormParseResult | null> => {
+  const turnstile = await verifyTurnstileToken({
+    remoteIp: request.headers.get("cf-connecting-ip"),
+    secret: turnstileSecret(env),
+    token: parsed.values.get(TURNSTILE_RESPONSE_FIELD),
+  });
+  if (!turnstile.success) {
+    const log = turnstile.reason === "invalid" ? console.info : console.error;
+    log(`[${label}] Turnstile check failed: ${turnstile.reason}`);
+    return { ...parsed, errorCode: "verification", status: HTTP_FORBIDDEN };
+  }
+  if (
+    minFillMs !== undefined &&
+    submittedTooFast(parsed.values.get(ELAPSED_FIELD), minFillMs)
+  ) {
+    console.info(`[${label}] Discarded a submission sent too fast`);
+    return { ...parsed, discarded: true };
+  }
+  return null;
 };
 
 /** Keeps only known option labels (plus "Other"), de-duplicated. */
@@ -183,26 +233,6 @@ const buildSubmission = (
   };
 };
 
-/** Returns the original values on every readable failure; never stores PII. */
-export const submitConnectForm = async (
-  request: Request,
-  env: ConnectEmailEnv
-): Promise<FormParseResult> => {
-  const parsed = await parseForm(request, { requireMessage: false });
-  if (parsed.errorCode || parsed.honeypot) {
-    return parsed;
-  }
-
-  try {
-    await sendConnectEmail(env, buildSubmission(request, parsed.values));
-  } catch {
-    // Do not log message content, contact details, or provider error text.
-    console.error("[connect] Email delivery failed");
-    return { ...parsed, errorCode: "delivery", status: HTTP_BAD_GATEWAY };
-  }
-  return parsed;
-};
-
 const buildContactSubmission = (
   request: Request,
   values: URLSearchParams
@@ -221,22 +251,64 @@ const buildContactSubmission = (
   };
 };
 
-/** Public contact form on /visit: name, contact channel, message. */
-export const submitContactForm = async (
-  request: Request,
-  env: ConnectEmailEnv
-): Promise<FormParseResult> => {
-  const parsed = await parseForm(request, { requireMessage: true });
-  if (parsed.errorCode || parsed.honeypot) {
-    return parsed;
-  }
+interface SubmitOptions {
+  deliver: (values: URLSearchParams) => Promise<unknown>;
+  label: string;
+  minFillMs?: number;
+  requireMessage: boolean;
+}
 
+const deliverParsed = async (
+  parsed: FormParseResult,
+  { deliver, label }: Pick<SubmitOptions, "deliver" | "label">
+): Promise<FormParseResult> => {
   try {
-    await sendContactEmail(env, buildContactSubmission(request, parsed.values));
+    await deliver(parsed.values);
   } catch {
     // Do not log message content, contact details, or provider error text.
-    console.error("[contact] Email delivery failed");
+    console.error(`[${label}] Email delivery failed`);
     return { ...parsed, errorCode: "delivery", status: HTTP_BAD_GATEWAY };
   }
   return parsed;
 };
+
+/** Parse, validate, bot checks, then email. */
+const submitForm = async (
+  request: Request,
+  env: FormSubmitEnv,
+  { deliver, label, minFillMs, requireMessage }: SubmitOptions
+): Promise<FormParseResult> => {
+  const parsed = await parseForm(request, { requireMessage });
+  if (parsed.errorCode || parsed.discarded) {
+    return parsed;
+  }
+  const blocked = await checkHuman(request, env, parsed, { label, minFillMs });
+  return blocked ?? (await deliverParsed(parsed, { deliver, label }));
+};
+
+/** Returns the original values on every readable failure; never stores PII. */
+export const submitConnectForm = (
+  request: Request,
+  env: FormSubmitEnv
+): Promise<FormParseResult> =>
+  // No minimum fill time here: the card is QR-gated, and a phone with
+  // autofill can legitimately send name + contact in a couple of seconds.
+  submitForm(request, env, {
+    deliver: (values) =>
+      sendConnectEmail(env, buildSubmission(request, values)),
+    label: "connect",
+    requireMessage: false,
+  });
+
+/** Public contact form on /visit: name, contact channel, message. */
+export const submitContactForm = (
+  request: Request,
+  env: FormSubmitEnv
+): Promise<FormParseResult> =>
+  submitForm(request, env, {
+    deliver: (values) =>
+      sendContactEmail(env, buildContactSubmission(request, values)),
+    label: "contact",
+    minFillMs: CONTACT_MIN_FILL_MS,
+    requireMessage: true,
+  });

@@ -4,12 +4,14 @@ import { Button } from "@/components/starwind/button";
 import Input from "@/components/starwind/input/Input.astro";
 import Label from "@/components/starwind/label/Label.astro";
 import Textarea from "@/components/starwind/textarea/Textarea.astro";
+import TurnstileWidget from "@/components/turnstile-widget.astro";
 import {
   CONNECT_ERROR_MESSAGES,
   CONNECT_FIELD_LIMITS,
   CONTACT_PATH,
 } from "@/lib/connect-form";
 import type { ConnectErrorCode } from "@/lib/connect-form";
+import { ELAPSED_FIELD } from "@/lib/turnstile";
 
 interface Props {
   /** Recovered values from a failed submission. */
@@ -162,7 +164,28 @@ const contactError =
     }
   </div>
 
-  <div>
+  <!-- Time spent on the page, set on submit. A resent form keeps counting
+       from the earlier attempt so fixing one field quickly isn't "too fast". -->
+  <input
+    data-base={values.get(ELAPSED_FIELD) ?? "0"}
+    data-elapsed-field
+    name={ELAPSED_FIELD}
+    type="hidden"
+  />
+
+  <div class="grid justify-items-start gap-3">
+    <TurnstileWidget action="contact" />
     <Button size="lg" type="submit">Send Message</Button>
   </div>
 </form>
+
+<script>
+  for (const input of document.querySelectorAll<HTMLInputElement>(
+    "[data-elapsed-field]"
+  )) {
+    const base = Number(input.dataset.base) || 0;
+    input.form?.addEventListener("submit", () => {
+      input.value = String(Math.round(base + performance.now()));
+    });
+  }
+</script>
